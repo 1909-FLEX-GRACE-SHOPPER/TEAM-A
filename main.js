@@ -1,11 +1,55 @@
-'use strict'
+const Sequelize = require('sequelize');
+const chalk = require('chalk');
 
-const {db} = require('./server/db')
-const app = require('./server')
-const PORT = 1337
+const db = require('./db/db');
 
-db.sync() // if you update your db schemas, make sure you drop the tables first and then recreate them
+//module.exports = db;
+const User = db.define('user', {
+  firstName: {
+      type: Sequelize.STRING,
+      allowNull: false,
+      validate: {
+          notEmpty: true,
+      },
+  },
+  lastName: {
+      type: Sequelize.STRING,
+      allowNull: false,
+      validate: {
+          notEmpty: true,
+      },
+  },
+  name: {
+      type: Sequelize.VIRTUAL,
+      get() {
+          return `${this.firstName} ${this.lastName}`;
+      },
+      set(value) {
+          throw new Error('cannot SET name');
+      },
+  },
+  email: {
+      type: Sequelize.STRING,
+      allowNull: false,
+      validate: {
+          notEmpty: true,
+          isEmail: true,
+          isUnique: true,
+          required: true,
+      },
+  },
+  hashedPassword: {
+      type: Sequelize.TEXT,
+      allowNull: false,
+      validate: {
+          notEmpty: true,
+          required: true,
+      },
+  }
+})
+
+console.log(chalk.blue('Opening database connection'));
+db.sync({ force: true })
   .then(() => {
-    console.log('db synced')
-    app.listen(PORT, () => console.log(`studiously serving silly sounds on port ${PORT}`))
+    console.log(chalk.green('database sync successful'))
   })
