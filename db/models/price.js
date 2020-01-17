@@ -8,7 +8,7 @@ const Price = connection.define('price', {
         validate: {
             isNumeric: true,
             isDecimal: true,
-            min: 0.99,
+            min: 0.01,
             max: 9999.99
         }
     }
