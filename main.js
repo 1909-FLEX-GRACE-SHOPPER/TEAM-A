@@ -1,11 +1,17 @@
-'use strict'
+//const Sequelize = require('sequelize');
+const chalk = require('chalk');
 
-const {db} = require('./server/db')
-const app = require('./server')
-const PORT = 1337
+const { connection } = require('./db');
 
-db.sync() // if you update your db schemas, make sure you drop the tables first and then recreate them
+console.log(chalk.white('*** FILE: main.js'));
+
+console.log(chalk.white('Opening database connection'));
+
+connection.sync({ force: true })
   .then(() => {
-    console.log('db synced')
-    app.listen(PORT, () => console.log(`studiously serving silly sounds on port ${PORT}`))
+    console.log(chalk.green('database sync successful'))
+  })
+  .catch(e => {
+      console.log(chalk.red('database sync failed'));
+      console.error(e);
   })

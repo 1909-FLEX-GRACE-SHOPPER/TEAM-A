@@ -4,7 +4,8 @@
   "description": "This is our Readme file. Let's build something!",
   "main": "main.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start-db": "nodemon main.js"
   },
   "repository": {
     "type": "git",
@@ -16,5 +17,14 @@
   "bugs": {
     "url": "https://github.com/1909-FLEX-GRACE-SHOPPER/TEAM-A/issues"
   },
-  "homepage": "https://github.com/1909-FLEX-GRACE-SHOPPER/TEAM-A#readme"
+  "homepage": "https://github.com/1909-FLEX-GRACE-SHOPPER/TEAM-A#readme",
+  "dependencies": {
+    "chalk": "^3.0.0",
+    "nodemon": "^2.0.2",
+    "sequelize": "^5.21.3"
+  },
+  "devDependencies": {
+    "eslint": "^6.8.0",
+    "eslint-plugin-react": "^7.18.0"
+  }
 }
