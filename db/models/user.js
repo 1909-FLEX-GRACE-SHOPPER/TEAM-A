@@ -1,7 +1,7 @@
 const Sequelize = require('sequelize');
-const db = require('./connection');
+const connection = require('../connection');
 
-const User = db.define('user', {
+const User = connection.define('user', {
     firstName: {
         type: Sequelize.STRING,
         allowNull: false,
@@ -28,6 +28,7 @@ const User = db.define('user', {
     email: {
         type: Sequelize.STRING,
         allowNull: false,
+        defaultValue: 'guest@guest.com',
         validate: {
             notEmpty: true,
             isEmail: true,
@@ -42,6 +43,10 @@ const User = db.define('user', {
             notEmpty: true,
             required: true,
         },
+    },
+    isRegistered: {
+        type: Sequelize.BOOLEAN,
+        allowNull: false,
     }
 })
 
