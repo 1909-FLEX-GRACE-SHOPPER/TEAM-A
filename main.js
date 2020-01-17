@@ -1,6 +1,4 @@
-//const Sequelize = require('sequelize');
 const chalk = require('chalk');
-
 const { connection } = require('./db');
 
 console.log(chalk.white('*** FILE: main.js'));
