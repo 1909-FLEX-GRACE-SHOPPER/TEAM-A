@@ -5,7 +5,9 @@ const router = express.Router();
 //router.use('/order', require('./order'));
 //add additional routes here
 
-router.use('/cart', require('./cart'))
+//router.use('/cart', require('./cart'))
+
+router.use('/products', require('./products'))
 
 //error handling
 router.use((req, res, next) => {
