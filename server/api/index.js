@@ -2,8 +2,9 @@ const express = require('express');
 
 const router = express.Router();
 
-//router.use('/order', require('./order'));
 //add additional routes here
+router.use('/order', require('./order'));
+
 
 //error handling
 router.use((req, res, next) => {
