@@ -1,21 +1,17 @@
-const router = require('express').Router()
+const express = require('express');
 
-//API Routes go here
+const router = express.Router();
 
-router.use('/cart', require('./cart.js'))
+//router.use('/order', require('./order'));
+//add additional routes here
 
-// router.use('/cartItem', require('./cartItem.js'))
+router.use('/cart', require('./cart'))
 
-// router.use('/orders', require('./order.js'))
-
-// router.use('/orderItem', require('./orderItem.js'))
-
-// router.use('/product', require('./product.js'))
-
+//error handling
 router.use((req, res, next) => {
-  const err = new Error('API route not found!')
-  err.status = 404
+  const err = new Error(`Invalid API path: ${req.baseUrl}`);
+  err.status = 404;
   next(err)
 })
 
-module.exports = router
+module.exports = router;

@@ -5,6 +5,8 @@
   "main": "main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "seed": "node seed.js",
+    "cold-start": "run-s seed start",
     "start": "nodemon main.js"
   },
   "repository": {
@@ -20,9 +22,15 @@
   "homepage": "https://github.com/1909-FLEX-GRACE-SHOPPER/TEAM-A#readme",
   "dependencies": {
     "chalk": "^3.0.0",
+    "cookie-parser": "^1.4.4",
+    "express": "^4.17.1",
     "faker": "^4.1.0",
     "nodemon": "^2.0.2",
+<<<<<<< HEAD
     "pg": "^7.17.1",
+=======
+    "path": "^0.12.7",
+>>>>>>> dev
     "sequelize": "^5.21.3"
   },
   "devDependencies": {

@@ -1,5 +1,6 @@
+const Sequelize = require('sequelize');
 const router = require('express').Router()
-const { Cart, CartItem, User } = require('.../db/models')
+const { Cart, CartItem, User } = require('../../db')
 
 // CART: (/api/cart)
 // create new cart (POST - '/') - use userId (new cart should be created as soon as new user enters app)
