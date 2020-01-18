@@ -1,7 +1,7 @@
 const Sequelize = require('sequelize');
 const connection = require('../connection');
 
-const OrderItem = connection.define('orderItem', {
+const OrderItem = connection.define('orderitem', {
     quantity: {
         type: Sequelize.INTEGER,
         defaultValue: 1,

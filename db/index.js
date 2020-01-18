@@ -5,13 +5,13 @@ const connection = require('./connection');
 const { User, Cart, CartItem, Product, Order, OrderItem } = require('./models');
 
 //model associations here
-User.hasOne(Cart);
+Cart.belongsTo(User);
 Cart.hasMany(CartItem);
-CartItem.hasOne(Product);
+CartItem.belongsTo(Product);
 
-User.hasMany(Order);
+Order.belongsTo(User);
 Order.hasMany(OrderItem);
-OrderItem.hasOne(Product);
+OrderItem.belongsTo(Product);
 
 
 //exports
