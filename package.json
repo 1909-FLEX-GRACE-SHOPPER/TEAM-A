@@ -26,7 +26,11 @@
     "express": "^4.17.1",
     "faker": "^4.1.0",
     "nodemon": "^2.0.2",
+<<<<<<< HEAD
+    "pg": "^7.17.1",
+=======
     "path": "^0.12.7",
+>>>>>>> dev
     "sequelize": "^5.21.3"
   },
   "devDependencies": {
