@@ -2,7 +2,7 @@
 const connection = require('./connection');
 
 //Model imports
-const { User, Cart, CartItem, Product, Price, Order, OrderItem } = require('./models');
+const { User, Cart, CartItem, Product, Order, OrderItem } = require('./models');
 
 //model associations here
 User.hasOne(Cart);
@@ -13,7 +13,6 @@ User.hasMany(Order);
 Order.hasMany(OrderItem);
 OrderItem.hasOne(Product);
 
-Product.hasOne(Price);
 
 //exports
 module.exports = {
@@ -22,7 +21,6 @@ module.exports = {
     Cart,
     CartItem,
     Product,
-    Price,
     Order,
     OrderItem
 }
