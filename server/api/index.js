@@ -3,7 +3,8 @@ const express = require('express');
 const router = express.Router();
 
 //add additional routes here
-router.use('/order', require('./order'));
+router.use('/orders', require('./order'));
+router.use('/orderitems', require('./orderitem'));
 
 
 router.use('/cart', require('./cart'))
