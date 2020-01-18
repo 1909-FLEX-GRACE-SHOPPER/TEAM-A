@@ -5,7 +5,7 @@ console.log(chalk.white('*** FILE: main.js'));
 
 console.log(chalk.white('Opening database connection'));
 
-connection.sync({ force: true })
+connection.sync()
   .then(() => {
     console.log(chalk.green('database sync successful'))
   })
