@@ -55,3 +55,5 @@ router.put('/:cartId', (req, res, next) => {
       next(e);
     })
 })
+
+module.exports = router;
