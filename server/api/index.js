@@ -11,7 +11,7 @@ router.use('/cart', require('./cart'))
 
 //error handling
 router.use((req, res, next) => {
-  const err = new Error(`Invalid API path: ${req.baseUrl}`);
+  const err = new Error(`Invalid API path: ${req}`);
   err.status = 404;
   next(err)
 })
