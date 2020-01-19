@@ -2,6 +2,7 @@ const express = require('express');
 const path = require('path');
 const chalk = require('chalk');
 const cookieParser = require('cookie-parser');
+const { User } = require('../db');
 
 const server = express();
 
@@ -10,11 +11,36 @@ server.use(express.json());
 server.use(express.static(path.join(__dirname, '../public')));
 server.use(cookieParser());
 
-//authentication here
-//TODO: WRITE AUTHENTICATION ROUTING
+//check for cookie, set user based on sessionId
+server.use((req, res, next) => {
+    if (req.cookies.sessionId) {
+        User.findOne({
+            where: {
+                sessionId: req.cookies.sessionId
+            }
+        })
+        .then(user => {
+            if (user) {
+                req.loggedIn = true;
+                req.user = user;
+                req.guest = !user.isRegistered;
+            }
+            next();
+        })
+        .catch(e => {
+            console.log(chalk.red('Error retrieving sessionId'));
+            console.error(e);
+            next(e);
+        })
+    }
+    else {
+        next();
+    }
+});
 
 //routing here
 server.use('/api', require('./api'));
+server.use('/auth', require('./auth'));
 
 //main route to serve index.html
 server.get('/', (req, res) => {
