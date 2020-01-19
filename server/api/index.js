@@ -9,6 +9,8 @@ router.use('/orderitems', require('./orderitem'));
 
 router.use('/cart', require('./cart'))
 
+router.use('/products', require('./products'))
+
 //error handling
 router.use((req, res, next) => {
   const err = new Error(`Invalid API path: ${req}`);
