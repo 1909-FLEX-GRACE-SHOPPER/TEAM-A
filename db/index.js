@@ -5,6 +5,9 @@ const connection = require('./connection');
 const { User, Cart, CartItem, Product, Order, OrderItem } = require('./models');
 
 //model associations here
+User.hasOne(Cart);
+User.hasMany(Order);
+
 Cart.belongsTo(User);
 Cart.hasMany(CartItem);
 CartItem.belongsTo(Product);
