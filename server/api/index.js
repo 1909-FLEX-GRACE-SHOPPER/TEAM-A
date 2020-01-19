@@ -7,7 +7,7 @@ router.use('/orders', require('./order'));
 router.use('/orderitems', require('./orderitem'));
 
 
-//router.use('/cart', require('./cart'))
+router.use('/cart', require('./cart'))
 
 router.use('/products', require('./products'))
 
