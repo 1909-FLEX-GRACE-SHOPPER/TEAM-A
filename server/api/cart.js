@@ -24,14 +24,14 @@ router.post('/', (req, res, next) => {
 router.get('/:cartId?', (req, res, next) => {
   const { cartId } = req.params;
   if (cartId) {
-    Cart.findOne({ where: { id: cartId }, include: { model: User } })
+    Cart.findOne({ where: { id: cartId }, include: { model: CartItem } })
       .then(cart => res.status(302).send(cart))
       .catch(e => {
         res.status(404).send('Cart not found!')
         next(e)
       })
   } else {
-    Cart.findAll({ include: { model: User } })
+    Cart.findAll({ include: { model: CartItem } })
       .then(carts => res.status(302).send(carts))
       .catch(e => {
         res.status(404).send('Error finding all carts')
