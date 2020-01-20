@@ -4,13 +4,11 @@
   "description": "This is our Readme file. Let's build something!",
   "main": "main.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "cold-start": "run-s seed start",
-    "start-dev": "npm run build-watch & npm run start",
-    "start": "nodemon main.js -e html,js,css --ignore public",
-    "seed": "node seed.js",
+    "start-dev": "npm run build-watch & npm run start-server",
+    "start-server": "nodemon main.js -e html,js,css --ignore public",
     "build-watch": "webpack -w",
-    "build": "webpack"
+    "start": "node main.js",
+    "seed": "node seed.js"
   },
   "repository": {
     "type": "git",
