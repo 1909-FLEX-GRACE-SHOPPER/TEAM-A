@@ -7,16 +7,17 @@ const setCart = cart => {
     type: SET_CART,
     cart
   }
-
 };
 
 //reducer
 export const cartReducer = (state = {}, action) => {
   switch (action.type) {
-    case 'SET_CART':
+    case SET_CART: {
       return action.cart;
-    default:
+    }
+    default: {
       return state;
+    }
   }
 }
 
@@ -28,5 +29,3 @@ export const fetchCart = function (cartId) {
       .catch(e => console.log(e));
   }
 };
-
-
