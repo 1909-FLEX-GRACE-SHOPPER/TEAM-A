@@ -67,16 +67,26 @@ router.get('/:cartItemId?', (req, res, next) => {
 })
 
 // edit cart item (PUT - '/:cartItemId')
+// only quantity can be updated currently
 
 router.put('/:cartItemId', (req, res, next) => {
   const { cartItemId } = req.params;
+  const { id, cartId, productId } = req.body;
+  if (id || cartId || productId) {
+    return res.status(400).send('Only quantity can be updated')
+  }
   CartItem.findOne({
     where: {
       id: cartItemId
     }
   })
     .then(cart => {
-      cart.update({ ...cart, ...req.body }, { returning: true })
+      cart.update({ 
+        ...cart, 
+        quantity: req.body.quantity || cart.quantity, 
+      }, { 
+        returning: true 
+      })
         .then(updatedItem => res.status(200).send(updatedItem))
         .catch(e => {
           res.status(400).send('Error updating cart item');
