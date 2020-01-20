@@ -21,6 +21,7 @@
   },
   "homepage": "https://github.com/1909-FLEX-GRACE-SHOPPER/TEAM-A#readme",
   "dependencies": {
+    "bcrypt": "^3.0.7",
     "chalk": "^3.0.0",
     "cookie-parser": "^1.4.4",
     "express": "^4.17.1",
