@@ -2,22 +2,24 @@ import React from 'react';
 import store from './app/store.js';
 
 class Cart extends React.Component {
-  constructor(props) {
+  constructor() {
     super();
     this.state = store.getState()
   }
 
-  componentWillUnmount() {
+//   componentWillUnmount() {
 
-  }
+//   }
 
-  componentDidMount() {
+//   componentDidMount() {
 
-  }
+//   }
 
   render() {
-      return ()
-    
+      return (
+          <>
+          </>
+      )
 }
 }
 

@@ -7,7 +7,7 @@ const initialState = {
 const appReducer = combineReducers({
   products: (state = initialState, action) => {
     switch (action.type) {
-      case "SET_PRODUCTS":
+      case 'SET_PRODUCTS':
         return action.products;
       default:
         return state;
@@ -15,4 +15,4 @@ const appReducer = combineReducers({
   }
 });
 
-export default appReducer;
+export default appReducer
