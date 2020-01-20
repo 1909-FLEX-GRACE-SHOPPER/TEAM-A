@@ -6,7 +6,7 @@ const router = express.Router();
 router.use('/orders', require('./order'));
 router.use('/orderitems', require('./orderitem'));
 
-
+router.use('/cartitem', require('./cartitem'))
 router.use('/cart', require('./cart'))
 
 router.use('/products', require('./products'))
