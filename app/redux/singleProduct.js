@@ -1,5 +1,6 @@
 import axios from 'axios';
 const SET_SELECTED_PRODUCT = 'SET_SELECTED_PRODUCT';
+const SELECTED_QUANTITY = 'SELECTED_QUANTITY';
 
 //action creators
 const setSelectedProduct = product => {
