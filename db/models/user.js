@@ -32,8 +32,6 @@ const User = connection.define('user', {
         validate: {
             notEmpty: true,
             isEmail: true,
-            isUnique: true,
-            required: true,
         },
     },
     hashedPassword: {
@@ -41,7 +39,13 @@ const User = connection.define('user', {
         allowNull: false,
         validate: {
             notEmpty: true,
-            required: true,
+        },
+    },
+    sessionId: {
+        type: Sequelize.TEXT,
+        allowNull: true,
+        validate: {
+            notEmpty: true,
         },
     },
     isRegistered: {

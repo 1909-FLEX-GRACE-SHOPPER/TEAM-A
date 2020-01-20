@@ -28,6 +28,16 @@ const Product = connection.define('product', {
             max: 5000,
         }
     },
+    price: {
+        type: Sequelize.DECIMAL(6,2),
+        allowNull: false,
+        validate: {
+            isNumeric: true,
+            isDecimal: true,
+            min: 0.01,
+            max: 9999.99
+        },
+    }
 })
 
 module.exports = Product;
