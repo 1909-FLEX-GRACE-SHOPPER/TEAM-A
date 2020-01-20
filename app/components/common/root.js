@@ -1,14 +1,14 @@
-import React from 'react'
+import React from 'react';
 
 class Root extends React.Component {
 
   render() {
     return (
       <div>
-        Content Goes Here
+        Hello World again and again, from compiled React!
       </div>
     )
   }
 }
 
-export default Root
+export default Root;
