@@ -5,7 +5,6 @@ const { Order, OrderItem } = require('../../db');
 
 router.use(express.json());
 
-
 //return a single order (and items) by id
 router.get('/:orderId', (req, res, next) => {
     Order.findOne({
@@ -29,11 +28,9 @@ router.get('/:orderId', (req, res, next) => {
 });
 
 //return all orders, with optional sort query parameter in url
-//example 1: /api/orders
-//example 2: /api/orders?sort=status&dir=ASC
+//example 1: /api/order
+//example 2: /api/order?sort=status&dir=ASC
 router.get('/', (req, res, next) => {
-    let filter = req.query.filter;
-
     Order.findAll({
         include: [{
             model: OrderItem,
