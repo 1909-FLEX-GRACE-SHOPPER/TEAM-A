@@ -1,5 +1,6 @@
 var express = require('express');
 var router = express.Router();
+const chalk = require('chalk');
 const { User, Cart, Order } = require('../../db');
 const { generateSessionId } = require('../utils');
 
@@ -27,6 +28,7 @@ router.get('/:userId', (req, res, next) => {
         res.status(404).send('Not found');
     })
     .catch(e => {
+        console.log(chalk.red(`Error in GET /api/user/id: ${req.url}`));
         res.status(400).send('Invalid request');
         next(e);
     })
@@ -46,6 +48,7 @@ router.get('/', (req, res, next) => {
         res.status(200).send(results);
     })
     .catch(e => { 
+        console.log(chalk.red(`Error in GET /api/user: ${req.url}`));
         res.status(400).send('Invalid request');
         next(e);
     })
@@ -72,6 +75,7 @@ router.put('/:userId', (req, res, next) => {
         res.status(404).send('Not found');
     })
     .catch(e => {
+        console.log(chalk.red(`Error in PUT /api/user/id: ${req.url}`));
         res.status(400).send('Invalid request');
         next(e);
     })
@@ -96,6 +100,7 @@ router.post('/guest', (req, res, next) => {
         res.status(201).send(created);
     })
     .catch(e => {
+        console.log(chalk.red(`Error in POST /api/user/guest: ${req.url}`));
         res.status(400).send('Invalid request');
         next(e);
     })
@@ -117,6 +122,7 @@ router.post('/', (req, res, next) => {
         res.status(201).send(created);
     })
     .catch(e => {
+        console.log(chalk.red(`Error in POST /api/user/guest: ${req.body}`));
         res.status(400).send('Invalid request');
         next(e);
     })
