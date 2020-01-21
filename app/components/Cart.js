@@ -11,8 +11,7 @@ class Cart extends React.Component {
   render() {
     return (
       <div>
-        <h1>Hi from Cart!</h1>
-        <h3>Cart items:</h3>
+        <h2>Cart items:</h2>
         <Fragment>
           {
             this.props.cart.id ?
