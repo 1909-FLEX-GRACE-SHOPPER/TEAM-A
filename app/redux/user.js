@@ -1,32 +1,76 @@
-import axios from 'axios';
+import chalk from 'chalk';
+
 const SET_USER = 'SET_USER';
 
+//initial state
+const initState = {};
+
 //action creators
-const setUser = user => {
+const setUser = (user) => {
   return {
     type: SET_USER,
     user
   }
-
 };
 
-//reducer
-export const userReducer = (state = {}, action) => {
-  switch (action.type) {
-    case SET_USER: {
-      return action.user;
-    }
-    default: {
-      return state;
-    }
-  }
-}
 
 //thunks
-export const fetchUser = function (userId) {
-  return dispatch => {
-    axios.get(`/api/users/${userId}`)
+
+//log in a user (for login form and after a new guest has been created)
+//note the /auth/login call will also set the cookie
+export const loginUser = (user) => {
+  return (dispatch, getState, {axios}) => {
+    return axios.post('/auth/login', user)
+      .then(response => response.data)
+      .then(() => dispatch(setUser(user)))
+      .catch(e => console.log(chalk.red(`Error IN Redux thunk loginUser: ${e}`)))
+  }
+};
+
+//check if cookie is set, and then set the user as per that cookie
+export const fetchLogin = () => {
+  return (dispath, getState, {axios}) => {
+    return axios.get('/auth/who')
       .then(user => dispatch(setUser(user.data)))
-      .catch(e => console.log(e));
+      .catch(() => dispatch(createGuest()))
+  }
+};
+
+export const createGuest = () => {
+  return (dispatch, getState, {axios}) => {
+    return axios.post('/api/user/guest', {})
+      .then(response => response.data)
+      .then(guest => dispatch(loginUser(guest)))
+      .catch(e => console.log(chalk.red(`Error IN Redux thunk createGuest: ${e}`)))
+  }
+};
+
+export const fetchUser = (userId) => {
+  return (dispatch, getState, {axios}) => {
+    return axios.get(`/api/user/${userId}`)
+      .then(response => response.data)
+      .then(user => dispatch(setUser(user)))
+      .catch(e => console.log(chalk.red(`Error IN Redux thunk fetchUser: ${e}`)))
+  }
+};
+
+export const createUser = (user) => {
+  return (dispatch, getState, {axios}) => {
+    return axios.post('/api/user', {user})
+      .then(response => response.data)
+      .then(newUser => dispatch(loginUser(newUser)))
+      .catch(e => console.log(chalk.red(`Error IN Redux thunk createUser: ${e}`)))
+  }
+};
+
+
+
+//reducer
+export const userReducer = (state = initState, action) => {
+  switch (action.type) {
+    case SET_USER:
+      return action.user;
+    default:
+      return state;
   }
 };
