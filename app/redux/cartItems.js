@@ -12,7 +12,7 @@ const setCartItems = cartItems => {
   }
 }
 
-const updateCartItem = (newDetails, id) => {
+const updateACartItem = (newDetails, id) => {
   return {
     type: UPDATE_CART_ITEM,
     newDetails: {
@@ -22,7 +22,7 @@ const updateCartItem = (newDetails, id) => {
   }
 }
 
-const deleteCartItem = id => {
+const deleteACartItem = id => {
   return {
     type: DELETE_CART_ITEM,
     id
@@ -58,10 +58,10 @@ export const cartItemsReducer = (state = [], action) => {
 
 //thunks
 
-export const setCartItems = (cartId) => {
+export const fetchCartItems = (cartId) => {
   return (dispatch) => {
-    axios.get('/api/cartitem')
-      .then(cartItems => dispatch(setCartItems(cartItems.data)))
+    axios.get(`/api/cart/${cartId}`)
+      .then(cart => dispatch(setCartItems(cart.data.cartItems)))
       .catch(e => console.error(e))
   }
 }
@@ -69,7 +69,7 @@ export const setCartItems = (cartId) => {
 export const updateCartItem = (cartItemId, newDetails) => {
   return (dispatch) => {
     axios.put(`/api/cartitem/${cartItemId}`, newDetails)
-      .then(() => dispatch(updateCartItem(newDetails, parseInt(cartItemId))))
+      .then(() => dispatch(updateACartItem(newDetails, parseInt(cartItemId))))
       .catch(e => {
         console.error(e)
         // create this:
@@ -81,7 +81,7 @@ export const updateCartItem = (cartItemId, newDetails) => {
 export const deleteCartItem = cartItemId => {
   return (dispatch) => {
     axios.delete(`/api/cartitem/${cartItemId}`)
-      .then(() => dispatch(deleteCartItem(cartItemId)))
+      .then(() => dispatch(deleteACartItem(cartItemId)))
       .catch(e => console.error(e))
   }
 }

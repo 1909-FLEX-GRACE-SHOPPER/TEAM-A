@@ -1,5 +1,8 @@
 import React from 'react';
-import { BrowserRouter, Switch, Route } from 'react-router-dom';
+import { HashRouter, Route } from 'react-router-dom'
+import { connect } from 'react-redux';
+import Cart from '../Cart'
+import Home from '../Home'
 
 //redux
 //import {store} from '.../store';
@@ -14,14 +17,22 @@ class Root extends React.Component {
   render() {
     
     return (
-      <BrowserRouter>
-          <Navbar />
-          <Switch>
-            <Route exact path="/" component={ProductList}></Route>
-          </Switch>
-      </BrowserRouter>
-    );
+      <HashRouter>
+        <Route exact path='/' component={Home} />
+        <Route path='/cart' component={Cart} />
+      </HashRouter>
+    )
   }
 }
 
-export default Root;
+const mapState = ({ cart }) => {
+  return {
+    cart,
+  }
+}
+
+// const mapDispatch = dispatch => {
+
+// }
+
+export default connect(mapState)(Root)
