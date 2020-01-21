@@ -24,8 +24,8 @@ router.post('/', (req, res, next) => {
 router.get('/:cartId?', (req, res, next) => {
   const { cartId } = req.params;
   if (cartId) {
-    Cart.findOne({ where: { id: cartId }, include: { model: CartItem } })
-      .then(cart => res.status(302).send(cart))
+    Cart.findOne({ where: { id: parseInt(cartId) }, include: { model: CartItem } })
+      .then(cart => res.send(cart))
       .catch(e => {
         res.status(404).send('Cart not found!')
         next(e)
