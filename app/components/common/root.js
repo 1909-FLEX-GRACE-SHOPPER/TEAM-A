@@ -1,14 +1,30 @@
 import React from 'react';
+import { HashRouter, Route } from 'react-router-dom'
+import { connect } from 'react-redux';
+import Cart from '../Cart'
 
 class Root extends React.Component {
 
   render() {
     return (
-      <div>
-        Hello World again and again, from compiled React!
-      </div>
+      <HashRouter>
+        <Route path='/' component={Cart} />
+      </HashRouter>
+      // <div>
+      //   Hello World again and again, from compiled React!
+      // </div>
     )
   }
 }
 
-export default Root;
+const mapState = ({ cart }) => {
+  return {
+    cart,
+  }
+}
+
+// const mapDispatch = dispatch => {
+
+// }
+
+export default connect(mapState)(Root)

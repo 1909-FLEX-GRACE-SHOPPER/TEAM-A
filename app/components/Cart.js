@@ -1,26 +1,51 @@
-import React from 'react';
-import store from './app/store.js';
+import React, { Fragment } from 'react';
+import { connect } from 'react-redux';
+import { fetchCart } from '../redux/cart'
 
 class Cart extends React.Component {
-  constructor() {
-    super();
-    this.state = store.getState()
+
+  componentDidMount() {
+    this.props.fetchCart(1)
   }
 
-//   componentWillUnmount() {
-
-//   }
-
-//   componentDidMount() {
-
-//   }
-
   render() {
-      return (
-          <>
-          </>
-      )
-}
+    return (
+      <div>
+        <h1>Hi from Cart!</h1>
+        <Fragment>
+          {
+            this.props.cart.id ?
+              (
+                <ul>
+                  {
+                    this.props.cart.cartitems.map(cartItem => {
+                      return (
+                        <li key={cartItem.id}>id: {cartItem.id} productId: {cartItem.productId} created at: {cartItem.createdAt} </li>
+                      )
+                    })
+                  }
+                </ul>
+              ) : (
+                <h3>Loading...</h3>
+              )
+          }
+        </Fragment>
+      </div>
+    )
+  }
+
 }
 
-export default Cart
+const mapState = ({ cart }) => {
+  return {
+    cart,
+  }
+}
+
+const mapDispatch = dispatch => {
+  return {
+    fetchCart: (cartId) => dispatch(fetchCart(cartId))
+  }
+}
+
+export default connect(mapState, mapDispatch)(Cart)
