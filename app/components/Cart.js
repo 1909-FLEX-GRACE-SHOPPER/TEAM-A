@@ -12,6 +12,7 @@ class Cart extends React.Component {
     return (
       <div>
         <h1>Hi from Cart!</h1>
+        <h3>Cart items:</h3>
         <Fragment>
           {
             this.props.cart.id ?

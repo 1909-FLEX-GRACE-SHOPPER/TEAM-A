@@ -2,17 +2,16 @@ import React from 'react';
 import { HashRouter, Route } from 'react-router-dom'
 import { connect } from 'react-redux';
 import Cart from '../Cart'
+import Home from '../Home'
 
 class Root extends React.Component {
 
   render() {
     return (
       <HashRouter>
-        <Route path='/' component={Cart} />
+        <Route exact path='/' component={Home} />
+        <Route path='/cart' component={Cart} />
       </HashRouter>
-      // <div>
-      //   Hello World again and again, from compiled React!
-      // </div>
     )
   }
 }
