@@ -1,25 +1,22 @@
-import React, { useState, useEffect } from 'react';
-import { createGuest } from '../../redux/user';
+import React, { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { fetchLogin } from '../../redux/user';
 
-const SamplePage = (props) => {
+function TestAuthPage() {
+    const user = useSelector(state => state.user);
+    const dispatch = useDispatch();
+
     useEffect(() => {
-        if (!props.user) {
-            props.createGuest();
+        if (!user.sessionId) {
+            dispatch(fetchLogin());
         }
-    })
-    
+    });
+
+    return (
+        <div>
+            {user ? `currently  logged in as ${user.email} and sessionId ${user.sessionId}` : `no user`}
+        </div>
+    )
 };
 
-const mapStateToProps = (state) => {
-    return {
-        user: state.user,
-        loggedIn: state.user.isRegistered,
-        name: state.user.firstName,
-    }
-};
-
-const mapDispatchToProps = (dispatch) => {
-    return {
-        createGuest: () => dispatch(createGuest())
-    }
-};
+export default TestAuthPage;

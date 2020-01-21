@@ -91,7 +91,6 @@ router.post('/guest', (req, res, next) => {
     firstName: 'guest',
     lastName: 'guest',
     email: `${Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15)}@guest.com`,
-    //todo: replace this with the hashing function on a random string
     hashedPassword: hasher(Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15)),
     isRegistered: false,
     sessionId,
