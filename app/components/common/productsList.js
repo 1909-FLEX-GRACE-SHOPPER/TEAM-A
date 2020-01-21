@@ -1,8 +1,7 @@
 import React from 'react';
-export default class Productslist extends React.Component {
-  render() {
-    <div>
-      <h3>this is productsList</h3>
-    </div>;
-  }
-}
+
+const ProductList = () => {
+  return <h3>this is ProductsList</h3>;
+};
+
+export default ProductList;
