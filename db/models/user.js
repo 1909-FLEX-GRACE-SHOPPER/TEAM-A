@@ -28,7 +28,7 @@ const User = connection.define('user', {
     email: {
         type: Sequelize.STRING,
         allowNull: false,
-        defaultValue: 'guest@guest.com',
+        unique: true,
         validate: {
             notEmpty: true,
             isEmail: true,
