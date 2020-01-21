@@ -25,7 +25,9 @@ export const cartReducer = (state = {}, action) => {
 export const fetchCart = function (cartId) {
   return dispatch => {
     axios.get(`/api/cart/${cartId}`)
-      .then(cart => dispatch(setCart(cart.data)))
+      .then(cart => {
+        return dispatch(setCart(cart.data))
+      })
       .catch(e => console.log(e));
   }
 };
