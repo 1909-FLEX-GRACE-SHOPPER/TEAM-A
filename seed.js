@@ -24,13 +24,12 @@ const seed = async() => {
         //generate list of users, random guests or registered
         let userList = Array(GENERATED_USERS);
         for (let i = 0; i < GENERATED_USERS; i++) {
-            let registered = randomBool();
             userList[i] = {
-                firstName: registered ? faker.name.firstName() : 'guest',
-                lastName: registered ? faker.name.lastName() : 'guest',
-                email: registered ? faker.internet.email() : 'guest@guest.com',
+                firstName: faker.name.firstName(),
+                lastName: faker.name.lastName(),
+                email: faker.internet.email(),
                 hashedPassword: faker.random.alphaNumeric(16),
-                isRegistered: registered,
+                isRegistered: true,
             }
         }
         //create users
