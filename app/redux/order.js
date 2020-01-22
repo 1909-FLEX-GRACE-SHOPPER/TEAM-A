@@ -34,7 +34,7 @@ export const orderReducer = (state = {}, action) => {
         case CREATE_ORDER:
             return action.newOrder;
         case ADD_ORDER_ITEM:
-            return action.order;
+            return action.orderItem;
         default:
             return state;
     }
@@ -43,7 +43,7 @@ export const orderReducer = (state = {}, action) => {
 //thunks
 export const fetchOrder = function (orderId) {
     return dispatch => {
-        axios.get(`/api/orders/${orderId}`)
+        axios.get(`/api/order/${orderId}`)
             .then(order => dispatch(setOrder(order.data)))
             .catch(e => console.log(e));
     }
@@ -51,7 +51,7 @@ export const fetchOrder = function (orderId) {
 
 export const createOrder = function (newOrderId){
     return dispatch => {
-        axios.post(`/api/orders/`, newOrderId)
+        axios.post(`/api/order/`, newOrderId)
             .then(newOrder => dispatch(addOrder(newOrder.data)))
             .catch(e => console.log(e));
         }
@@ -59,29 +59,21 @@ export const createOrder = function (newOrderId){
 
 export const addOrderItem = function (orderId, productId) {
     return dispatch => {
-        axios.post(`/api/orderItem/`, {orderId, productId})
+        axios.post(`/api/orderitem/`, {orderId, productId})
             .then(orderItem => dispatch(addOrderItem(orderItem.data)))
             .catch(e => console.log(e));
     }
 }
 
-export const addOrderItemsToNewOrder = function(orderId) {
-    return dispatch(createOOrder(orderId)). 
-    then() =>{
-    const fetchedOrder = getState().ordersById[orderId]
-    }
-    return dispatch(addOrderItems())
+export const createOrderAndAddOrderItems = function(orderId) {
+    return (dispatch, getState) => {
+        return dispatch(createOrder(orderId))
+            .then(() => { 
+                const cart = getState().cart
+                const order = getState().order
+
+                return cart.cartItems.forEach(cartItem => dispatch(addOrderItem(order.userId, cartItem.productId)))
+            })
+}
 }
 
-//add orderitems 
-//loop through order items and add to order 
-    
-
-
-export cont addItemsToOrder = function (orderid) {
-
-
-
-}
-
-export const createOrder
