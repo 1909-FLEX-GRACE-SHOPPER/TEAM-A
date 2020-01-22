@@ -11,16 +11,16 @@ import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 
 const ProductsList = props => {
-  console.log('ProducstList PROPS****', props);
+  //console.log('ProducstList PROPS****', props);
   return props.products.map(product => {
     return (
       <Card className="card" key={product.id}>
         <CardActionArea>
-          <CardMedia
-            className="classes.media"
+          {/* <CardMedia
+            className={classes.media}
             image="/static/images/cards/contemplative-reptile.jpg"
             title="Contemplative Reptile"
-          />
+          /> */}
           <CardContent>
             <Typography gutterBottom variant="h5" component="h2">
               {product.name}

@@ -1,4 +1,5 @@
 import React from 'react';
+import Cart from '../Cart'
 
 import { AppBar, Tabs, Tab } from '@material-ui/core';
 
@@ -7,7 +8,8 @@ class Navbar extends React.Component {
     return (
       <AppBar title="My App">
         <Tabs>
-          <Tab label="cart" />
+          <Tab label='Home' />
+          <Tab label="Cart" />
           <Tab label="Log In" />
         </Tabs>
       </AppBar>

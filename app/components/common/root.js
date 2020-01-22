@@ -1,20 +1,12 @@
 import React from 'react';
 import { HashRouter, Route } from 'react-router-dom';
 import { connect } from 'react-redux';
-import Cart from '../Cart';
-import Home from '../Home';
-
-// todo:
-// import thunk to fetch products
-// give fetch products to mapDispatchToProps
-// run fetch products in componentdidmount
+import Cart from '../Cart'
+import Home from '../Home'
+import { testAuthPage } from '../index';
 
 //thunks
 import { fetchProducts } from '../../redux/products';
-
-//redux
-//import store from '.../store';
-//import fetchProducts from '.../redux/products';
 
 //Components
 import Navbar from './navbar';
