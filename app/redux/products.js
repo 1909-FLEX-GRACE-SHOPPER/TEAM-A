@@ -5,7 +5,7 @@ const SET_PRODUCTS = 'SET_PRODUCTS';
 const setProducts = products => {
   return {
     type: SET_PRODUCTS,
-    products
+    products:products
   }
 
 };
@@ -23,7 +23,7 @@ export const productsReducer = (state = [], action) => {
 //thunks
 export const fetchProducts = function () {
   return dispatch => {
-    axios.get('/api/products')
+    axios.get('/api/products') //longtime
       .then(products => dispatch(setProducts(products.data)))
       .catch(e => console.log(e));
   }
