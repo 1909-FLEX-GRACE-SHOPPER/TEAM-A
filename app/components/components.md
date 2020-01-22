@@ -30,6 +30,7 @@
 - title
 - price
 - description
+- quantity selector
 - add to cart (disabled if product is sold out)
 
 **CART PAGE**
@@ -44,6 +45,13 @@
 - title
 - price
 - quantity (editable)
+
+**CHECKOUT SUCCESS PAGE**
+
+* CHECKOUT SUCCESS component:
+- display new order
+- edit order
+- return to homepage
 
 **LOGIN PAGE**
 
@@ -132,8 +140,8 @@ ADMIN VIEW:
 
 **INDIVIDUAL ORDER PAGE**
 
-* ORDER component (editable)
-- order items (name, link to product, quantity)
+* ORDER component
+- order items (name, link to product, quantity - editable)
 - status
 
 **ACCOUNT INFO PAGE**
