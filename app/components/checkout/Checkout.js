@@ -83,7 +83,7 @@ const Checkout = () => {
       <AppBar position="absolute" color="default" className={classes.appBar}>
         <Toolbar>
           <Typography variant="h6" color="inherit" noWrap>
-            Company name
+            Team-A Grace Shopper
           </Typography>
         </Toolbar>
       </AppBar>
@@ -106,7 +106,7 @@ const Checkout = () => {
                   Thank you for your order.
                 </Typography>
                 <Typography variant="subtitle1">
-                  Your order number is #2001539. We have emailed your order confirmation, and will
+                  Your order number is #2001539. This completes your order. We will
                   send you an update when your order has shipped.
                 </Typography>
               </React.Fragment>
