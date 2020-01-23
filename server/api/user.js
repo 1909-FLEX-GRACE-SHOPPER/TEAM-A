@@ -91,7 +91,7 @@ router.post('/guest', (req, res, next) => {
     firstName: 'guest',
     lastName: 'guest',
     email: `${Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15)}@guest.com`,
-    hashedPassword: hasher(Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15)),
+    password: hasher(Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15)),
     isRegistered: false,
     sessionId,
   })
@@ -113,7 +113,7 @@ router.post('/', (req, res, next) => {
     firstName: req.body.firstName,
     lastName: req.body.lastName,
     email: req.body.email,
-    hashedPassword: hasher(req.body.hashedPassword),
+    password: hasher(req.body.password),
     isRegistered: true,
     sessionId,
   })

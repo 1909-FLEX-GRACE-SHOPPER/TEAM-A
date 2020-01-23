@@ -9,7 +9,7 @@ router.post('/', (req, res, next) => {
   const { userId } = req.body;
   Cart.create({ userId })
     .then(() => {
-      Cart.findOne({ where: { userId }, include: { model: User } })
+      Cart.findOne({ where: { userId }, include: { model: CartItem } })
         .then(cart => res.status(201).send(cart))
         .catch(() => res.status(404).send('Error finding new cart'))
     })

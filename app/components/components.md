@@ -46,6 +46,21 @@
 - price
 - quantity (editable)
 
+**CHECKOUT PAGE**
+
+* CHECKOUT component:
+- shipping address
+- payment
+- continue button
+
+**ORDER SUMMARY PAGE**
+
+* ORDER SUMMARY component:
+- orderItems
+- shipping address
+- payment details
+- submit order button
+
 **CHECKOUT SUCCESS PAGE**
 
 * CHECKOUT SUCCESS component:
