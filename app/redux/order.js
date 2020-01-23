@@ -18,7 +18,7 @@ const addOrder = newOrder => {
     newOrder
   }
 }
-const addOrderItem = orderItem => {
+const addAnOrderItem = orderItem => {
   return {
     type: ADD_ORDER_ITEM,
     orderItem
@@ -60,7 +60,7 @@ export const createOrder = function (newOrderId) {
 export const addOrderItem = function (orderId, productId) {
   return dispatch => {
     axios.post(`/api/orderitem/`, { orderId, productId })
-      .then(orderItem => dispatch(addOrderItem(orderItem.data)))
+      .then(orderItem => dispatch(addAnOrderItem(orderItem.data)))
       .catch(e => console.log(e));
   }
 }
