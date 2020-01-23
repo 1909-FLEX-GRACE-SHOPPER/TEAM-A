@@ -12,7 +12,8 @@ router.post('/', (req, res, next) => {
   User.findOne({ where: { email } })
     .then(user => {
       if (password == user.hashedPassword) {
-        user.update({ ...user, sessionId: generateSessionId() }, { returning: true })
+        let newSessionId = generateSessionId();
+        user.update({ sessionId: newSessionId }, { returning: true })
           .then(updatedUser => {
             res.cookie('sessionId', updatedUser.sessionId, {
               path: '/',
