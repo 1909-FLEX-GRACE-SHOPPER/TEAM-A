@@ -20,10 +20,10 @@ const setUser = (user) => {
 //note the /auth/login call will also set the cookie
 export const loginUser = (user) => {
   return (dispatch, getState, {axios}) => {
-    return axios.post('/auth/login', { email: user.email, password: user.hashedPassword })
+    return axios.post('/auth/login', { email: user.email, password: user.password })
       .then(response => response.data)
       .then(() => dispatch(setUser(user)))
-      .catch(e => console.log(chalk.red(`Error IN Redux thunk loginUser: ${e}`)))
+      .catch(e => dispatch(setUser('')))
   }
 };
 

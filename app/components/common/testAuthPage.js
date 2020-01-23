@@ -7,7 +7,7 @@ function TestAuthPage() {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        if (!user.sessionId) {
+        if (!user) {
             dispatch(fetchLogin());
         }
     });
