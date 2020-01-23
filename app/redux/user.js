@@ -4,7 +4,7 @@ import { createCart } from './cart'
 const SET_USER = 'SET_USER';
 
 //initial state
-const initState = {};
+const initState = '';
 
 //action creators
 const setUser = (user) => {
