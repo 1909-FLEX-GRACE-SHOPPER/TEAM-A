@@ -4,7 +4,7 @@ import { createCart } from './cart'
 const SET_USER = 'SET_USER';
 
 //initial state
-const initState = '';
+const initState = {};
 
 //action creators
 const setUser = (user) => {
@@ -20,13 +20,8 @@ const setUser = (user) => {
 //log in a user (for login form and after a new guest has been created)
 //note the /auth/login call will also set the cookie
 export const loginUser = (user) => {
-<<<<<<< HEAD
   return (dispatch, getState, { axios }) => {
-    return axios.post('/auth/login', { email: user.email, password: user.hashedPassword })
-=======
-  return (dispatch, getState, {axios}) => {
     return axios.post('/auth/login', { email: user.email, password: user.password })
->>>>>>> dev
       .then(response => response.data)
       .then(() => dispatch(setUser(user)))
       .catch(e => dispatch(setUser('')))
@@ -46,7 +41,9 @@ export const createGuest = () => {
   return (dispatch, getState, { axios }) => {
     return axios.post('/api/user/guest', {})
       .then(response => response.data)
-      .then(guest => dispatch(loginUser(guest)))
+      .then(guest => {
+        return dispatch(loginUser(guest))
+      })
       .catch(e => console.log(chalk.red(`Error IN Redux thunk createGuest: ${e}`)))
   }
 };

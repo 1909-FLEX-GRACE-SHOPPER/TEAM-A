@@ -11,7 +11,7 @@ router.post('/', (req, res, next) => {
   const { email, password } = req.body;
   User.findOne({ where: { email } })
     .then(user => {
-      if (password == user.hashedPassword) {
+      if (password == user.password) {
         let newSessionId = generateSessionId();
         user.update({ sessionId: newSessionId }, { returning: true })
           .then(updatedUser => {
