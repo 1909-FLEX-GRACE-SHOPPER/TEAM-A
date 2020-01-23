@@ -3,14 +3,14 @@ import { productsReducer } from './products'
 import { singleProductReducer } from './singleProduct'
 import { userReducer } from './user'
 import { cartReducer } from './cart'
-import { cartItemsReducer } from './cartItems';
+import { orderReducer } from './order'
 
 const appReducer = combineReducers({
   products: productsReducer,
   user: userReducer,
   selectedProduct: singleProductReducer,
   cart: cartReducer,
-  cartItems: cartItemsReducer
+  order: orderReducer,
 })
 
 export default appReducer;
