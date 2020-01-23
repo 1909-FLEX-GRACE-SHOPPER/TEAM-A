@@ -23,8 +23,8 @@ export const loginUser = (user) => {
   return (dispatch, getState, { axios }) => {
     return axios.post('/auth/login', { email: user.email, password: user.password })
       .then(response => response.data)
-      .then(() => dispatch(setUser(user)))
-      .catch(e => dispatch(setUser('')))
+      .then((user) => dispatch(setUser(user)))
+      .catch(e => console.log(chalk.red('login failed')))
   }
 };
 
