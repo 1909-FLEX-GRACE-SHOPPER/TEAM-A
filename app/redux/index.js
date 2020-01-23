@@ -13,4 +13,4 @@ const appReducer = combineReducers({
   cartItems: cartItemsReducer
 })
 
-export default appReducer
+export default appReducer;

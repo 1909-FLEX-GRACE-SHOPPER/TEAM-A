@@ -1,6 +1,14 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import { fetchCart } from '../redux/cart'
+import Table from "@material-ui/core/Table";
+import TableBody from "@material-ui/core/TableBody";
+import TableCell from "@material-ui/core/TableCell";
+import TableContainer from "@material-ui/core/TableContainer";
+import TableHead from "@material-ui/core/TableHead";
+import TableRow from "@material-ui/core/TableRow";
+import Paper from "@material-ui/core/Paper";
+
 
 class Cart extends React.Component {
 
@@ -11,25 +19,34 @@ class Cart extends React.Component {
   render() {
     return (
       <div>
-        <h2>Cart items:</h2>
-        <Fragment>
-          {
-            this.props.cart.id ?
-              (
-                <ul>
-                  {
-                    this.props.cart.cartitems.map(cartItem => {
-                      return (
-                        <li key={cartItem.id}>id: {cartItem.id} productId: {cartItem.productId} created at: {cartItem.createdAt} </li>
-                      )
-                    })
-                  }
-                </ul>
-              ) : (
-                <h3>Loading...</h3>
+       <TableContainer component={Paper}>
+          <Table aria-label="shoppingCart">
+            <TableHead>
+              <TableRow>
+                <TableCell>Product Name</TableCell>
+                <TableCell>Quantity</TableCell>
+                <TableCell>Price</TableCell>
+               </TableRow>
+            </TableHead>
+            <TableBody>
+              {
+                this.props.cart.id ?
+                  (this.props.cart.cartitems.map(cartItem => (
+                    <TableRow key={cartItem.id}>
+                  <TableCell component="th" scope="row">
+                        {cartItem.id}
+                  </TableCell>
+                      <TableCell align="left">{cartItem.productId}</TableCell>
+                      <TableCell align="left">{cartItem.createdAt}</TableCell>
+                </TableRow>
+              ))) : (
+                <p>Loading...</p>
               )
-          }
-        </Fragment>
+            }
+            </TableBody>
+          </Table>
+        </TableContainer>
+                
       </div>
     )
   }
