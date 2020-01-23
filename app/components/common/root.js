@@ -1,31 +1,46 @@
 import React from 'react';
 import { HashRouter, Route } from 'react-router-dom'
 import { connect } from 'react-redux';
+import { fetchProducts } from '../../redux/products'
+import { createGuestAndCart } from '../../redux/user'
+import { createCart } from '../../redux/cart'
 import Cart from '../Cart'
 import Home from '../Home'
+import SingleProduct from '../SingleProduct'
 import { testAuthPage } from '../index';
+import { create } from 'jss';
 
 class Root extends React.Component {
+
+  componentDidMount() {
+    this.props.fetchProducts()
+    this.props.createGuestAndCart()
+  }
 
   render() {
     return (
       <HashRouter>
         <Route exact path='/' component={Home} />
         <Route path='/cart' component={Cart} />
-        <Route path ='/testauth' component ={testAuthPage} />
+        <Route path='/testauth' component={testAuthPage} />
+        <Route exact path='/products/:id' component={SingleProduct} />
       </HashRouter>
     )
   }
 }
 
-const mapState = ({ cart }) => {
+const mapState = ({ cart, user }) => {
   return {
     cart,
+    user
   }
 }
 
-// const mapDispatch = dispatch => {
+const mapDispatch = dispatch => {
+  return {
+    fetchProducts: () => dispatch(fetchProducts()),
+    createGuestAndCart: () => dispatch(createGuestAndCart()),
+  }
+}
 
-// }
-
-export default connect(mapState)(Root)
+export default connect(mapState, mapDispatch)(Root)

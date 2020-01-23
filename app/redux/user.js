@@ -1,4 +1,5 @@
 import chalk from 'chalk';
+import { createCart } from './cart'
 
 const SET_USER = 'SET_USER';
 
@@ -19,7 +20,7 @@ const setUser = (user) => {
 //log in a user (for login form and after a new guest has been created)
 //note the /auth/login call will also set the cookie
 export const loginUser = (user) => {
-  return (dispatch, getState, {axios}) => {
+  return (dispatch, getState, { axios }) => {
     return axios.post('/auth/login', { email: user.email, password: user.hashedPassword })
       .then(response => response.data)
       .then(() => dispatch(setUser(user)))
@@ -29,7 +30,7 @@ export const loginUser = (user) => {
 
 //check if cookie is set, and then set the user as per that cookie
 export const fetchLogin = () => {
-  return (dispatch, getState, {axios}) => {
+  return (dispatch, getState, { axios }) => {
     return axios.get('/auth/who')
       .then(user => dispatch(setUser(user.data)))
       .catch(() => dispatch(createGuest()));
@@ -37,7 +38,7 @@ export const fetchLogin = () => {
 };
 
 export const createGuest = () => {
-  return (dispatch, getState, {axios}) => {
+  return (dispatch, getState, { axios }) => {
     return axios.post('/api/user/guest', {})
       .then(response => response.data)
       .then(guest => dispatch(loginUser(guest)))
@@ -46,7 +47,7 @@ export const createGuest = () => {
 };
 
 export const fetchUser = (userId) => {
-  return (dispatch, getState, {axios}) => {
+  return (dispatch, getState, { axios }) => {
     return axios.get(`/api/user/${userId}`)
       .then(response => response.data)
       .then(user => dispatch(setUser(user)))
@@ -55,15 +56,23 @@ export const fetchUser = (userId) => {
 };
 
 export const createUser = (user) => {
-  return (dispatch, getState, {axios}) => {
-    return axios.post('/api/user', {user})
+  return (dispatch, getState, { axios }) => {
+    return axios.post('/api/user', { user })
       .then(response => response.data)
       .then(newUser => dispatch(loginUser(newUser)))
       .catch(e => console.log(chalk.red(`Error IN Redux thunk createUser: ${e}`)))
   }
 };
 
-
+export const createGuestAndCart = () => {
+  return (dispatch, getState) => {
+    return dispatch(createGuest())
+      .then(() => {
+        const user = getState().user;
+        return dispatch(createCart(user.id))
+      })
+  }
+}
 
 //reducer
 export const userReducer = (state = initState, action) => {
