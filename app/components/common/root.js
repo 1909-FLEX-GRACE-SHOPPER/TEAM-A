@@ -3,7 +3,7 @@ import { HashRouter, Route } from 'react-router-dom'
 import { connect } from 'react-redux';
 import { fetchProducts } from '../../redux/products'
 import { createGuestAndCart } from '../../redux/user'
-import { testAuthPage, LoginPage, SingleProduct, Cart, Home } from '../index';
+import { testAuthPage, LoginPage, SingleProduct, Cart, Home, Checkout } from '../index';
 
 class Root extends React.Component {
 
@@ -19,6 +19,7 @@ class Root extends React.Component {
         <Route path='/cart' component={Cart} />
         <Route path='/testauth' component={testAuthPage} />
         <Route path='/login' component={LoginPage} />
+        <Route path='/checkout' component={Checkout} />
         <Route exact path='/products/:id' component={SingleProduct} />
       </HashRouter>
     )
