@@ -10,20 +10,26 @@ import CardMedia from '@material-ui/core/CardMedia';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 
+//styling
+const gridStyle = {
+  direction: 'row',
+  justify: 'space-around',
+  alignItems: 'center'
+}
+const cardStyle = {
+  margin: '1rem',
+  width: '30vw',
+  height: '40vh'
+}
+
 const ProductsList = props => {
   //console.log('ProducstList PROPS****', props);
   return (
-    <Grid 
-      container
-      direction='row'
-      justify='space-around'
-      alignItems='center'
-      spacing={2}
-    >
+    <Grid container style={gridStyle}>
       {props.products.map(product => {
         return (
           <Grid item md key={product.id}>
-            <Card className="card">
+            <Card className="card" style={cardStyle}>
               <CardActionArea>
                 {/* <CardMedia
                 className={classes.media}
@@ -31,7 +37,7 @@ const ProductsList = props => {
                 title="Contemplative Reptile"
               /> */}
                 <CardContent>
-                  <Typography gutterBottom variant="h5" component="h2">
+                  <Typography gutterBottom variant="h5" component="h3">
                     {product.name}
                   </Typography>
                   <Typography variant="body2" color="textSecondary" component="p">

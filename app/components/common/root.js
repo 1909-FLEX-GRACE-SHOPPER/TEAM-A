@@ -10,7 +10,7 @@ import { fetchProducts } from '../../redux/products';
 
 //Components
 import Navbar from './navbar';
-import ProductsList from './productsList';
+import ProductsList from './ProductsList';
 
 class Root extends React.Component {
  
@@ -18,7 +18,6 @@ class Root extends React.Component {
     this.props.fetchProducts();
   }
   render() {
-    console.log('****This.props****', this.props);
     return (
       <React.Fragment>
         <Navbar />
