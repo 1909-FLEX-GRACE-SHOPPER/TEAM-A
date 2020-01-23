@@ -31,7 +31,8 @@ class SingleProduct extends Component {
   }
 
   render() {
-    const { selectedProduct, addCartItem, user, cart } = this.props;
+    const { selectedProduct, addCartItem, cart } = this.props;
+    // TODO: add case for !selectedProduct
     return (
       <div>
         <h1>Image??</h1>
