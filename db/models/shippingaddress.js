@@ -35,12 +35,11 @@ const ShippingAddress = connection.define('shippingAddress', {
     }
   },
   state: {
-    type: Sequelize.STRING,
+    type: Sequelize.ENUM(states),
     allowNull: false,
     validate: {
       notEmpty: true,
       isUppercase: true,
-      isIn: [states],
     }
   },
   zip5: {
