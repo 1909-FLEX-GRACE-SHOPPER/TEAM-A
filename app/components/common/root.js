@@ -2,10 +2,8 @@ import React from 'react';
 import { HashRouter, Route } from 'react-router-dom'
 import { connect } from 'react-redux';
 import { fetchProducts } from '../../redux/products'
-import { createGuestAndCart } from '../../redux/oldUser'
-import Cart from '../Cart'
-import Home from '../Home'
-import { testAuthPage, LoginPage, SingleProduct, Cart } from '../index';
+import { createGuestAndCart } from '../../redux/user'
+import { testAuthPage, LoginPage, SingleProduct, Cart, Home } from '../index';
 
 class Root extends React.Component {
 
