@@ -7,7 +7,8 @@
 
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { fetchProduct } from '../redux/singleProduct'
+import { Link } from 'react-router-dom';
+import { fetchProduct, clearProduct } from '../redux/singleProduct'
 import { addCartItem } from '../redux/cart'
 
 class SingleProduct extends Component {
@@ -31,8 +32,8 @@ class SingleProduct extends Component {
   }
 
   render() {
-    const { selectedProduct, addCartItem, cart } = this.props;
-    // TODO: add case for !selectedProduct
+    const { selectedProduct, clearSelectedProduct, addCartItem, cart } = this.props;
+    // TODO: add case for !selectedProduct (i.e. return "Requested product could not be found")
     return (
       <div>
         <h1>Image??</h1>
@@ -48,15 +49,19 @@ class SingleProduct extends Component {
           onClick={() => addCartItem(cart.id, this.props.match.params.id, this.state.quantity)}
           disabled={selectedProduct.quantity === 0}
         >Add to cart</button>
+        <Link
+          to='/'
+          // TODO: clear selected product thunk
+          onClick={() => clearSelectedProduct()}
+        >Return to products</Link>
       </div>
     )
   }
 }
 
-const mapState = ({ selectedProduct, user, cart }) => {
+const mapState = ({ selectedProduct, cart }) => {
   return {
     selectedProduct,
-    user,
     cart,
   }
 }
@@ -64,6 +69,7 @@ const mapState = ({ selectedProduct, user, cart }) => {
 const mapDispatch = dispatch => {
   return {
     setProduct: (productId) => dispatch(fetchProduct(productId)),
+    clearSelectedProduct: () => dispatch(clearProduct()),
     addCartItem: (cartId, productId, quantity) => dispatch(addCartItem(cartId, productId, quantity))
   }
 }
