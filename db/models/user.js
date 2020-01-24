@@ -51,7 +51,7 @@ const User = connection.define('user', {
   isRegistered: {
     type: Sequelize.BOOLEAN,
     allowNull: false,
-  }
+  },
 })
 
 module.exports = User;

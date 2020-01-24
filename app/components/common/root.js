@@ -8,8 +8,10 @@ import { testAuthPage, LoginPage, SingleProduct, Cart, Home, Checkout } from '..
 class Root extends React.Component {
 
   componentDidMount() {
-    this.props.fetchProducts()
-    this.props.createGuestAndCart()
+    this.props.fetchProducts();
+    if (!this.props.user) {
+      this.props.createGuestAndCart();
+    }
   }
 
   render() {

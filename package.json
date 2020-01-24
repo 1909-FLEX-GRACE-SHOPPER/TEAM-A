@@ -23,6 +23,7 @@
   "homepage": "https://github.com/1909-FLEX-GRACE-SHOPPER/TEAM-A#readme",
   "dependencies": {
     "@material-ui/core": "^4.9.0",
+    "@material-ui/styles": "^4.9.0",
     "axios": "^0.19.1",
     "babel": "^6.23.0",
     "babel-cli": "^6.26.0",
