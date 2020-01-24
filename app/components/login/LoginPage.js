@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { loginUser } from '../../redux/user';
+import { ErrorBar } from '../index';
 import Paper from '@material-ui/core/Paper';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
+import { useStyles } from '../index';
 
 function LoginPage(props) {
   const [loginError, setError] = useState(false);
@@ -12,6 +14,9 @@ function LoginPage(props) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const dispatch = useDispatch();
+
+  const classes = useStyles();
+
   const handleChange = (event) => {
     switch (event.target.id) {
       case "password":
@@ -24,6 +29,7 @@ function LoginPage(props) {
         break;
     }
   };
+
   const handleSubmit = () => {
     setInit(false);
     setError(false);
@@ -39,30 +45,33 @@ function LoginPage(props) {
     if (!initLoad && !user.isRegistered) {
       setError(true);
     }
-
+    if (email || password) {
+        setError(false);
+    }
   });
 
   return (
-    <div id="loginContainer">
-      <Paper>
-        {loginError &&
-          <div>
-            Error Logging In
-                    </div>
-        }
+    <div id="loginContainer" className={[classes.root, classes.centerHero].join(' ')}>
+        
         {
           user.isRegistered &&
           <div>
             LoggedIn!
                     </div>
         }
-        <form>
+        <form className={classes.root}>
+        <h1 className={classes.header}>Welcome Back</h1>
+        <h3 className={classes.header}>Please login to your account</h3>
+        {loginError &&
+          <ErrorBar title={"Login failed"} message={"Incorrect email or password"}/>
+        }
           <TextField
             id="email"
             label="Email"
             variant="outlined"
             value={email}
             onChange={handleChange}
+            className={classes.formElem} 
           />
           <TextField
             id="password"
@@ -71,10 +80,10 @@ function LoginPage(props) {
             type="password"
             value={password}
             onChange={handleChange}
+            className={classes.formElem} 
           />
-          <Button variant="contained" color="primary" onClick={handleSubmit}>Log In</Button>
+          <Button className={classes.formElem} variant="contained" color="primary" onClick={handleSubmit}>Log In</Button>
         </form>
-      </Paper>
     </div>
   )
 
