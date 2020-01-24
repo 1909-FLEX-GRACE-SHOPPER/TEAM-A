@@ -2,4 +2,6 @@
   box-sizing: border-box;
   font-family: arial, sans-serif;
 }
-
+.card {
+  max-width: 345;
+}
