@@ -27,15 +27,16 @@ function LoginPage(props) {
   const handleSubmit = () => {
     setInit(false);
     setError(false);
-    let user = { email, password }
-    dispatch(loginUser(user));
+    dispatch(loginUser({ email, password }));
+    setEmail('');
+    setPassword('');
   }
 
   useEffect(() => {
-    //Placeholder
-    console.log(email);
-    console.log(password);
-    if (!initLoad && !user) {
+    if (user && user.isRegistered) {
+        props.history.push('/');
+    }
+    if (!initLoad && !user.isRegistered) {
       setError(true);
     }
 
@@ -50,7 +51,7 @@ function LoginPage(props) {
                     </div>
         }
         {
-          user &&
+          user.isRegistered &&
           <div>
             LoggedIn!
                     </div>

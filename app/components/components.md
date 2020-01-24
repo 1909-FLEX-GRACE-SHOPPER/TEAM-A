@@ -61,7 +61,7 @@
 - payment details
 - submit order button
 
-**CHECKOUT SUCCESS PAGE**
+**REVIEW PAGE (CHECKOUT SUCCESS PAGE)**
 
 * CHECKOUT SUCCESS component:
 - display new order
