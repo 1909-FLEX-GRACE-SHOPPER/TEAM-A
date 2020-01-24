@@ -7,6 +7,8 @@ import Cart from './Cart';
 import Checkout from './checkout/Checkout';
 import Navbar from './Navbar'
 import ProductsList from './ProductsList'
+import ErrorBar from './login/ErrorBar';
+import useStyles from './styles/useStyles';
 
 export {
   Root,
@@ -17,5 +19,7 @@ export {
   Cart,
   Checkout,
   Navbar,
-  ProductsList
+  ProductsList,
+  ErrorBar,
+  useStyles
 }

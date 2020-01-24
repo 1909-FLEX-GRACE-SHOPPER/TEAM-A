@@ -9,7 +9,9 @@ class Root extends React.Component {
 
   componentDidMount() {
     this.props.fetchProducts();
-    this.props.createGuestAndCart()
+    if (!this.props.user) {
+      this.props.createGuestAndCart();
+    }
   }
   render() {
     return (
