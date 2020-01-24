@@ -13,6 +13,7 @@ if (process.browser) {
 }
 
 const RESET_STORE = 'RESET_STORE'
+
 export const resetStore = () => ({ type: RESET_STORE })
 const rootReducer = (state, action) => {
   if (action.type === RESET_STORE) {

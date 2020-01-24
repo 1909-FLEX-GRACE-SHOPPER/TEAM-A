@@ -1,14 +1,10 @@
 import React from 'react';
+import ProductsList from './common/ProductsList'
 
-export default function () {
+export default function() {
   return (
-    <div>
-      Hello World again and again, from compiled React!
-    </div>
-  )
+    <React.Fragment>
+      <ProductsList />
+    </React.Fragment>
+  );
 }
-
-
-
-
-
