@@ -1,7 +1,7 @@
 import React from 'react';
-import ProductsList from './common/ProductsList'
+import { ProductsList } from './index'
 
-export default function() {
+export default function () {
   return (
     <React.Fragment>
       <ProductsList />

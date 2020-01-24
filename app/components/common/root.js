@@ -3,11 +3,10 @@ import { HashRouter, Route } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { fetchProducts } from '../../redux/products'
 import { createGuestAndCart } from '../../redux/user'
-import { testAuthPage, LoginPage, SingleProduct, Cart, Home, Checkout } from '../index';
-import Navbar from './navbar';
+import { testAuthPage, LoginPage, SingleProduct, Cart, Home, Checkout, Navbar, ProductsList } from '../index';
 
 class Root extends React.Component {
- 
+
   componentDidMount() {
     this.props.fetchProducts();
     this.props.createGuestAndCart()
