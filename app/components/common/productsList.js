@@ -31,11 +31,12 @@ const ProductsList = props => {
           <Grid item md key={product.id}>
             <Card className="card" style={cardStyle}>
               <CardActionArea>
-                {/* <CardMedia
-                className={classes.media}
-                image="/static/images/cards/contemplative-reptile.jpg"
-                title="Contemplative Reptile"
-              /> */}
+                {/* Product Image will go here
+                <CardMedia
+                  className={classes.media}
+                  image="/static/images/cards/contemplative-reptile.jpg"
+                  title="Contemplative Reptile"
+                /> */}
                 <CardContent>
                   <Typography gutterBottom variant="h5" component="h3">
                     {product.name}
@@ -46,12 +47,12 @@ const ProductsList = props => {
                 </CardContent>
               </CardActionArea>
               <CardActions>
-                <Button size="small" color="primary">
+                <Button size="medium" color="primary">
                   Add to Cart
                 </Button>
               </CardActions>
             </Card>
-           </Grid>
+          </Grid>
         );
       })}
     </Grid>

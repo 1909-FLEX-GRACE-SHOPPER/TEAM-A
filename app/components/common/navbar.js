@@ -16,7 +16,7 @@ class Navbar extends React.Component {
           <IconButton edge="start" color="inherit" aria-label="menu">
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6">Store Name</Typography>
+          <Button color="inherit">StoreName/Home</Button>
           <Button color="inherit">Login</Button>
           <Button color="inherit">Cart</Button>
         </Toolbar>
