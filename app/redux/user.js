@@ -43,6 +43,9 @@ export const createGuest = () => {
       .then(response => response.data)
       .then(guest => {
         return dispatch(loginUser(guest))
+          .then(() => {
+            return dispatch(createCart(guest.id))
+          })
       })
       .catch(e => console.log(chalk.red(`Error IN Redux thunk createGuest: ${e}`)))
   }

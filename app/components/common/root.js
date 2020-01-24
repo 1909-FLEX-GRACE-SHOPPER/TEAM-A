@@ -2,7 +2,7 @@ import React from 'react';
 import { HashRouter, Route, Switch } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { fetchProducts } from '../../redux/products'
-import { createGuestAndCart } from '../../redux/user'
+import { createGuestAndCart, fetchLogin } from '../../redux/user'
 import { testAuthPage, LoginPage, SingleProduct, Cart, Home, Checkout, Navbar, ProductsList } from '../index';
 
 class Root extends React.Component {
@@ -10,7 +10,7 @@ class Root extends React.Component {
   componentDidMount() {
     this.props.fetchProducts();
     if (!this.props.user) {
-      this.props.createGuestAndCart();
+      this.props.fetchLogin();
     }
   }
   render() {
@@ -43,6 +43,7 @@ const mapDispatch = dispatch => {
   return {
     fetchProducts: () => dispatch(fetchProducts()),
     createGuestAndCart: () => dispatch(createGuestAndCart()),
+    fetchLogin: () => dispatch(fetchLogin())
   }
 }
 
