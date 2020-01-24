@@ -56,6 +56,7 @@ export const fetchUser = (userId) => {
     return axios.get(`/api/user/${userId}`)
       .then(response => response.data)
       .then(user => dispatch(setUser(user)))
+      .then(() => dispatch(createCart(getState().user.id)))
       .catch(e => console.log(chalk.red(`Error IN Redux thunk fetchUser: ${e}`)))
   }
 };
