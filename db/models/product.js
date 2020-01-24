@@ -37,6 +37,10 @@ const Product = connection.define('product', {
             min: 0.01,
             max: 9999.99
         },
+    },
+    imageUrl: {
+        type: Sequelize.TEXT,
+        defaultValue: 'https://graceshopper.nyc3.cdn.digitaloceanspaces.com/Untitled_Artwork.png',
     }
 })
 
