@@ -11,14 +11,15 @@ router.post('/', (req, res, next) => {
   const { email, password } = req.body;
   User.findOne({ where: { email } })
     .then(user => {
-      if (password == user.hashedPassword) {
-        user.update({ ...user, sessionId: generateSessionId() }, { returning: true })
+      if (password == user.password) {
+        let newSessionId = generateSessionId();
+        user.update({ sessionId: newSessionId }, { returning: true })
           .then(updatedUser => {
             res.cookie('sessionId', updatedUser.sessionId, {
               path: '/',
               expires: moment.utc().add(1, 'day').toDate(),
             })
-            res.status(202).send('Success logging in!')
+            res.status(202).send(updatedUser)
           })
       } else {
         res.status(400).send('Pasword does not match')
