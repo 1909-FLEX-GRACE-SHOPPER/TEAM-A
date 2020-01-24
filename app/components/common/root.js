@@ -1,5 +1,5 @@
 import React from 'react';
-import { HashRouter, Route } from 'react-router-dom';
+import { HashRouter, Route, Switch } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { fetchProducts } from '../../redux/products'
 import { createGuestAndCart } from '../../redux/user'
@@ -16,14 +16,16 @@ class Root extends React.Component {
   render() {
     return (
       <React.Fragment>
-        <Navbar />
         <HashRouter>
-          <Route exact path="/" component={Home} />
-          <Route path="/cart" component={Cart} />
-          <Route path='/testauth' component={testAuthPage} />
-          <Route path='/login' component={LoginPage} />
-          <Route path='/checkout' component={Checkout} />
-          <Route exact path='/products/:id' component={SingleProduct} />
+        <Navbar />
+          <Switch>
+            <Route exact path="/" component={Home} />
+            <Route path="/cart" component={Cart} />
+            <Route path='/testauth' component={testAuthPage} />
+            <Route path='/login' component={LoginPage} />
+            <Route path='/checkout' component={Checkout} />
+            <Route exact path='/products/:id' component={SingleProduct} />
+          </Switch>
         </HashRouter>
       </React.Fragment>
     );
