@@ -19,7 +19,7 @@ router.post('/', (req, res, next) => {
               path: '/',
               expires: moment.utc().add(1, 'day').toDate(),
             })
-            res.status(202).send('Success logging in!')
+            res.status(202).send(updatedUser)
           })
       } else {
         res.status(400).send('Pasword does not match')
