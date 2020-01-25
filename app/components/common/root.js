@@ -42,7 +42,6 @@ const mapState = ({ cart, user }) => {
 const mapDispatch = dispatch => {
   return {
     fetchProducts: () => dispatch(fetchProducts()),
-    fetchProducts: () => dispatch(fetchProducts()),
     createGuestAndCart: () => dispatch(createGuestAndCart()),
     fetchLogin: () => dispatch(fetchLogin())
   }
