@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { fetchCart } from '../redux/cart'
+import { fetchCart } from '../redux/cart';
+import { fetchProducts } from '../redux/products';
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
@@ -14,6 +15,7 @@ class Cart extends React.Component {
 
   componentDidMount() {
     this.props.fetchCart(1)
+    this.props.fetchProducts()
   }
 
   render() {
@@ -26,6 +28,7 @@ class Cart extends React.Component {
                 <TableCell>Product Name</TableCell>
                 <TableCell>Quantity</TableCell>
                 <TableCell>Price</TableCell>
+                <TableCell>Total</TableCell>
                </TableRow>
             </TableHead>
             <TableBody>
@@ -33,11 +36,20 @@ class Cart extends React.Component {
                 this.props.cart.id ?
                   (this.props.cart.cartitems.map(cartItem => (
                     <TableRow key={cartItem.id}>
-                  <TableCell component="th" scope="row">
-                        {cartItem.id}
-                  </TableCell>
-                      <TableCell align="left">{cartItem.productId}</TableCell>
-                      <TableCell align="left">{cartItem.createdAt}</TableCell>
+                      {this.props.products.map(product => {
+                        if (cartItem.productId === product.id) {
+                          return (
+                          <>
+                            <TableCell align="left" key = {product.id}>{product.name}</TableCell>
+                              <TableCell align="left">{cartItem.quantity}</TableCell>
+                              <TableCell align="left">{product.price}</TableCell>
+                              <TableCell align="left">{product.price}</TableCell>
+                           
+                          </>)
+                        }
+                      })}
+                      
+                    
                 </TableRow>
               ))) : (
                 <p>Loading...</p>
@@ -53,15 +65,17 @@ class Cart extends React.Component {
 
 }
 
-const mapState = ({ cart }) => {
+const mapState = ({ cart, products }) => {
   return {
     cart,
+    products
   }
 }
 
 const mapDispatch = dispatch => {
   return {
-    fetchCart: (cartId) => dispatch(fetchCart(cartId))
+    fetchCart: (cartId) => dispatch(fetchCart(cartId)),
+    fetchProducts: () => dispatch(fetchProducts())
   }
 }
 
