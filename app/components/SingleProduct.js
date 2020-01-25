@@ -42,7 +42,7 @@ class SingleProduct extends Component {
         <h3>Description: {selectedProduct.description}</h3>
         <select name='quantity' onChange={this.handleChange}>
           {
-            Array(11).fill('').map((el, idx) => <option key={idx}>{idx}</option>)
+            Array(10).fill('').map((el, idx) => <option key={idx}>{idx + 1}</option>)
           }
         </select>
         <button
