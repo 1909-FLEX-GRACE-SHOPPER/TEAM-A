@@ -23,7 +23,7 @@ class Root extends React.Component {
             <Route path="/cart" component={Cart} />
             <Route path='/testauth' component={testAuthPage} />
             <Route path='/login' component={LoginPage} />
-            <Route path='/checkout' component={Checkout} />
+            <Route path='/checkout/:userId' component={Checkout} />
             <Route exact path='/products/:id' component={SingleProduct} />
           </Switch>
         </HashRouter>
@@ -41,6 +41,7 @@ const mapState = ({ cart, user }) => {
 
 const mapDispatch = dispatch => {
   return {
+    fetchProducts: () => dispatch(fetchProducts()),
     fetchProducts: () => dispatch(fetchProducts()),
     createGuestAndCart: () => dispatch(createGuestAndCart()),
     fetchLogin: () => dispatch(fetchLogin())

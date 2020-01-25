@@ -4,7 +4,14 @@ const connection = require('../connection');
 const states = ['AL', 'AK', 'AZ', 'AR', 'CA', 'CO', 'CT', 'DE', 'FL', 'GA', 'HI', 'ID', 'IL', 'IN', 'IA', 'KS', 'KY', 'LA', 'ME', 'MD', 'MA', 'MI', 'MN', 'MS', 'MO', 'MT', 'NE', 'NV', 'NH', 'NJ', 'NM', 'NY', 'NC', 'ND', 'OH', 'OK', 'OR', 'PA', 'RI', 'SC', 'SD', 'TN', 'TX', 'UT', 'VT', 'VA', 'WA', 'WV', 'WI', 'WY']
 
 const ShippingAddress = connection.define('shippingAddress', {
-  name: {
+  firstname: {
+    type: Sequelize.STRING,
+    allowNull: true,
+    validate: {
+      len: [1, 50],
+    }
+  },
+  lastname: {
     type: Sequelize.STRING,
     allowNull: true,
     validate: {
@@ -42,7 +49,7 @@ const ShippingAddress = connection.define('shippingAddress', {
       isUppercase: true,
     }
   },
-  zip5: {
+  zip: {
     type: Sequelize.INTEGER,
     allowNull: false,
     validate: {
@@ -51,12 +58,12 @@ const ShippingAddress = connection.define('shippingAddress', {
       len: [5]
     }
   },
-  zip4: {
-    type: Sequelize.INTEGER,
-    allowNull: true,
+  country: {
+    type: Sequelize.STRING,
+    allowNull: false,
     validate: {
-      isInt: true,
-      len: [4]
+      notEmpty: true,
+      len: [1, 50],
     }
   },
 })
