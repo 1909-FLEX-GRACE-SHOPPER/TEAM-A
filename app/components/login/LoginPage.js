@@ -10,7 +10,6 @@ import { useStyles } from '../index';
 function LoginPage(props) {
   const [loginError, setError] = useState(false);
   const user = useSelector(state => state.user);
-  const [initLoad, setInit] = useState(true);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const dispatch = useDispatch();
@@ -31,24 +30,17 @@ function LoginPage(props) {
   };
 
   const handleSubmit = async() => {
-    //dispatch isLoading = true
+    setError(false);
     await dispatch(loginUser({ email, password }));
-    //dispatch isLoading = false
-    // setEmail('');
-    // setPassword('');
-    // setInit(false);
+    if (!user.isRegistered) {
+      setError(true);
+    }
   }
 
   useEffect(() => {
     if (user.isRegistered) {
       setError(false);
       props.history.push('/');
-    }
-    if (!user.isRegistered && !initLoad) {
-      setError(true);
-    }
-    return () => {
-
     }
   });
 
