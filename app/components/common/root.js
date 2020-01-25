@@ -11,21 +11,9 @@ class Root extends React.Component {
   componentDidMount() {
     this.props.fetchProducts();
     if (!this.props.user) {
-      // console.log('in root didMount')
       this.props.fetchLogin();
     }
-    // if (this.props.user) {
-    //   console.log('user.id in Root didMount: ', this.props.user.id)
-    //   this.props.fetchCartByUserId(this.props.user.id)
-    // }
   }
-
-  // componentDidUpdate() {
-  //   if (this.props.user) {
-  //     console.log('user.id in Root didUpdate: ', this.props.user.id)
-  //     this.props.fetchCartByUserId(this.props.user.id)
-  //   }
-  // }
 
   render() {
     return (
