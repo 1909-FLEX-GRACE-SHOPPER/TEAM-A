@@ -147,3 +147,13 @@ export const fetchCart = function (cartId) {
       .catch(e => console.log(e));
   }
 };
+
+export const fetchCartByUserId = function (userId) {
+  return dispatch => {
+    axios.get(`/api/cart/byuser/${userId}`)
+      .then(cart => {
+        return dispatch(setCart(cart.data))
+      })
+      .catch(e => console.log(e));
+  }
+};

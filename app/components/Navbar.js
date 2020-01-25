@@ -23,6 +23,11 @@ const useStyles = makeStyles(theme => ({
 
 function Navbar(props) {
   const user = useSelector(state => state.user);
+  const cartItemsLength = useSelector(state => {
+    if (state.cart.cartitems) {
+      return state.cart.cartitems.length
+    }
+  })
   const [loggedIn, setLoggedIn] = useState(false);
   const classes = useStyles();
 
@@ -37,15 +42,15 @@ function Navbar(props) {
   }
 
   return (
-      <AppBar position="static">
-        <Toolbar className={classes.root}>
-          <Button className={classes.home} edge='start' id='home' color="inherit" onClick={() => handleClick('')}>Dead Bits R Us</Button>
-          <Button color="inherit" onClick={() => handleClick('cart')}>Cart</Button>
-          <Button edge="end" color="inherit" onClick={() => handleClick(loggedIn ? 'logout' : 'login')}>
-            {loggedIn ? `Welcome, ${user.firstName}` : 'Log In'}
-          </Button>
-        </Toolbar>
-      </AppBar>
+    <AppBar position="static">
+      <Toolbar className={classes.root}>
+        <Button className={classes.home} edge='start' id='home' color="inherit" onClick={() => handleClick('')}>Dead Bits R Us</Button>
+        <Button color="inherit" onClick={() => handleClick('cart')}>Cart ({cartItemsLength ? cartItemsLength : 0})</Button>
+        <Button edge="end" color="inherit" onClick={() => handleClick(loggedIn ? 'logout' : 'login')}>
+          {loggedIn ? `Welcome, ${user.firstName}` : 'Log In'}
+        </Button>
+      </Toolbar>
+    </AppBar>
   );
 };
 

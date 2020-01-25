@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { fetchCart } from '../redux/cart';
 import { fetchProducts } from '../redux/products';
+import { fetchCart, fetchCartByUserId } from '../redux/cart'
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
@@ -13,19 +13,14 @@ import Paper from "@material-ui/core/Paper";
 
 class Cart extends React.Component {
 
-  componentDidMount() {
-    this.props.fetchCart(1)
-    this.props.fetchProducts()
-  }
-
   render() {
     return (
       <div>
-       <TableContainer component={Paper}>
+        <TableContainer component={Paper}>
           <Table aria-label="shoppingCart">
             <TableHead>
               <TableRow>
-                <TableCell>Product Name</TableCell>
+                <TableCell>Product Id</TableCell>
                 <TableCell>Quantity</TableCell>
                 <TableCell>Price</TableCell>
                 <TableCell>Total</TableCell>
@@ -58,16 +53,18 @@ class Cart extends React.Component {
             </TableBody>
           </Table>
         </TableContainer>
-                
+
       </div>
     )
   }
 
 }
 
-const mapState = ({ cart, products }) => {
+
+const mapState = ({ cart, user, products }) => {
   return {
     cart,
+    user,
     products
   }
 }
@@ -75,7 +72,8 @@ const mapState = ({ cart, products }) => {
 const mapDispatch = dispatch => {
   return {
     fetchCart: (cartId) => dispatch(fetchCart(cartId)),
-    fetchProducts: () => dispatch(fetchProducts())
+    fetchProducts: () => dispatch(fetchProducts()),
+    fetchCartByUserId: (userId) => dispatch(fetchCartByUserId(userId))
   }
 }
 
