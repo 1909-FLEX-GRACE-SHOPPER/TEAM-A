@@ -3,7 +3,7 @@ import { HashRouter, Route, Switch } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { fetchProducts } from '../../redux/products'
 import { createGuestAndCart, fetchLogin } from '../../redux/user'
-import { createCart } from '../../redux/cart'
+import { createCart, fetchCartByUserId } from '../../redux/cart'
 import { testAuthPage, LoginPage, SingleProduct, Cart, Home, Checkout, Navbar, ProductsList } from '../index';
 
 class Root extends React.Component {
@@ -11,17 +11,21 @@ class Root extends React.Component {
   componentDidMount() {
     this.props.fetchProducts();
     if (!this.props.user) {
+      // console.log('in root didMount')
       this.props.fetchLogin();
     }
-    if (!this.props.cart.cartitems) {
-    }
+    // if (this.props.user) {
+    //   console.log('user.id in Root didMount: ', this.props.user.id)
+    //   this.props.fetchCartByUserId(this.props.user.id)
+    // }
   }
 
-  componentDidUpdate() {
-    if (this.props.user && !this.props.cart.cartitems) {
-      this.props.createCart(this.props.user.id)
-    }
-  }
+  // componentDidUpdate() {
+  //   if (this.props.user) {
+  //     console.log('user.id in Root didUpdate: ', this.props.user.id)
+  //     this.props.fetchCartByUserId(this.props.user.id)
+  //   }
+  // }
 
   render() {
     return (
@@ -54,7 +58,8 @@ const mapDispatch = dispatch => {
     fetchProducts: () => dispatch(fetchProducts()),
     createGuestAndCart: () => dispatch(createGuestAndCart()),
     fetchLogin: () => dispatch(fetchLogin()),
-    createCart: (userId) => dispatch(createCart(userId))
+    createCart: (userId) => dispatch(createCart(userId)),
+    fetchCartByUserId: (userId) => dispatch(fetchCartByUserId(userId))
   }
 }
 
