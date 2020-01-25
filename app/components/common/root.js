@@ -3,6 +3,7 @@ import { HashRouter, Route, Switch } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { fetchProducts } from '../../redux/products'
 import { createGuestAndCart, fetchLogin } from '../../redux/user'
+import { createCart, fetchCartByUserId } from '../../redux/cart'
 import { testAuthPage, LoginPage, SingleProduct, Cart, Home, Checkout, Navbar, ProductsList } from '../index';
 
 class Root extends React.Component {
@@ -13,11 +14,12 @@ class Root extends React.Component {
       this.props.fetchLogin();
     }
   }
+
   render() {
     return (
-      <React.Fragment>
+      <>
         <HashRouter>
-        <Navbar />
+          <Navbar />
           <Switch>
             <Route exact path="/" component={Home} />
             <Route path="/cart" component={Cart} />
@@ -27,7 +29,7 @@ class Root extends React.Component {
             <Route exact path='/products/:id' component={SingleProduct} />
           </Switch>
         </HashRouter>
-      </React.Fragment>
+      </>
     );
   }
 }
@@ -43,7 +45,9 @@ const mapDispatch = dispatch => {
   return {
     fetchProducts: () => dispatch(fetchProducts()),
     createGuestAndCart: () => dispatch(createGuestAndCart()),
-    fetchLogin: () => dispatch(fetchLogin())
+    fetchLogin: () => dispatch(fetchLogin()),
+    createCart: (userId) => dispatch(createCart(userId)),
+    fetchCartByUserId: (userId) => dispatch(fetchCartByUserId(userId))
   }
 }
 

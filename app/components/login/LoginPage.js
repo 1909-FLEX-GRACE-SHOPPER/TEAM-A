@@ -40,50 +40,50 @@ function LoginPage(props) {
 
   useEffect(() => {
     if (user && user.isRegistered) {
-        props.history.push('/');
+      props.history.push('/');
     }
     if (!initLoad && !user.isRegistered) {
       setError(true);
     }
     if (email || password) {
-        setError(false);
+      setError(false);
     }
   });
 
   return (
     <div id="loginContainer" className={[classes.root, classes.centerHero].join(' ')}>
-        
-        {
-          user.isRegistered &&
-          <div>
-            LoggedIn!
+
+      {
+        user.isRegistered &&
+        <div>
+          LoggedIn!
                     </div>
-        }
-        <form className={classes.root}>
+      }
+      <form className={classes.root}>
         <h1 className={classes.header}>Welcome Back</h1>
         <h3 className={classes.header}>Please login to your account</h3>
         {loginError &&
-          <ErrorBar title={"Login failed"} message={"Incorrect email or password"}/>
+          <ErrorBar title={"Login failed"} message={"Incorrect email or password"} />
         }
-          <TextField
-            id="email"
-            label="Email"
-            variant="outlined"
-            value={email}
-            onChange={handleChange}
-            className={classes.formElem} 
-          />
-          <TextField
-            id="password"
-            label="Password"
-            variant="outlined"
-            type="password"
-            value={password}
-            onChange={handleChange}
-            className={classes.formElem} 
-          />
-          <Button className={classes.formElem} variant="contained" color="primary" onClick={handleSubmit}>Log In</Button>
-        </form>
+        <TextField
+          id="email"
+          label="Email"
+          variant="outlined"
+          value={email}
+          onChange={handleChange}
+          className={classes.formElem}
+        />
+        <TextField
+          id="password"
+          label="Password"
+          variant="outlined"
+          type="password"
+          value={password}
+          onChange={handleChange}
+          className={classes.formElem}
+        />
+        <Button className={classes.formElem} variant="contained" color="primary" onClick={handleSubmit}>Log In</Button>
+      </form>
     </div>
   )
 

@@ -40,6 +40,18 @@ router.get('/:cartId?', (req, res, next) => {
   }
 })
 
+// retrieve single cart by userId
+
+router.get('/byuser/:userId', (req, res, next) => {
+  const { userId } = req.params;
+  Cart.findOne({ where: { userId }, include: { model: CartItem } })
+    .then(cart => res.send(cart))
+    .catch(e => {
+      res.status(404).send('Cart not found by userId!')
+        .next(e)
+    })
+})
+
 // clear cart (PUT - '/:cartId')
 
 router.put('/:cartId', (req, res, next) => {
