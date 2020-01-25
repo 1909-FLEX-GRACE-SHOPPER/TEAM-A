@@ -30,23 +30,25 @@ function LoginPage(props) {
     }
   };
 
-  const handleSubmit = () => {
-    setInit(false);
-    setError(false);
-    dispatch(loginUser({ email, password }));
-    setEmail('');
-    setPassword('');
+  const handleSubmit = async() => {
+    //dispatch isLoading = true
+    await dispatch(loginUser({ email, password }));
+    //dispatch isLoading = false
+    // setEmail('');
+    // setPassword('');
+    // setInit(false);
   }
 
   useEffect(() => {
-    if (user && user.isRegistered) {
+    if (user.isRegistered) {
+      setError(false);
       props.history.push('/');
     }
-    if (!initLoad && !user.isRegistered) {
+    if (!user.isRegistered && !initLoad) {
       setError(true);
     }
-    if (email || password) {
-      setError(false);
+    return () => {
+
     }
   });
 
