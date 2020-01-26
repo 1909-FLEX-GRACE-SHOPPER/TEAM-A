@@ -37,8 +37,8 @@ function Navbar(props) {
     }
   });
 
-  const handleClick = (path) => {
-    props.history.push(`/${path}`);
+  const handleClick = () => {
+    props.history.push('/account');
   }
 
   return (
@@ -46,7 +46,7 @@ function Navbar(props) {
       <Toolbar className={classes.root}>
         <Button className={classes.home} edge='start' id='home' color="inherit" onClick={() => handleClick('')}>Dead Bits R Us</Button>
         <Button color="inherit" onClick={() => handleClick('cart')}>Cart ({cartItemsLength ? cartItemsLength : 0})</Button>
-        <Button edge="end" color="inherit" onClick={() => handleClick(loggedIn ? 'logout' : 'login')}>
+        <Button edge="end" color="inherit" onClick={handleClick}>
           {loggedIn ? `Welcome, ${user.firstName}` : 'Log In'}
         </Button>
       </Toolbar>
