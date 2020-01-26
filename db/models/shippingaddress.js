@@ -8,7 +8,7 @@ const ShippingAddress = connection.define('shippingAddress', {
     type: Sequelize.STRING,
     allowNull: true,
     validate: {
-      len: [1, 50],
+      max: 50,
     }
   },
   line1: {
@@ -16,14 +16,13 @@ const ShippingAddress = connection.define('shippingAddress', {
     allowNull: false,
     validate: {
       notEmpty: true,
-      len: [1, 50],
+      max: 50,
     }
   },
   line2: {
     type: Sequelize.STRING,
-    allowNull: true,
     validate: {
-      len: [1, 50],
+      max: 50,
     }
   },
   city: {
@@ -31,7 +30,7 @@ const ShippingAddress = connection.define('shippingAddress', {
     allowNull: false,
     validate: {
       notEmpty: true,
-      len: [1, 50],
+      max: 50,
     }
   },
   state: {
@@ -42,21 +41,13 @@ const ShippingAddress = connection.define('shippingAddress', {
       isUppercase: true,
     }
   },
-  zip5: {
+  zip: {
     type: Sequelize.INTEGER,
     allowNull: false,
     validate: {
       notEmpty: true,
       isInt: true,
       len: [5]
-    }
-  },
-  zip4: {
-    type: Sequelize.INTEGER,
-    allowNull: true,
-    validate: {
-      isInt: true,
-      len: [4]
     }
   },
 })

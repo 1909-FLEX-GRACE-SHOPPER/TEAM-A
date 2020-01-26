@@ -5,12 +5,12 @@ const { ShippingAddress, User } = require('../../db/models/index')
 // create shipping address
 
 router.post('/', (req, res, next) => {
-  const { name, line1, line2, city, state, zip5, zip4, userId } = req.body;
-  if (!name || !line1 || !city || !state || !zip5 || !userId) {
+  const { name, line1, line2, city, state, zip, userId } = req.body;
+  if (!name || !line1 || !city || !state || !zip || !userId) {
     res.status(400).send('Invalid request. Name, Address line 1, City, State, Zipcode and UserId are required fields. Please try again with all required fields.')
   }
   else {
-    ShippingAddress.create({ name, line1, line2, city, state, zip5, zip4, userId })
+    ShippingAddress.create({ name, line1, line2, city, state, zip, userId })
       .then(address => res.status(201).send(address))
       .catch(e => {
         res.status(400).send('Error creating shipping address');
@@ -49,8 +49,7 @@ router.put('/:userId', (req, res, next) => {
       const line2 = req.body.line2 ? req.body.line2 : address.line2;
       const city = req.body.city ? req.body.city : address.city;
       const state = req.body.state ? req.body.state : address.state;
-      const zip5 = req.body.zip5 ? req.body.zip5 : address.zip5;
-      const zip4 = req.body.zip4 ? req.body.zip4 : address.zip4;
+      const zip = req.body.zip ? req.body.zip : address.zip;
       const userId = req.body.userId ? req.body.userId : address.userId;
       address.update({
         name,
@@ -58,8 +57,7 @@ router.put('/:userId', (req, res, next) => {
         line2,
         city,
         state,
-        zip5,
-        zip4,
+        zip,
         userId
       }, {
           returning: true
