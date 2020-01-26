@@ -44,7 +44,7 @@ const ProductsList = props => {
                 <CardMedia
                   className={classes.media}
                   image={product.imageUrl}
-                  title="Product Image"
+                  title={product.name}
                 />
                 <CardContent>
                   <Typography gutterBottom variant="h5" component="h3">
