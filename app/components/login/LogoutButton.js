@@ -24,3 +24,5 @@ const LogoutButton = (props) => {
         </div>
     )
 }
+
+export default LogoutButton;
