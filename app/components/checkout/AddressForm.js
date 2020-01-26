@@ -78,7 +78,6 @@ const AddressForm = (props) => {
           />
         </Grid>
         <Grid item xs={12} sm={6}>
-         
           <FormControl>
             <InputLabel id="state-select-label">State</InputLabel>
             <Select
@@ -107,8 +106,10 @@ const AddressForm = (props) => {
         </Grid>
         <Grid item xs={12} sm={6}>
           <Button
+            style={{ width: '100%' }}
             variant="outlined"
             color="primary"
+            fullWidth
             onClick={handleSubmit}
           >
             Save

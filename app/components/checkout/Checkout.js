@@ -67,10 +67,9 @@ const getStepContent = (step) => {
       throw new Error('Unknown step');
   }
 }
-
-
 const Checkout = () => {
   const shippingAddress = useSelector(state => state.shippingAddress);
+  const billing = useSelector(state => state.billing);
   const classes = useStyles();
   const [isDisabled, setDisabled] = React.useState(true);
   const [activeStep, setActiveStep] = React.useState(0);
@@ -78,6 +77,7 @@ const Checkout = () => {
 
   const handleNext = () => {
     setActiveStep(activeStep + 1);
+    setDisabled(true);
   };
 
   const handleBack = () => {
@@ -86,6 +86,9 @@ const Checkout = () => {
 
   useEffect(() => {
     if (activeStep === 0 && shippingAddress) {
+      setDisabled(false);
+    }
+    if (activeStep === 1 && billing) {
       setDisabled(false);
     }
   })
