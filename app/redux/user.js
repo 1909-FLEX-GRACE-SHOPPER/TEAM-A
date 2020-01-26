@@ -89,6 +89,14 @@ export const createGuestAndCart = () => {
   }
 }
 
+export const userLogout = () => {
+  return (dispatch, getState, {axios}) => {
+      return axios.put('/auth/login', {logout: true})
+          .then(() => dispatch(setUser('')))
+          .catch(e => console.log(chalk.red(`Error IN Redux thunk userLogout: ${e}`)))
+  }
+};
+
 //reducer
 export const userReducer = (state = initState, action) => {
   switch (action.type) {
