@@ -68,6 +68,7 @@ export const fetchUser = (userId) => {
 export const updateUser = (userId, newUserDetails) => {
   return (dispatch, getState, { axios }) => {
     return axios.put(`/api/user/${userId}`, newUserDetails)
+      .then(response => response.data)
       .then((newUser) => dispatch(setUser(newUser)))
       .catch(e => {
         console.error(e)
