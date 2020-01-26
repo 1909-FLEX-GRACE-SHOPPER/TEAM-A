@@ -5,33 +5,24 @@ const states = ['AL', 'AK', 'AZ', 'AR', 'CA', 'CO', 'CT', 'DE', 'FL', 'GA', 'HI'
 
 const ShippingAddress = connection.define('shippingAddress', {
   name: {
-    type: Sequelize.STRING,
-    allowNull: true,
-    validate: {
-      len: [1, 50],
-    }
+    type: Sequelize.TEXT,
+    allowNull: false,
   },
   line1: {
     type: Sequelize.STRING,
     allowNull: false,
     validate: {
       notEmpty: true,
-      len: [1, 50],
     }
   },
   line2: {
     type: Sequelize.STRING,
-    allowNull: true,
-    validate: {
-      len: [1, 50],
-    }
   },
   city: {
     type: Sequelize.STRING,
     allowNull: false,
     validate: {
       notEmpty: true,
-      len: [1, 50],
     }
   },
   state: {
@@ -42,21 +33,13 @@ const ShippingAddress = connection.define('shippingAddress', {
       isUppercase: true,
     }
   },
-  zip5: {
+  zip: {
     type: Sequelize.INTEGER,
     allowNull: false,
     validate: {
       notEmpty: true,
       isInt: true,
       len: [5]
-    }
-  },
-  zip4: {
-    type: Sequelize.INTEGER,
-    allowNull: true,
-    validate: {
-      isInt: true,
-      len: [4]
     }
   },
 })
