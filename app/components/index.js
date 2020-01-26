@@ -7,6 +7,7 @@ import AllOrders from './AllOrders';
 import Home from './Home';
 import Cart from './Cart';
 import Checkout from './checkout/Checkout';
+import AccountInfo from './AccountInfo';
 import Navbar from './Navbar'
 import ProductsList from './ProductsList'
 import ErrorBar from './login/ErrorBar';
@@ -21,6 +22,7 @@ export {
   Home,
   Cart,
   Checkout,
+  AccountInfo,
   SingleOrder,
   AllOrders,
   Navbar,
