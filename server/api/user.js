@@ -74,8 +74,6 @@ router.put('/:userId', (req, res, next) => {
     }
   )
     .then(updated => {
-      console.log("updated[0]===>", updated[0])
-      console.log("updated[1]===>", updated[1])
       if (updated[0]) {
         return res.status(200).send(updated[1]);
       }
