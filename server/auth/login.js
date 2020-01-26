@@ -30,6 +30,14 @@ router.post('/', (req, res, next) => {
     })
 });
 
+router.put('/', (req, res, next) => {
+  const { logout } = req.body;
+  if (logout) {
+    res.clearCookie("sessionId");
+    res.status(200).send();
+  }
+})
+
 
 module.exports = router;
 
