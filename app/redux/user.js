@@ -1,5 +1,6 @@
 import chalk from 'chalk';
 import { createCart, fetchCartByUserId } from './cart'
+import { fetchOrdersByUser } from './ordersByUser'
 
 const SET_USER = 'SET_USER';
 
@@ -36,6 +37,10 @@ export const fetchLogin = () => {
       .then(() => {
         const user = getState().user
         return dispatch(fetchCartByUserId(user.id))
+      })
+      .then(() => {
+        const user = getState().user
+        return dispatch(fetchOrdersByUser(user.id))
       })
       .catch(() => dispatch(createGuest()));
   }
