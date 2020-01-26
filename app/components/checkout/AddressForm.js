@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { postShippingAddress } from '../../redux/shippingAddress';
+import { postShippingAddress, updateShippingAddress } from '../../redux/shippingAddress';
 
 import { states } from '../../../constants';
 
@@ -25,7 +25,9 @@ const AddressForm = (props) => {
   const user = useSelector(state => state.user);
 
   const handleSubmit = () => {
-    dispatch(postShippingAddress({ name, line1, line2, city, state, zip, userId: user.id }));
+    shippingAddress ?
+    dispatch(updateShippingAddress({ name, line1, line2, city, state, zip, userId: user.id }))
+    : dispatch(postShippingAddress({ name, line1, line2, city, state, zip, userId: user.id }))
   }
 
   return (

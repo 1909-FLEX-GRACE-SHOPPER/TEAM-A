@@ -5,32 +5,24 @@ const states = ['AL', 'AK', 'AZ', 'AR', 'CA', 'CO', 'CT', 'DE', 'FL', 'GA', 'HI'
 
 const ShippingAddress = connection.define('shippingAddress', {
   name: {
-    type: Sequelize.STRING,
-    allowNull: true,
-    validate: {
-      max: 50,
-    }
+    type: Sequelize.TEXT,
+    allowNull: false,
   },
   line1: {
     type: Sequelize.STRING,
     allowNull: false,
     validate: {
       notEmpty: true,
-      max: 50,
     }
   },
   line2: {
     type: Sequelize.STRING,
-    validate: {
-      max: 50,
-    }
   },
   city: {
     type: Sequelize.STRING,
     allowNull: false,
     validate: {
       notEmpty: true,
-      max: 50,
     }
   },
   state: {

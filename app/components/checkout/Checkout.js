@@ -74,6 +74,7 @@ const Checkout = () => {
   const [isDisabled, setDisabled] = React.useState(true);
   const [activeStep, setActiveStep] = React.useState(0);
   const [next, setNext] = React.useState(false);
+  const dispatch = useDispatch();
 
   const handleNext = () => {
     setActiveStep(activeStep + 1);
@@ -89,6 +90,9 @@ const Checkout = () => {
       setDisabled(false);
     }
     if (activeStep === 1 && billing) {
+      setDisabled(false);
+    }
+    if (activeStep === 2) {
       setDisabled(false);
     }
   })

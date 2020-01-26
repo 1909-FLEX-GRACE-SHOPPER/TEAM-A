@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import List from '@material-ui/core/List';
@@ -37,6 +38,12 @@ const useStyles = makeStyles(theme => ({
 
 const Review = () => {
   const classes = useStyles();
+  const shippingAddress = useSelector(state => state.shippingAddress);
+  const billingInfo = useSelector(state => state.billing);
+  const cart = useSelector(state => state.cart);
+  const dispatch = useDispatch();
+
+  const cartTotal = cart.items ? cart.items.reduce((total, item) => {return total + item.product.price}, 0) : 0;
 
   return (
     <React.Fragment>
@@ -44,16 +51,17 @@ const Review = () => {
         Order summary
       </Typography>
       <List disablePadding>
-        {products.map(product => (
-          <ListItem className={classes.listItem} key={product.name}>
-            <ListItemText primary={product.name} secondary={product.desc} />
-            <Typography variant="body2">{product.price}</Typography>
+        {cart.cartitems && cart.cartitems.map(item => (
+          <ListItem className={classes.listItem} key={item.product.name}>
+            <ListItemText primary={item.name} secondary={item.product.description} />
+            <ListItemText primary={item.name} secondary={item.quantity} />
+            <Typography variant="body2">{item.product.price}</Typography>
           </ListItem>
         ))}
         <ListItem className={classes.listItem}>
           <ListItemText primary="Total" />
           <Typography variant="subtitle1" className={classes.total}>
-            $34.06
+            {`$${cartTotal}`}
           </Typography>
         </ListItem>
       </List>
@@ -62,25 +70,20 @@ const Review = () => {
           <Typography variant="h6" gutterBottom className={classes.title}>
             Shipping
           </Typography>
-          <Typography gutterBottom>Team A</Typography>
-          <Typography gutterBottom>{addresses.join(', ')}</Typography>
+          <Typography gutterBottom>{shippingAddress.name}</Typography>
+          <Typography gutterBottom>{shippingAddress.line1}</Typography>
+          <Typography gutterBottom>{shippingAddress.line2}</Typography>
+          <Typography gutterBottom>{shippingAddress.city}</Typography>
+          <Typography gutterBottom>{shippingAddress.state}</Typography>
+          <Typography gutterBottom>{shippingAddress.zip}</Typography>
         </Grid>
-        <Grid item container direction="column" xs={12} sm={6}>
+        <Grid item xs={12} sm={6}>
           <Typography variant="h6" gutterBottom className={classes.title}>
             Payment details
           </Typography>
-          <Grid container>
-            {payments.map(payment => (
-              <React.Fragment key={payment.name}>
-                <Grid item xs={6}>
-                  <Typography gutterBottom>{payment.name}</Typography>
-                </Grid>
-                <Grid item xs={6}>
-                  <Typography gutterBottom>{payment.detail}</Typography>
-                </Grid>
-              </React.Fragment>
-            ))}
-          </Grid>
+          <Typography gutterBottom>{billingInfo.cardName}</Typography>
+          <Typography gutterBottom>{`Card Number: ****${billingInfo.cardNumber.slice(billingInfo.cardNumber.length - 4, billingInfo.cardNumber.length)}`}</Typography>
+          <Typography gutterBottom>{`Expires: ${billingInfo.expireMonth} / ${billingInfo.expireYear}`}</Typography>
         </Grid>
       </Grid>
     </React.Fragment>
