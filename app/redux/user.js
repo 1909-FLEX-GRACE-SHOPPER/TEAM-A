@@ -65,6 +65,16 @@ export const fetchUser = (userId) => {
   }
 };
 
+export const updateUser = (userId, newUserDetails) => {
+  return (dispatch, getState, { axios }) => {
+    return axios.put(`/api/user/${userId}`, newUserDetails)
+      .then((newUser) => dispatch(setUser(newUser)))
+      .catch(e => {
+        console.error(e)
+      })
+  }
+}
+
 export const createUser = (user) => {
   return (dispatch, getState, { axios }) => {
     return axios.post('/api/user', { user })
@@ -83,6 +93,8 @@ export const createGuestAndCart = () => {
       })
   }
 }
+
+
 
 //reducer
 export const userReducer = (state = initState, action) => {

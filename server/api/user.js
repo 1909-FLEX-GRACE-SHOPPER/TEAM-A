@@ -55,11 +55,16 @@ router.get('/', (req, res, next) => {
 });
 
 //update a user
-//right now, the only field that can be updated is the sessionId
+//Converting guest user to singed up user, the only field that CANNOT be updated is the sessionId
 router.put('/:userId', (req, res, next) => {
   User.update(
     {
-      sessionId: req.body.sessionId
+      sessionId: req.body.sessionId,
+      firstName: req.body.firstName,
+      lastName: req.body.lastName,
+      email: req.body.email,
+      password: hasher(req.body.password),
+      isRegistered: true,
     },
     {
       where: {
@@ -69,6 +74,8 @@ router.put('/:userId', (req, res, next) => {
     }
   )
     .then(updated => {
+      console.log("updated[0]===>", updated[0])
+      console.log("updated[1]===>", updated[1])
       if (updated[0]) {
         return res.status(200).send(updated[1]);
       }
@@ -113,7 +120,7 @@ router.post('/', (req, res, next) => {
     firstName: req.body.firstName,
     lastName: req.body.lastName,
     email: req.body.email,
-    password: hasher(req.body.password),
+    password: req.body.password,
     isRegistered: true,
     sessionId,
   })

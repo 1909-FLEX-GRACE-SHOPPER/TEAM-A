@@ -83,7 +83,11 @@ function LoginPage(props) {
           className={classes.formElem}
         />
         <Button className={classes.formElem} variant="contained" color="primary" onClick={handleSubmit}>Log In</Button>
+              <a href="#/signup" variant="body2">
+                {"Don't have an account? Sign Up"}
+              </a>
       </form>
+
     </div>
   )
 

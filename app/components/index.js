@@ -9,6 +9,7 @@ import Navbar from './Navbar'
 import ProductsList from './ProductsList'
 import ErrorBar from './login/ErrorBar';
 import useStyles from './styles/useStyles';
+import NewUserRegistration from './login/NewUserRegistration';
 
 export {
   Root,
@@ -21,5 +22,6 @@ export {
   Navbar,
   ProductsList,
   ErrorBar,
-  useStyles
+  useStyles,
+  NewUserRegistration
 }
