@@ -49,7 +49,8 @@ const seed = async () => {
         name: faker.commerce.productName(),
         description: faker.lorem.sentence(),
         inventory: Math.round(Math.random() * 2000),
-        price: faker.commerce.price(1.00, 99.99, 2)
+        price: faker.commerce.price(1.00, 99.99, 2),
+        imageUrl: `${faker.image.nature()}?random=${Date.now()}`
       }
     }
 

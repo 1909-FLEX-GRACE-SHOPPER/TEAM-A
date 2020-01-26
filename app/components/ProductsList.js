@@ -11,34 +11,41 @@ import CardMedia from '@material-ui/core/CardMedia';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import Link from '@material-ui/core/Link';
+import { makeStyles } from '@material-ui/core/styles';
 
 //styling
-const gridStyle = {
-  direction: 'row',
-  justify: 'space-around',
-  alignItems: 'center'
-}
-const cardStyle = {
-  margin: '1rem',
-  width: '30vw',
-  height: '40vh'
-}
+const useStyles = makeStyles({
+  gridStyle: {
+    direction: 'row',
+    justify: 'space-around',
+    alignItems: 'center'
+  },
+  cardStyle: {
+    margin: '1rem',
+    width: '30vw',
+    height: '40vh'
+  },
+  media: {
+    height: 140,
+  },
+})
+
 
 const ProductsList = props => {
   //console.log('ProducstList PROPS****', props);
+  const classes = useStyles()
   return (
-    <Grid container style={gridStyle}>
+    <Grid container className={classes.gridStyle}>
       {props.products.map(product => {
         return (
           <Grid item md key={product.id}>
-            <Card className="card" style={cardStyle}>
+            <Card className="card" className={classes.cardStyle}>
               <CardActionArea>
-                {/* Product Image will go here
                 <CardMedia
                   className={classes.media}
-                  image="/static/images/cards/contemplative-reptile.jpg"
-                  title="Contemplative Reptile"
-                /> */}
+                  image={product.imageUrl}
+                  title="Product Image"
+                />
                 <CardContent>
                   <Typography gutterBottom variant="h5" component="h3">
                     <Link href={`/#/products/${product.id}`}>{product.name}</Link>
