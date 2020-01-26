@@ -11,18 +11,19 @@ const setOrdersByUser = orders => {
   }
 };
 
-// const addOrder = newOrder => {
-//   return {
-//     type: CREATE_ORDER,
-//     newOrder
-//   }
-// }
-// const addAnOrderItem = orderItem => {
-//   return {
-//     type: ADD_ORDER_ITEM,
-//     orderItem
-//   }
-// }
+const addOrder = newOrder => {
+  return {
+    type: CREATE_ORDER,
+    newOrder
+  }
+}
+
+const addAnOrderItem = orderItem => {
+  return {
+    type: ADD_ORDER_ITEM,
+    orderItem
+  }
+}
 
 
 //reducer
@@ -30,8 +31,8 @@ export const ordersByUserReducer = (state = [], action) => {
   switch (action.type) {
     case SET_ORDERS_BY_USER:
       return action.orders;
-    // case CREATE_ORDER:
-    //   return action.newOrder;
+    case CREATE_ORDER:
+      return action.newOrder;
     // case ADD_ORDER_ITEM:
     //   return action.orderItem;
     default:
