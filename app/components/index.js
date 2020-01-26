@@ -2,6 +2,8 @@ import Root from './common/root';
 import testAuthPage from './common/testAuthPage';
 import LoginPage from './login/LoginPage';
 import SingleProduct from './SingleProduct';
+import SingleOrder from './SingleOrder';
+import AllOrders from './AllOrders';
 import Home from './Home';
 import Cart from './Cart';
 import Checkout from './checkout/Checkout';
@@ -19,6 +21,8 @@ export {
   Home,
   Cart,
   Checkout,
+  SingleOrder,
+  AllOrders,
   Navbar,
   ProductsList,
   ErrorBar,

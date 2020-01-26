@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { fetchProducts } from '../../redux/products'
 import { createGuestAndCart, fetchLogin } from '../../redux/user'
 import { createCart, fetchCartByUserId } from '../../redux/cart'
-import { testAuthPage, LoginPage, SingleProduct, Cart, Home, Checkout, Navbar, ProductsList, NewUserRegistration } from '../index';
+import { testAuthPage, LoginPage, SingleProduct, Cart, Home, Checkout, Navbar, SingleOrder, AllOrders, ProductsList, NewUserRegistration } from '../index';
 
 class Root extends React.Component {
 
@@ -28,6 +28,8 @@ class Root extends React.Component {
             <Route path='/signup' component={NewUserRegistration} />
             <Route path='/checkout' component={Checkout} />
             <Route exact path='/products/:id' component={SingleProduct} />
+            <Route exact path='/orders/viewall' component={AllOrders} />
+            <Route exact path='/orders/:id' component={SingleOrder} />
           </Switch>
         </HashRouter>
       </>
