@@ -1,4 +1,6 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+
 import { makeStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import AppBar from '@material-ui/core/AppBar';
@@ -9,6 +11,7 @@ import Step from '@material-ui/core/Step';
 import StepLabel from '@material-ui/core/StepLabel';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
+
 import AddressForm from './AddressForm';
 import PaymentForm from './PaymentForm';
 import Review from './Review';
@@ -64,29 +67,39 @@ const getStepContent = (step) => {
       throw new Error('Unknown step');
   }
 }
-
 const Checkout = () => {
+  const shippingAddress = useSelector(state => state.shippingAddress);
+  const billing = useSelector(state => state.billing);
   const classes = useStyles();
+  const [isDisabled, setDisabled] = React.useState(true);
   const [activeStep, setActiveStep] = React.useState(0);
+  const [next, setNext] = React.useState(false);
+  const dispatch = useDispatch();
 
   const handleNext = () => {
     setActiveStep(activeStep + 1);
+    setDisabled(true);
   };
 
   const handleBack = () => {
     setActiveStep(activeStep - 1);
   };
 
+  useEffect(() => {
+    if (activeStep === 0 && shippingAddress) {
+      setDisabled(false);
+    }
+    if (activeStep === 1 && billing) {
+      setDisabled(false);
+    }
+    if (activeStep === 2) {
+      setDisabled(false);
+    }
+  })
+
   return (
     <React.Fragment>
       <CssBaseline />
-      <AppBar position="absolute" color="default" className={classes.appBar}>
-        <Toolbar>
-          <Typography variant="h6" color="inherit" noWrap>
-            Team-A Grace Shopper
-          </Typography>
-        </Toolbar>
-      </AppBar>
       <main className={classes.layout}>
         <Paper className={classes.paper}>
           <Typography component="h1" variant="h4" align="center">
@@ -124,6 +137,7 @@ const Checkout = () => {
                     color="primary"
                     onClick={handleNext}
                     className={classes.button}
+                    disabled={isDisabled}
                   >
                     {activeStep === steps.length - 1 ? 'Place order' : 'Next'}
                   </Button>
