@@ -6,18 +6,28 @@ const { Cart, CartItem, User } = require('../../db')
 // create new cart (POST - '/') - use userId (new cart should be created as soon as new user enters app)
 
 router.post('/', (req, res, next) => {
-  const { userId } = req.body;
-  Cart.create({ userId })
+  if (req.user) {
+    Cart.create({ userId: req.user.id , sessionId: req.cookies.sessionId })
     .then(() => {
-      Cart.findOne({ where: { userId }, include: { model: CartItem } })
-        .then(cart => res.status(201).send(cart))
-        .catch(() => res.status(404).send('Error finding new cart'))
+      Cart.findOne({ where: { sessionId: req.cookies.sessionId }, include: { model: CartItem } })
+        .then((newCart) => res.status(201).send(newCart))
+        .catch(e => {
+          res.status(400).send('Error creating new cart!')
+          next(e)
+        })
     })
-    .catch(e => {
-      res.status(400).send('Error creating new cart!')
-      next(e)
+  } else {
+      Cart.create({ sessionId: req.cookies.sessionId })
+      .then(() => {
+        Cart.findOne({ where: { sessionId: req.cookies.sessionId }, include: { model: CartItem } })
+        .then((newCart) => res.status(201).send(newCart))
+          .catch(e => {
+            res.status(400).send('Error creating new cart!')
+            next(e)
+          })
     })
-})
+  }
+});
 
 // retrieve single cart, or all carts (GET - '/:cartId?')
 

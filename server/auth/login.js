@@ -1,27 +1,31 @@
-var express = require('express');
-var router = express.Router();
-const { User } = require('../../db');
+const express = require('express');
+const { User, Session } = require('../../db');
 const { generateSessionId, compare } = require('../utils')
-const moment = require('moment')
 
-router.use(express.json());
+const router = express.Router();
 
 //POST for submitting a user's login email and password;
 router.post('/', (req, res, next) => {
-  const { email, password } = req.body;
-  User.findOne({ where: { email } })
-    .then(user => {
-      if (password == user.password) {
-        let newSessionId = generateSessionId();
-        user.update({ sessionId: newSessionId }, { returning: true })
-          .then(updatedUser => {
-            res.cookie('sessionId', updatedUser.sessionId, {
-              path: '/',
-              expires: moment.utc().add(1, 'day').toDate(),
-            })
-            res.status(202).send(updatedUser)
-          })
-      } else {
+  User.findOne({ 
+    where: { 
+      email: req.body.email, 
+    }, 
+  })
+    .then(foundUser => {
+      if (foundUser && req.body.password == user.password) {
+        User.update(
+          {
+            sessionId: req.cookies.sessionId
+          },
+          {
+            where: {
+              id: foundUser.id
+            }
+          }
+        )
+        res.status(202).send(foundUser);
+      } 
+      else {
         res.status(400).send('Pasword does not match')
       }
     })
@@ -29,15 +33,6 @@ router.post('/', (req, res, next) => {
       res.status(404).send('User not found')
     })
 });
-
-router.put('/', (req, res, next) => {
-  const { logout } = req.body;
-  if (logout) {
-    res.clearCookie("sessionId");
-    res.status(200).send();
-  }
-})
-
 
 module.exports = router;
 

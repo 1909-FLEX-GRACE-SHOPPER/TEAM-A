@@ -4,7 +4,8 @@ const CartItem = require('./cartitem');
 const Product = require('./product');
 const Order = require('./order');
 const OrderItem = require('./orderitem');
-const ShippingAddress = require('./shippingaddress')
+const ShippingAddress = require('./shippingaddress');
+const Session = require('./session');
 
 module.exports = {
   User,
@@ -14,4 +15,5 @@ module.exports = {
   Order,
   OrderItem,
   ShippingAddress,
+  Session
 }

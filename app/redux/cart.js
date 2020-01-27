@@ -46,7 +46,7 @@ const createACart = cart => {
   }
 }
 
-const setCart = cart => {
+export const setCart = cart => {
   return {
     type: SET_CART,
     cart

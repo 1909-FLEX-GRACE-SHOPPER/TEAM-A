@@ -1,5 +1,5 @@
 import chalk from 'chalk';
-import { createCart, fetchCartByUserId } from './cart'
+import { createCart, fetchCartByUserId, setCart } from './cart'
 import { fetchOrdersByUser } from './ordersByUser'
 
 const SET_USER = 'SET_USER';
@@ -42,20 +42,15 @@ export const fetchLogin = () => {
         const user = getState().user
         return dispatch(fetchOrdersByUser(user.id))
       })
-      .catch(() => dispatch(createGuest()));
+      .catch(() => dispatch(createSessionCart()));
   }
 };
 
-export const createGuest = () => {
+export const createSessionCart = () => {
   return (dispatch, getState, { axios }) => {
-    return axios.post('/api/user/guest', {})
+    return axios.post('/api/cart', {})
       .then(response => response.data)
-      .then(guest => {
-        return dispatch(loginUser(guest))
-          .then(() => {
-            return dispatch(createCart(guest.id))
-          })
-      })
+      .then(cart => dispatch(setCart(cart)))
       .catch(e => console.log(chalk.red(`Error IN Redux thunk createGuest: ${e}`)))
   }
 };
