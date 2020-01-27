@@ -6,6 +6,7 @@ import Paper from '@material-ui/core/Paper';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import { useStyles } from '../index';
+import { Link } from 'react-router-dom';
 
 function LoginPage(props) {
   const [loginError, setError] = useState(false);
@@ -83,10 +84,9 @@ function LoginPage(props) {
           className={classes.formElem}
         />
         <Button className={classes.formElem} variant="contained" color="primary" onClick={handleSubmit}>Log In</Button>
-              <a href="#/signup" variant="body2">
-                {"Don't have an account? Sign Up"}
-              </a>
-      </form>
+
+                <Link to="/signup" variant="body2">Don't have an account? Sign Up</Link>
+          </form>
 
     </div>
   )

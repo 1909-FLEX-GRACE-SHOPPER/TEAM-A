@@ -3,16 +3,13 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { updateUser } from '../../redux/user';
-import { ErrorBar } from '../index';
-import Paper from '@material-ui/core/Paper';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import { useStyles } from '../index';
+import { Link } from 'react-router-dom';
 
 function NewUserRegistration(props) {
-  const [loginError, setError] = useState(false);
   const user = useSelector(state => state.user);
-  const [initLoad, setInit] = useState(true);
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
@@ -41,25 +38,9 @@ function NewUserRegistration(props) {
   };
 
   const handleSubmit = () => {
-    setInit(false);
-    setError(false);
     dispatch(updateUser(user.id, { firstName, lastName, email, password, userId: user.id }));
-    setEmail('');
-    setPassword('');
     props.history.push(`/`)
   }
-
-  useEffect(() => {
-    if (user && user.isRegistered) {
-      props.history.push('/');
-    }
-    if (!initLoad && !user.isRegistered) {
-      setError(true);
-    }
-    if (email || password) {
-      setError(false);
-    }
-  });
 
   return (
     <div id="loginContainer" className={[classes.root, classes.centerHero].join(' ')}>
@@ -73,9 +54,7 @@ function NewUserRegistration(props) {
       <form className={classes.root}>
         <h1 className={classes.header}>Sign up</h1>
         <h3 className={classes.header}>glad to see you!</h3>
-        {loginError &&
-          <ErrorBar title={"Login failed"} message={"Incorrect email or password"} />
-        }
+
         <TextField
           id="firstname"
           label="First Name"
@@ -109,10 +88,8 @@ function NewUserRegistration(props) {
           onChange={handleChange}
           className={classes.formElem}
         />
-        <Button className={classes.formElem} variant="contained" color="primary" onClick={handleSubmit}>Log In</Button>
-              <a href="#/login" variant="body2">
-                {"Already have an account? Sign in"}
-              </a>
+        <Button className={classes.formElem} variant="contained" color="primary" onClick={handleSubmit}>Sign up</Button>
+              <Link to="/login" variant="body2">Already have an account? Sign in</Link>
       </form>
 
     </div>
