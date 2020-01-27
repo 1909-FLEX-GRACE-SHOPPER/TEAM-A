@@ -2,7 +2,7 @@
 const connection = require('./connection');
 
 //Model imports
-const { User, Cart, CartItem, Product, Order, OrderItem, ShippingAddress } = require('./models/index');
+const { User, Cart, CartItem, Product, Order, OrderItem, ShippingAddress, Session } = require('./models/index');
 
 //model associations here
 User.hasOne(Cart);
@@ -17,8 +17,12 @@ Order.belongsTo(User);
 Order.hasMany(OrderItem);
 OrderItem.belongsTo(Product);
 
-ShippingAddress.belongsTo(User)
+ShippingAddress.belongsTo(User);
 
+Session.hasOne(User);
+User.belongsTo(Session);
+Session.hasOne(Cart);
+Cart.belongsTo(Session);
 
 //exports
 module.exports = {
@@ -28,5 +32,7 @@ module.exports = {
   CartItem,
   Product,
   Order,
-  OrderItem
+  OrderItem,
+  Session,
+  ShippingAddress
 }
