@@ -138,13 +138,17 @@ export const createCart = userId => {
   }
 }
 
-export const fetchCart = function (cartId) {
+export const fetchCart = function (cartId = '') {
   return dispatch => {
-    axios.get(`/api/cart/${cartId}`)
-      .then(cart => {
-        return dispatch(setCart(cart.data))
-      })
-      .catch(e => console.log(e));
+    if (cartId) {
+      axios.get(`/api/cart/${cartId}`)
+        .then(cart => {
+          return dispatch(setCart(cart.data))
+        })
+        .catch(e => console.log(e));
+    } else {
+      return dispatch(setCart(''))
+    }
   }
 };
 

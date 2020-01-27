@@ -51,7 +51,7 @@ export const createSessionCart = () => {
     return axios.post('/api/cart', {})
       .then(response => response.data)
       .then(cart => dispatch(setCart(cart)))
-      .catch(e => console.log(chalk.red(`Error IN Redux thunk createGuest: ${e}`)))
+      .catch(e => console.log(chalk.red(`Error IN Redux thunk createSessionCart: ${e}`)))
   }
 };
 
@@ -85,10 +85,11 @@ export const createGuestAndCart = () => {
 }
 
 export const userLogout = () => {
-  return (dispatch, getState, {axios}) => {
-      return axios.put('/auth/login', {logout: true})
-          .then(() => dispatch(setUser('')))
-          .catch(e => console.log(chalk.red(`Error IN Redux thunk userLogout: ${e}`)))
+  return (dispatch, getState, { axios }) => {
+    return axios.put('/auth/login', { logout: true })
+      .then(() => dispatch(setUser('')))
+      .then(() => dispatch(fetchCart()))
+      .catch(e => console.log(chalk.red(`Error IN Redux thunk userLogout: ${e}`)))
   }
 };
 

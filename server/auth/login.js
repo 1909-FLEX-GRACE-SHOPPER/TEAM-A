@@ -6,13 +6,13 @@ const router = express.Router();
 
 //POST for submitting a user's login email and password;
 router.post('/', (req, res, next) => {
-  User.findOne({ 
-    where: { 
-      email: req.body.email, 
-    }, 
+  User.findOne({
+    where: {
+      email: req.body.email,
+    },
   })
     .then(foundUser => {
-      if (foundUser && req.body.password == user.password) {
+      if (foundUser && req.body.password == foundUser.password) {
         User.update(
           {
             sessionId: req.cookies.sessionId
@@ -24,7 +24,7 @@ router.post('/', (req, res, next) => {
           }
         )
         res.status(202).send(foundUser);
-      } 
+      }
       else {
         res.status(400).send('Pasword does not match')
       }
