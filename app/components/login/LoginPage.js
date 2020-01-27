@@ -11,7 +11,6 @@ import { Link } from 'react-router-dom';
 function LoginPage(props) {
   const [loginError, setError] = useState(false);
   const user = useSelector(state => state.user);
-  const [initLoad, setInit] = useState(true);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const dispatch = useDispatch();
@@ -31,23 +30,18 @@ function LoginPage(props) {
     }
   };
 
-  const handleSubmit = () => {
-    setInit(false);
+  const handleSubmit = async () => {
     setError(false);
-    dispatch(loginUser({ email, password }));
-    setEmail('');
-    setPassword('');
+    await dispatch(loginUser({ email, password }));
+    if (!user.isRegistered) {
+      setError(true);
+    }
   }
 
   useEffect(() => {
-    if (user && user.isRegistered) {
-      props.history.push('/');
-    }
-    if (!initLoad && !user.isRegistered) {
-      setError(true);
-    }
-    if (email || password) {
+    if (user.isRegistered) {
       setError(false);
+      props.history.push('/');
     }
   });
 
