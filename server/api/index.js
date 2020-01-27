@@ -8,8 +8,6 @@ router.use(express.json());
 router.use('/order', require('./order'));
 router.use('/orderitem', require('./orderitem'));
 router.use('/user', require('./user'));
-router.use('/cartitem', require('./cartitem'))
-router.use('/cart', require('./cart'))
 router.use('/shippingaddress', require('./shippingAddress'))
 router.use('/products', require('./products'))
 

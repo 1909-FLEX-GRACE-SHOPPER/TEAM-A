@@ -13,9 +13,7 @@ const OrderItem = connection.define('orderitem', {
     },
     pricePaid: {
         type: Sequelize.DECIMAL(6,2),
-        allowNull: false,
         validate: {
-            isNumeric: true,
             isDecimal: true,
             min: 0.99,
             max: 9999.99

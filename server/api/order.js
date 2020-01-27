@@ -27,30 +27,53 @@ router.get('/:orderId', (req, res, next) => {
     })
 });
 
-//return all orders by userId
-
-router.get('/byuser/:userId', (req, res, next) => {
-  const { userId } = req.params;
-  // console.log('userId: ', userId)
-  // console.log('typeof userId: ', typeof (userId))
-  Order.findAll({
+//return all orders for current session
+router.get('/session', (req, res, next) => {
+  Order.findOne({
     where: {
-      userId: parseInt(userId),
+      sessionId: req.cookies.sessionId
     },
-    include: [{
-      model: OrderItem,
-    }],
-  })
-    .then(results => {
-      if (results) {
-        return res.status(200).send(results);
+    include: [
+      {
+        model: OrderItem,
       }
-      res.status(200).send([]);
+    ]
+  })
+  .then(result => {
+    if (result) {
+      return res.status(200).send(result);
+    }
+    res.status(404).send('Not found');
+  })
+  .catch(e => {
+    res.status(400).send('Invalid request');
+    next(e);
+  })
+})
+
+//return all orders for current logged in user
+router.get('/user/', (req, res, next) => {
+  if (req.user) {
+    Order.findAll({
+      where: {
+        userId: req.user.id,
+      },
+      include: [{
+        model: OrderItem,
+      }],
     })
-    .catch(e => {
-      res.status(400).send('Invalid request for orders by userId');
-      next(e);
-    })
+      .then(results => {
+        if (results) {
+          return res.status(200).send(results);
+        }
+        return res.status(200).send([]);
+      })
+      .catch(e => {
+        res.status(400).send('Invalid request for orders by userId');
+        next(e);
+      })
+  }
+  return res.status(400).send('Invalid request for orders by userId');
 });
 
 //return all orders, with optional sort query parameter in url
@@ -80,7 +103,7 @@ router.post('/', (req, res, next) => {
     return res.status(400).send('Invalid request; userId required');
   }
   Order.create({
-    status: req.body.status || 'pending',
+    status: req.body.status || 'cart',
     userId: req.body.userId,
   })
     .then(created => {
@@ -93,11 +116,11 @@ router.post('/', (req, res, next) => {
 });
 
 //Update an order
-//As of now, the only field on an order that can be modified is status
 router.put('/:orderId', (req, res, next) => {
   Order.update(
     {
-      status: req.body.status
+      status: req.body.status || 'cart',
+      userId: req.user.id || null
     },
     {
       where: {

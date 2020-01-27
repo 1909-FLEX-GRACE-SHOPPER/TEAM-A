@@ -1,12 +1,11 @@
 const faker = require('faker');
 const chalk = require('chalk');
-const { connection, User, Cart, CartItem, Product, Order, OrderItem } = require('./db');
+const { connection, User, Product, Order, OrderItem } = require('./db');
 
 const GENERATED_PRODUCTS = 100;
 const GENERATED_USERS = 50;
 const GENERATED_ORDERS = 100;
 const MAX_ORDERITEMS = 10;
-const MAX_CARTITEMS = 10;
 
 const orderStatuses = ['pending', 'fulfilled', 'shipped', 'delivered', 'cancelled'];
 
@@ -37,10 +36,15 @@ const seed = async () => {
       userList.map(user => User.create({ ...user }))
     );
 
-    //create a cart record for each user
-    const createdCarts = await Promise.all(
-      createdUsers.map(user => Cart.create({ userId: user.id }))
-    );
+    //create random orders (none with cart status);
+    let createdOrders = Array(GENERATED_ORDERS);
+    for (let i = 0; i < GENERATED_ORDERS; i++) {
+      let randomUser = Math.floor(Math.random() * GENERATED_USERS);
+      createdOrders[i] = await Order.create({
+        userId: createdUsers[randomUser].id,
+        status: orderStatuses[i % orderStatuses.length],
+      })
+    }
 
     //generate list of random products
     let productList = Array(GENERATED_PRODUCTS);
@@ -59,30 +63,7 @@ const seed = async () => {
       productList.map(product => Product.create({ ...product }))
     );
 
-    //generate cart items from products and carts
-    for (let i = 0; i < GENERATED_USERS; i++) {
-      let totalItems = Math.round(Math.random() * MAX_CARTITEMS);
-      for (let j = 0; j < totalItems; j++) {
-        const randomProduct = Math.floor(Math.random() * GENERATED_PRODUCTS);
-        await CartItem.create({
-          quantity: Math.ceil(Math.random() * 10),
-          cartId: createdCarts[i].id,
-          productId: createdProducts[randomProduct].id
-        });
-      }
-    }
-
-    //generate orders
-    let createdOrders = Array(GENERATED_ORDERS);
-    for (let i = 0; i < GENERATED_ORDERS; i++) {
-      let randomUser = Math.floor(Math.random() * GENERATED_USERS);
-      createdOrders[i] = await Order.create({
-        userId: createdUsers[randomUser].id,
-        status: orderStatuses[i % orderStatuses.length],
-      })
-    }
-
-    //generate order items from products and carts
+    //generate order items from products
     for (let i = 0; i < GENERATED_ORDERS; i++) {
       let totalItems = Math.round(Math.random() * MAX_ORDERITEMS);
       for (let j = 0; j < totalItems; j++) {

@@ -14,9 +14,6 @@ router.get('/:userId', (req, res, next) => {
     },
     include: [
       {
-        model: Cart,
-      },
-      {
         model: Order,
       }
     ]
@@ -59,7 +56,7 @@ router.get('/', (req, res, next) => {
 router.put('/:userId', (req, res, next) => {
   User.update(
     {
-      sessionId: req.body.sessionId
+      sessionId: req.cookies.sessionId
     },
     {
       where: {
@@ -76,30 +73,6 @@ router.put('/:userId', (req, res, next) => {
     })
     .catch(e => {
       console.log(chalk.red(`Error in PUT /api/user/id: ${req.url}`));
-      res.status(400).send('Invalid request');
-      next(e);
-    })
-});
-
-//special post method for creating a guest user
-//generates a user random string email and hashed password,
-//returns said user with sessionId
-router.post('/guest', (req, res, next) => {
-  //todo: replace this function with something more secure
-  const sessionId = generateSessionId();
-  User.create({
-    firstName: 'guest',
-    lastName: 'guest',
-    email: `${Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15)}@guest.com`,
-    password: hasher(Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15)),
-    isRegistered: false,
-    sessionId,
-  })
-    .then(created => {
-      res.status(201).send(created);
-    })
-    .catch(e => {
-      console.log(chalk.red(`Error in POST /api/user/guest: ${req.url}`));
       res.status(400).send('Invalid request');
       next(e);
     })
