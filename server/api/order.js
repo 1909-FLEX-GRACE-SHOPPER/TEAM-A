@@ -99,12 +99,10 @@ router.get('/', (req, res, next) => {
 
 //create new order. UserId is required
 router.post('/', (req, res, next) => {
-  if (!req.body.userId) {
-    return res.status(400).send('Invalid request; userId required');
-  }
   Order.create({
     status: req.body.status || 'cart',
-    userId: req.body.userId,
+    sessionId: req.cookies.sessionId,
+    userId: req.user.id,
   })
     .then(created => {
       res.status(201).send(created);
