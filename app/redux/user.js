@@ -1,5 +1,5 @@
 import chalk from 'chalk';
-import { createCart, fetchCartByUserId } from './cart'
+import { fetchCart, createCart, fetchCartByUserId } from './cart'
 import { fetchOrdersByUser } from './ordersByUser'
 
 const SET_USER = 'SET_USER';
@@ -90,10 +90,11 @@ export const createGuestAndCart = () => {
 }
 
 export const userLogout = () => {
-  return (dispatch, getState, {axios}) => {
-      return axios.put('/auth/login', {logout: true})
-          .then(() => dispatch(setUser('')))
-          .catch(e => console.log(chalk.red(`Error IN Redux thunk userLogout: ${e}`)))
+  return (dispatch, getState, { axios }) => {
+    return axios.put('/auth/login', { logout: true })
+      .then(() => dispatch(setUser('')))
+      .then(() => dispatch(fetchCart()))
+      .catch(e => console.log(chalk.red(`Error IN Redux thunk userLogout: ${e}`)))
   }
 };
 

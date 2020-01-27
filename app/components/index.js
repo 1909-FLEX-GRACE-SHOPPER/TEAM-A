@@ -11,6 +11,7 @@ import AccountInfo from './AccountInfo';
 import Navbar from './Navbar'
 import ProductsList from './ProductsList'
 import ErrorBar from './login/ErrorBar';
+import LogoutButton from './login/LogoutButton'
 import useStyles from './styles/useStyles';
 
 export {
@@ -27,5 +28,6 @@ export {
   Navbar,
   ProductsList,
   ErrorBar,
+  LogoutButton,
   useStyles
 }
