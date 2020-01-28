@@ -31,36 +31,44 @@ router.post('/', (req, res, next) => {
 
 // retrieve single cart, or all carts (GET - '/:cartId?')
 
-router.get('/:cartId?', (req, res, next) => {
-  const { cartId } = req.params;
-  if (cartId) {
-    Cart.findOne({ where: { id: parseInt(cartId) }, include: { model: CartItem } })
-      .then(cart => res.send(cart))
-      .catch(e => {
-        res.status(404).send('Cart not found!')
-        next(e)
-      })
-  } else {
-    Cart.findAll({ include: { model: CartItem } })
-      .then(carts => res.status(302).send(carts))
-      .catch(e => {
-        res.status(404).send('Error finding all carts')
-        next(e)
-      })
-  }
-})
+// router.get('/:cartId?', (req, res, next) => {
+//   const { cartId } = req.params;
+//   if (cartId) {
+//     Cart.findOne({ where: { id: parseInt(cartId) }, include: { model: CartItem } })
+//       .then(cart => res.send(cart))
+//       .catch(e => {
+//         res.status(404).send('Cart not found!')
+//         next(e)
+//       })
+//   } else {
+//     Cart.findAll({ include: { model: CartItem } })
+//       .then(carts => res.status(302).send(carts))
+//       .catch(e => {
+//         res.status(404).send('Error finding all carts')
+//         next(e)
+//       })
+//   }
+// })
 
 // retrieve single cart by userId
 
-router.get('/byuser/:userId', (req, res, next) => {
-  const { userId } = req.params;
-  Cart.findOne({ where: { userId }, include: { model: CartItem } })
+router.get('/byuser', (req, res, next) => {
+  if (req.user) {
+    Cart.findOne({ where: { userId: req.user.id }, include: [{ model: CartItem }] })
     .then(cart => res.send(cart))
     .catch(e => {
       res.status(404).send('Cart not found by userId!')
-        .next(e)
+      .next(e)
     })
-})
+  } else {
+    Cart.findOne({ where: { sessionId: req.cookies.sessionId }, include: [{ model: CartItem }] })
+    .then(cart => res.send(cart))
+    .catch(e => {
+      res.status(404).send('Cart not found by sessionId!')
+      .next(e)
+    })
+  }
+});
 
 // clear cart (PUT - '/:cartId')
 

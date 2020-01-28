@@ -105,7 +105,7 @@ export const addCartItem = (cartId, productId, quantity) => {
 
 export const fetchCartItems = (cartId) => {
   return (dispatch) => {
-    axios.get(`/api/cart/${cartId}`)
+    axios.get(`/api/cart/byuser`)
       .then(cart => dispatch(setCartItems(cart.data.cartItems)))
       .catch(e => console.error(e))
   }
@@ -138,18 +138,14 @@ export const createCart = userId => {
   }
 }
 
-export const fetchCart = function (cartId = '') {
+export const fetchCart = function () {
   return dispatch => {
-    if (cartId) {
-      axios.get(`/api/cart/${cartId}`)
+      axios.get(`/api/cart/byuser`)
         .then(cart => {
           return dispatch(setCart(cart.data))
         })
         .catch(e => console.log(e));
-    } else {
-      return dispatch(setCart(''))
-    }
-  }
+    } 
 };
 
 export const fetchCartByUserId = function (userId) {

@@ -32,7 +32,7 @@ function Navbar(props) {
   const classes = useStyles();
 
   useEffect(() => {
-    if (user && user.isRegistered) {
+    if (user) {
       setLoggedIn(true);
     }
   });
@@ -46,8 +46,8 @@ function Navbar(props) {
       <Toolbar className={classes.root}>
         <Button className={classes.home} edge='start' id='home' color="inherit" onClick={() => handleClick('')}>Dead Bits R Us</Button>
         <Button color="inherit" onClick={() => handleClick('cart')}>Cart ({cartItemsLength ? cartItemsLength : 0})</Button>
-        <Button edge="end" color="inherit" onClick={() => handleClick(user.isRegistered ? 'account' : 'login')}>
-          {user.isRegistered ? `Welcome, ${user.firstName}` : 'Log In'}
+        <Button edge="end" color="inherit" onClick={() => handleClick(user ? 'account' : 'login')}>
+          {user ? `Welcome, ${user.firstName}` : 'Log In'}
         </Button>
       </Toolbar>
     </AppBar>

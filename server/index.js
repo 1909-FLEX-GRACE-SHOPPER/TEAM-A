@@ -6,12 +6,15 @@ const { User, Session } = require('../db');
 const moment = require('moment');
 const APIRouter = require('./api');
 const authRouter = require('./auth');
+const volleyball = require('volleyball')
 
 const server = express();
 
 //middleware here
 server.use(express.json());
 server.use(express.static(path.join(__dirname, '../public')));
+const debug = process.env.NODE_ENV === 'test'
+server.use(volleyball.custom({ debug }))
 server.use(cookieParser());
 
 //check for cookie, set user based on sessionId
