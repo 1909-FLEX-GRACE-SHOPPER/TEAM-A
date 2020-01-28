@@ -95,65 +95,99 @@ export const cartReducer = (state = {}, action) => {
 
 //thunks
 
+//try fetching cart by user first
+export const fetchCart = () => {
+  return (dispatch, getState, { axios }) => {
+    return axios.get('/api/cart/')
+      .then(cart => 
+        cart.data ?
+        dispatch(setCart(cart.data))
+        : dispatch(newSessionCart())
+        )
+      .catch((e) => {
+        console.log('error in fetchCart thunk');
+        console.error(e);
+      });
+  }
+};
+
+//creates a new cart with the current sessionId
+export const newSessionCart = () => {
+  return (dispatch, getState, { axios }) => {
+    return axios.post('/api/cart/', {})
+      .then(response => response.data)
+      .then(cart => dispatch(setCart(cart)))
+      .catch(e => console.log(chalk.red(`Error in Redux thunk createSessionCart: ${e}`)))
+  }
+};
+
+export const updateCart = (update) => {
+  return (dispatch, getState, { axios }) => {
+    const { cart } = getState();
+    return axios.put(`/api/cart/${cart.id}`, update)
+      .then(() => dispatch(fetchCart()))
+      .catch(e => console.log(`Error in Redux thunk updateCart: ${e}`))
+  }
+};
+
+//---------Cart Item Thunks
+
 export const addCartItem = (cartId, productId, quantity) => {
   return (dispatch) => {
     axios.post('/api/cartitem', { cartId, productId, quantity })
-      .then(cartItem => dispatch(addACartItem(cartItem.data)))
+      .then(cartItem => dispatch(fetchCart()))
       .catch(e => console.error(e))
   }
-}
-
-export const fetchCartItems = (cartId) => {
-  return (dispatch) => {
-    axios.get(`/api/cart/byuser`)
-      .then(cart => dispatch(setCartItems(cart.data.cartItems)))
-      .catch(e => console.error(e))
-  }
-}
+};
 
 export const updateCartItem = (cartItemId, newDetails) => {
   return (dispatch) => {
     axios.put(`/api/cartitem/${cartItemId}`, newDetails)
-      .then(() => dispatch(updateACartItem(newDetails, parseInt(cartItemId))))
-      .catch(e => {
-        console.error(e)
-        // TODO: create dispatch(updateCartItemError())
-      })
+      .then(() => dispatch(fetchCart()))
+      .catch(e => console.error(e))
   }
-}
+};
 
-export const deleteCartItem = cartItemId => {
+export const deleteCartItem = (cartItemId) => {
   return (dispatch) => {
     axios.delete(`/api/cartitem/${cartItemId}`)
-      .then(() => dispatch(deleteACartItem(cartItemId)))
+      .then(() => dispatch(fetchCart()))
       .catch(e => console.error(e))
   }
-}
-
-export const createCart = userId => {
-  return dispatch => {
-    axios.post('/api/cart', { userId })
-      .then(cart => dispatch(createACart(cart.data)))
-      .catch(e => console.error(e))
-  }
-}
-
-export const fetchCart = function () {
-  return dispatch => {
-      axios.get(`/api/cart/byuser`)
-        .then(cart => {
-          return dispatch(setCart(cart.data))
-        })
-        .catch(e => console.log(e));
-    } 
 };
 
-export const fetchCartByUserId = function (userId) {
-  return dispatch => {
-    axios.get(`/api/cart/byuser/${userId}`)
-      .then(cart => {
-        return dispatch(setCart(cart.data))
-      })
-      .catch(e => console.log(e));
-  }
-};
+//-------
+//Archived version of fetch cart that is split into two pieces
+//keeping here for troubleshooting use
+
+
+// export const fetchUserCart = () => {
+  //   return (dispatch, getState, { axios }) => {
+  //     return axios.get('/api/cart/user')
+  //       .then(cart => 
+  //         cart.data ?
+  //         dispatch(setCart(cart.data))
+  //         : dispatch(fetchSessionCart())
+  //         )
+  //       .catch((e) => {
+  //         console.log('error in fetchCart thunk');
+  //         console.error(e);
+  //       });
+  //   }
+  // };
+  
+  // //fetches cart by sessionId
+  // export const fetchSessionCart = () => {
+  //   return (dispatch, getState, { axios }) => {
+  //     return axios.get('/api/cart/session')
+  //       .then(cart => 
+  //         cart.data ?
+  //         dispatch(setCart(cart.data))
+  //         : dispatch(newSessionCart())
+  //       )
+  //       .catch((e) => {
+  //         console.log('error in fetchSessionCart thunk');
+  //         console.error(e);
+  //       });
+  //   }
+  // };

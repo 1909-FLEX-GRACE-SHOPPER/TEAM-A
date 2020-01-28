@@ -1,15 +1,17 @@
 import React from 'react';
 import { HashRouter, Route, Switch } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { fetchProducts } from '../../redux/products'
-import { fetchUser } from '../../redux/user'
+import { fetchProducts } from '../../redux/products';
+import { fetchUser } from '../../redux/user';
+import { fetchCart } from '../../redux/cart';
 import { LoginPage, SingleProduct, Cart, Home, Checkout, Navbar, SingleOrder, AllOrders, AccountInfo } from '../index';
 
 class Root extends React.Component {
 
-  componentDidMount() {
-    this.props.fetchProducts();
-    this.props.fetchUser();
+  async componentDidMount() {
+    await this.props.fetchProducts();
+    await this.props.fetchUser();
+    await this.props.fetchCart();
   }
 
   render() {
@@ -44,6 +46,7 @@ const mapDispatch = dispatch => {
   return {
     fetchProducts: () => dispatch(fetchProducts()),
     fetchUser: () => dispatch(fetchUser()),
+    fetchCart: () => dispatch(fetchCart())
   }
 }
 

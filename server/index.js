@@ -20,18 +20,14 @@ server.use(cookieParser());
 //check for cookie, set user based on sessionId
 server.use((req, res, next) => {
     if (req.cookies.sessionId) {
-        Session.findOne({
+        User.findOne({
             where: {
-                id: req.cookies.sessionId,
-            },
-            include: [{ 
-                model: User 
-            }]
+                sessionId: req.cookies.sessionId,
+            }
         })
-        .then(foundSession => {
-            if (foundSession) {
-                req.session = foundSession.id;
-                req.user = foundSession.user || null;
+        .then(foundUser => {
+            if (foundUser) {
+                req.user = foundUser;
             }
             next();
         })
