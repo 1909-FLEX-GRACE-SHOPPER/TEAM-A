@@ -7,7 +7,7 @@ router.get('/', (req, res, next) => {
     if (req.user) {
         return res.status(201).send(req.user);
     }
-    return res.status(401).send('No login found');
+    return res.send(null);
 });
 
 module.exports = router;
