@@ -57,7 +57,7 @@ export const setCart = cart => {
 export const cartReducer = (state = {}, action) => {
   switch (action.type) {
     case ADD_CART_ITEM: {
-      state.cartitems.push(action.cartItem);
+      [...state.cartitems, action.cartItem ]
       return state;
     }
     case SET_CART_ITEMS: {
