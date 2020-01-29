@@ -95,7 +95,7 @@ export const cartReducer = (state = {}, action) => {
 
 //thunks
 
-//try fetching cart by user first
+//fetch cart
 export const fetchCart = () => {
   return (dispatch, getState, { axios }) => {
     return axios.get('/api/cart/')

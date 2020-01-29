@@ -41,9 +41,10 @@ const User = connection.define('user', {
       notEmpty: true,
     },
   },
-  isRegistered: {
+  isAdmin: {
     type: Sequelize.BOOLEAN,
     allowNull: false,
+    defaultValue: false,
   },
 })
 
