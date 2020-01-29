@@ -1,11 +1,9 @@
 import chalk from 'chalk';
-import { createCart, fetchCartByUserId, setCart } from './cart'
-import { fetchOrdersByUser } from './ordersByUser'
 
 const SET_USER = 'SET_USER';
 
 //initial state
-const initState = '';
+const initState = null;
 
 //action creators
 const setUser = (user) => {
@@ -15,80 +13,27 @@ const setUser = (user) => {
   }
 };
 
-
-//thunks
-
-//log in a user (for login form and after a new guest has been created)
-//note the /auth/login call will also set the cookie
-export const loginUser = (user) => {
-  return (dispatch, getState, { axios }) => {
-    return axios.post('/auth/login', { email: user.email, password: user.password })
-      .then(response => response.data)
-      .then((user) => dispatch(setUser(user)))
-      .catch(e => console.log(chalk.red('login failed')))
-  }
-};
-
 //check if cookie is set, and then set the user as per that cookie
-export const fetchLogin = () => {
+export const fetchUser = () => {
   return (dispatch, getState, { axios }) => {
     return axios.get('/auth/who')
       .then(user => dispatch(setUser(user.data)))
-      .then(() => {
-        const user = getState().user
-        return dispatch(fetchCartByUserId(user.id))
-      })
-      .then(() => {
-        const user = getState().user
-        return dispatch(fetchOrdersByUser(user.id))
-      })
-      .catch(() => dispatch(createSessionCart()));
-  }
+      .catch(() => dispatch(setUser(null)))
+  } 
 };
 
-export const createSessionCart = () => {
+export const loginUser = (login) => {
   return (dispatch, getState, { axios }) => {
-    return axios.post('/api/cart', {})
-      .then(response => response.data)
-      .then(cart => dispatch(setCart(cart)))
-      .catch(e => console.log(chalk.red(`Error IN Redux thunk createSessionCart: ${e}`)))
+    return axios.post('/auth/login', login)
+      .then(user => dispatch(setUser(user.data)))
+      .catch(user => dispatch(setUser(null)))
   }
 };
 
-export const fetchUser = (userId) => {
-  return (dispatch, getState, { axios }) => {
-    return axios.get(`/api/user/${userId}`)
-      .then(response => response.data)
-      .then(user => dispatch(setUser(user)))
-      .then(() => dispatch(createCart(getState().user.id)))
-      .catch(e => console.log(chalk.red(`Error IN Redux thunk fetchUser: ${e}`)))
-  }
-};
-
-export const createUser = (user) => {
-  return (dispatch, getState, { axios }) => {
-    return axios.post('/api/user', { user })
-      .then(response => response.data)
-      .then(newUser => dispatch(loginUser(newUser)))
-      .catch(e => console.log(chalk.red(`Error IN Redux thunk createUser: ${e}`)))
-  }
-};
-
-export const createGuestAndCart = () => {
-  return (dispatch, getState) => {
-    return dispatch(createGuest())
-      .then(() => {
-        const user = getState().user;
-        return dispatch(createCart(user.id))
-      })
-  }
-}
-
-export const userLogout = () => {
+export const logoutUser = () => {
   return (dispatch, getState, { axios }) => {
     return axios.put('/auth/login', { logout: true })
       .then(() => dispatch(setUser('')))
-      .then(() => dispatch(fetchCart()))
       .catch(e => console.log(chalk.red(`Error IN Redux thunk userLogout: ${e}`)))
   }
 };

@@ -12,7 +12,7 @@ class AccountInfo extends Component {
         <h1>Account Information</h1>
         <>
           {
-            user.isRegistered ?
+            user ?
               (
                 <div>
                   <h2>First name: {user.firstName}</h2>

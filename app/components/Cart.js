@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react';
 import { connect } from 'react-redux';
 import { fetchProducts } from '../redux/products';
-import { fetchCart, fetchCartByUserId, updateCartItem, deleteCartItem } from '../redux/cart'
+import { updateCartItem, deleteCartItem } from '../redux/cart'
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
@@ -11,7 +11,6 @@ import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import Button from '@material-ui/core/Button';
 import DeleteIcon from '@material-ui/icons/Delete';
-
 
 class Cart extends React.Component {
 
@@ -90,9 +89,7 @@ const mapState = ({ cart, user, products }) => {
 
 const mapDispatch = dispatch => {
   return {
-    fetchCart: (cartId) => dispatch(fetchCart(cartId)),
     fetchProducts: () => dispatch(fetchProducts()),
-    fetchCartByUserId: (userId) => dispatch(fetchCartByUserId(userId)),
     updateCartItem: (cartItemId, newDetails) => dispatch(updateCartItem(cartItemId, newDetails)),
     deleteCartItem: (cartItemId) => dispatch(deleteCartItem(cartItemId))
   }

@@ -6,29 +6,28 @@ const { User, Session } = require('../db');
 const moment = require('moment');
 const APIRouter = require('./api');
 const authRouter = require('./auth');
+const volleyball = require('volleyball')
 
 const server = express();
 
 //middleware here
 server.use(express.json());
 server.use(express.static(path.join(__dirname, '../public')));
+const debug = process.env.NODE_ENV === 'test'
+server.use(volleyball.custom({ debug }))
 server.use(cookieParser());
 
 //check for cookie, set user based on sessionId
 server.use((req, res, next) => {
     if (req.cookies.sessionId) {
-        Session.findOne({
+        User.findOne({
             where: {
-                id: req.cookies.sessionId,
-            },
-            include: [{ 
-                model: User 
-            }]
+                sessionId: req.cookies.sessionId,
+            }
         })
-        .then(foundSession => {
-            if (foundSession) {
-                req.session = foundSession.id;
-                req.user = foundSession.user || null;
+        .then(foundUser => {
+            if (foundUser) {
+                req.user = foundUser;
             }
             next();
         })

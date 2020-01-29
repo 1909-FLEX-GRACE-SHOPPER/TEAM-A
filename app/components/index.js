@@ -1,5 +1,4 @@
 import Root from './common/root';
-import testAuthPage from './common/testAuthPage';
 import LoginPage from './login/LoginPage';
 import SingleProduct from './SingleProduct';
 import SingleOrder from './SingleOrder';
@@ -16,7 +15,6 @@ import useStyles from './styles/useStyles';
 
 export {
   Root,
-  testAuthPage,
   LoginPage,
   SingleProduct,
   Home,
