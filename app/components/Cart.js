@@ -14,12 +14,19 @@ import DeleteIcon from '@material-ui/icons/Delete';
 
 
 class Cart extends React.Component {
+  // constructor(){
+  //   super();
+  //   this.state={
+  //     totalCost:0,
+  //   }
+  // }
 
   handleChange(ev, cartItemId) {
     this.props.updateCartItem(cartItemId, { quantity: parseInt(ev.target.value) })
   }
 
   render() {
+    let totalCost = 0
     return (
       <div>
         <TableContainer component={Paper}>
@@ -40,7 +47,9 @@ class Cart extends React.Component {
                     <TableRow key={cartItem.id}>
                       {this.props.products.map(product => {
                         if (cartItem.productId === product.id) {
-                          return (
+                          const productCost = product.price * cartItem.quantity
+                          totalCost += productCost
+                      return (
                             <Fragment key={cartItem.id}>
                               <TableCell align="left" >{product.name}</TableCell>
                               <TableCell align="left"><select name='quantity' value={cartItem.quantity} onChange={ev => this.handleChange(ev, cartItem.id)}>
@@ -49,7 +58,7 @@ class Cart extends React.Component {
                                 }
                               </select></TableCell>
                               <TableCell align="left" >{product.price}</TableCell>
-                              <TableCell align="left" >{product.price * cartItem.quantity}</TableCell>
+                              <TableCell align="left" >{productCost}</TableCell>
                               <TableCell align="left" ><Button
                                 variant="contained"
                                 color="secondary"
@@ -72,11 +81,12 @@ class Cart extends React.Component {
             </TableBody>
           </Table>
         </TableContainer>
+        <h4>Total Cost</h4>
+        <p>{totalCost}</p>
         <Button onClick={() => window.location.href = '/#/checkout'}>Checkout</Button>
       </div>
     )
   }
-
 }
 
 

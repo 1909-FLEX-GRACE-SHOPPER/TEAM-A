@@ -57,6 +57,7 @@ export const setCart = cart => {
 export const cartReducer = (state = {}, action) => {
   switch (action.type) {
     case ADD_CART_ITEM: {
+      //update no push 
       state.cartitems.push(action.cartItem);
       return state;
     }
