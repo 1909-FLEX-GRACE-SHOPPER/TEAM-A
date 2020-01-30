@@ -31,7 +31,12 @@ router.get('/', (req, res, next) => {
         sessionId: req.cookies.sessionId
       },
       include: [
-        { model: Product }
+        {
+          model: CartItem,
+          include: [
+            Product
+          ]
+        }
       ]
     })
       .then(cart => {
