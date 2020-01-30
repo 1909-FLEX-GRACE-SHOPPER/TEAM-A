@@ -31,6 +31,13 @@ const seed = async () => {
         password: faker.random.alphaNumeric(16),
         isRegistered: true,
       }
+      // userList.push({
+      //   firstName: 'joe',
+      //   lastName: 'smith',
+      //   email: 'joe@gmail.com',
+      //   password: '123',
+      //   isRegistered: true,
+      // })
     }
     //create users
     const createdUsers = await Promise.all(
