@@ -1,41 +1,46 @@
 const Sequelize = require('sequelize');
 const router = require('express').Router()
-const { Cart, CartItem, User } = require('../../db')
+const { Cart, CartItem, User, Product } = require('../../db')
 
 // retrieve single cart based on either userId (if signed in) or sessionId
 router.get('/', (req, res, next) => {
   if (req.user) {
     Cart.findOne({
-      where: { 
+      where: {
         userId: req.user.id
-      }, 
+      },
       include: [
-        { model: CartItem }
-      ] 
+        {
+          model: CartItem,
+          include: [
+            Product
+          ]
+        }
+      ]
     })
-    .then(cart => {
-      return res.send(cart)
-    })
-    .catch(e => {
-      res.status(500).send('error in GET cart/ route')
-      next(e)
-    })
+      .then(cart => {
+        return res.send(cart)
+      })
+      .catch(e => {
+        res.status(500).send('error in GET cart/ route')
+        next(e)
+      })
   } else {
-    Cart.findOne({ 
-      where: { 
+    Cart.findOne({
+      where: {
         sessionId: req.cookies.sessionId
-      }, 
+      },
       include: [
-        { model: CartItem }
-      ] 
+        { model: Product }
+      ]
     })
-    .then(cart => {
+      .then(cart => {
         return res.status(200).send(cart);
-    })
-    .catch(e => {
-      res.status(500).send('error in GET cart/ route')
-      next(e)
-    })
+      })
+      .catch(e => {
+        res.status(500).send('error in GET cart/ route')
+        next(e)
+      })
   }
 });
 
@@ -43,7 +48,7 @@ router.get('/', (req, res, next) => {
 router.get('/user/:id', (req, res, next) => {
   Cart.findOne({ where: { userId: req.params.id }, include: [{ model: CartItem }] })
     .then(cart => {
-        return res.status(200).send(cart);
+      return res.status(200).send(cart);
     })
     .catch(e => {
       res.status(500).send('error in /cart/user route')
@@ -56,22 +61,22 @@ router.get('/user/:id', (req, res, next) => {
 //If no user, the session Id is used to generate a new cart for that session
 router.post('/', (req, res, next) => {
   if (req.user) {
-      Cart.findOne({ where: { userId: req.user.id }, include: { model: CartItem } })
-        .then((foundCart) => res.status(201).send(foundCart))
-        .catch(e => {
-          res.status(400).send('User is logged in but could not find cart')
-          next(e)
-        })
+    Cart.findOne({ where: { userId: req.user.id }, include: { model: CartItem } })
+      .then((foundCart) => res.status(201).send(foundCart))
+      .catch(e => {
+        res.status(400).send('User is logged in but could not find cart')
+        next(e)
+      })
   } else {
-      Cart.create({ sessionId: req.cookies.sessionId })
+    Cart.create({ sessionId: req.cookies.sessionId })
       .then(() => {
         Cart.findOne({ where: { sessionId: req.cookies.sessionId }, include: { model: CartItem } })
-        .then((newCart) => res.status(201).send(newCart))
+          .then((newCart) => res.status(201).send(newCart))
           .catch(e => {
             res.status(400).send('Error creating new cart!')
             next(e)
           })
-    })
+      })
   }
 });
 
@@ -88,13 +93,13 @@ router.put('/:cartId', (req, res, next) => {
       }
     }
   )
-  .then(cart => {
-    return res.status(200).send(cart);
-  })
-  .catch(e => {
-    res.status(500).send('error in PUT /cart/:cartId route')
-    next(e)
-  })
+    .then(cart => {
+      return res.status(200).send(cart);
+    })
+    .catch(e => {
+      res.status(500).send('error in PUT /cart/:cartId route')
+      next(e)
+    })
 });
 
 
@@ -117,7 +122,7 @@ router.put('/clear/:cartId', (req, res, next) => {
 });
 
 router.delete('/:cartId', (req, res, next) => {
-  Cart.destroy({ where: { id: req.params.cartId }})
+  Cart.destroy({ where: { id: req.params.cartId } })
     .then(() => {
       return res.status(200).send();
     })
