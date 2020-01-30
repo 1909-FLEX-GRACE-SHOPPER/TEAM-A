@@ -103,6 +103,8 @@ const seed = async () => {
   }
 }
 
+module.exports = seed;
+
 //run the seed function
 seed()
   .then(() => {
