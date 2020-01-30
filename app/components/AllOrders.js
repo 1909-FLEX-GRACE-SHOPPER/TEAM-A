@@ -4,10 +4,6 @@ import { fetchOrdersByUser } from '../redux/ordersByUser'
 
 class AllOrders extends Component {
 
-  componentDidMount() {
-    this.props.fetchOrders();
-  }
-
   render() {
     const { ordersByUser } = this.props;
     return (
