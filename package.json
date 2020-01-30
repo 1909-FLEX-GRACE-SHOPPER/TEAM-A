@@ -9,7 +9,8 @@
     "start-server": "nodemon main.js -e html,js,css --ignore public",
     "build": "./node_modules/.bin/webpack --mode=\"production\"",
     "build-dev": "webpack -w",
-    "seed": "node seed.js"
+    "seed": "node seed.js",
+    "test": "NODE_ENV='test' mocha  ./tests --watch"
   },
   "repository": {
     "type": "git",
@@ -60,9 +61,10 @@
     "babel-loader": "^8.0.6",
     "babel-preset-env": "^1.7.0",
     "babel-preset-react": "^6.24.1",
+    "chai": "^4.2.0",
     "eslint": "^6.8.0",
     "eslint-plugin-react": "^7.18.0",
-    "redux-devtools-extension": "^2.13.8",
+    "mocha": "^7.0.1",
     "webpack": "^4.41.5",
     "webpack-cli": "^3.3.10"
   }
