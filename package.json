@@ -10,7 +10,7 @@
     "build": "./node_modules/.bin/webpack --mode=\"production\"",
     "build-dev": "webpack -w",
     "seed": "node seed.js",
-    "test": "NODE_ENV=test mocha ./tests --watch"
+    "test": "NODE_ENV=test mocha ./tests --recursive --watch"
   },
   "repository": {
     "type": "git",
