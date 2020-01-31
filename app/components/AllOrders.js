@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { fetchOrdersByUser } from '../redux/ordersByUser'
 
 class AllOrders extends Component {
 
@@ -41,4 +42,10 @@ const mapState = ({ ordersByUser }) => {
   }
 }
 
-export default connect(mapState)(AllOrders)
+const mapDispatch = dispatch => {
+  return {
+    fetchOrders: () => dispatch(fetchOrdersByUser())
+  }
+}
+
+export default connect(mapState, mapDispatch)(AllOrders)

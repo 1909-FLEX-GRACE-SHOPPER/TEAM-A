@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-
+import { createOrderAndAddOrderItems } from '../../redux/ordersByUser';
 import { makeStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import AppBar from '@material-ui/core/AppBar';
@@ -85,6 +85,10 @@ const Checkout = () => {
     setActiveStep(activeStep - 1);
   };
 
+  const handleSubmit = () => {
+    dispatch(createOrderAndAddOrderItems())
+  }
+
   useEffect(() => {
     if (activeStep === 0 && shippingAddress) {
       setDisabled(false);
@@ -124,26 +128,26 @@ const Checkout = () => {
                 </Typography>
               </React.Fragment>
             ) : (
-              <React.Fragment>
-                {getStepContent(activeStep)}
-                <div className={classes.buttons}>
-                  {activeStep !== 0 && (
-                    <Button onClick={handleBack} className={classes.button}>
-                      Back
+                <React.Fragment>
+                  {getStepContent(activeStep)}
+                  <div className={classes.buttons}>
+                    {activeStep !== 0 && (
+                      <Button onClick={handleBack} className={classes.button}>
+                        Back
                     </Button>
-                  )}
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    onClick={handleNext}
-                    className={classes.button}
-                    disabled={isDisabled}
-                  >
-                    {activeStep === steps.length - 1 ? 'Place order' : 'Next'}
-                  </Button>
-                </div>
-              </React.Fragment>
-            )}
+                    )}
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      onClick={activeStep === steps.length - 1 ? handleSubmit : handleNext}
+                      className={classes.button}
+                      disabled={isDisabled}
+                    >
+                      {activeStep === steps.length - 1 ? 'Place order' : 'Next'}
+                    </Button>
+                  </div>
+                </React.Fragment>
+              )}
           </React.Fragment>
         </Paper>
       </main>

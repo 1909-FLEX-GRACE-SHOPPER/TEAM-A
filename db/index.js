@@ -14,6 +14,7 @@ Cart.hasMany(CartItem);
 CartItem.belongsTo(Product);
 
 Order.belongsTo(User);
+Order.belongsTo(Session);
 Order.hasMany(OrderItem);
 OrderItem.belongsTo(Product);
 

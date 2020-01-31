@@ -7,7 +7,7 @@ router.use(express.json());
 
 //create an OrderItem. productId and orderId are required
 router.post('/', (req, res, next) => {
-  const { quantity, pricePaid, productId, orderId } = req.body;
+  const { orderId, productId, pricePaid, quantity } = req.body;
 
   //return 400 if productId & orderId are both not present
   if (!productId && orderId) {
@@ -15,7 +15,7 @@ router.post('/', (req, res, next) => {
   }
 
   OrderItem.create({
-    quantity: quantity || 1,
+    quantity,
     pricePaid,
     productId,
     orderId,

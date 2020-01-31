@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { fetchProducts } from '../../redux/products';
 import { fetchUser } from '../../redux/user';
 import { fetchCart } from '../../redux/cart';
+import { fetchOrdersByUser } from '../../redux/ordersByUser'
 import { LoginPage, SingleProduct, Cart, Home, Checkout, Navbar, SingleOrder, AllOrders, AccountInfo } from '../index';
 
 class Root extends React.Component {
@@ -11,6 +12,7 @@ class Root extends React.Component {
   async componentDidMount() {
     await this.props.fetchProducts();
     await this.props.fetchUser();
+    await this.props.fetchOrders();
     await this.props.fetchCart();
   }
 
@@ -46,7 +48,8 @@ const mapDispatch = dispatch => {
   return {
     fetchProducts: () => dispatch(fetchProducts()),
     fetchUser: () => dispatch(fetchUser()),
-    fetchCart: () => dispatch(fetchCart())
+    fetchCart: () => dispatch(fetchCart()),
+    fetchOrders: () => dispatch(fetchOrdersByUser())
   }
 }
 

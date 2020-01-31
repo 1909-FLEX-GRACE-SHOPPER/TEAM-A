@@ -29,59 +29,77 @@ router.get('/:orderId', (req, res, next) => {
 
 //return all orders by userId
 
-router.get('/byuser/:userId', (req, res, next) => {
-  const { userId } = req.params;
-  // console.log('userId: ', userId)
-  // console.log('typeof userId: ', typeof (userId))
-  Order.findAll({
-    where: {
-      userId: parseInt(userId),
-    },
-    include: [{
-      model: OrderItem,
-    }],
-  })
-    .then(results => {
-      if (results) {
-        return res.status(200).send(results);
-      }
-      res.status(200).send([]);
-    })
-    .catch(e => {
-      res.status(400).send('Invalid request for orders by userId');
-      next(e);
-    })
-});
+// router.get('/byuser', (req, res, next) => {
+//   Order.findAll({
+//     where: {
+//       userId: req.user.id,
+//     },
+//     include: [{
+//       model: OrderItem,
+//     }],
+//   })
+//     .then(results => {
+//       if (results) {
+//         return res.status(200).send(results);
+//       }
+//       res.status(200).send([]);
+//     })
+//     .catch(e => {
+//       res.status(400).send('Invalid request for orders by userId');
+//       next(e);
+//     })
+// });
 
 //return all orders, with optional sort query parameter in url
 //example 1: /api/order
 //example 2: /api/order?sort=status&dir=ASC
 router.get('/', (req, res, next) => {
-  Order.findAll({
-    include: [{
-      model: OrderItem,
-    }],
-    order: [
-      [req.query.sort || 'createdAt', req.query.dir || 'ASC']
-    ],
-  })
-    .then(results => {
-      res.status(200).send(results);
+  if (!req.user) {
+    Order.findAll({
+      where: {
+        sessionId: req.cookies.sessionId,
+      },
+      include: [{
+        model: OrderItem,
+      }],
+      order: [
+        [req.query.sort || 'createdAt', req.query.dir || 'ASC']
+      ],
     })
-    .catch(e => {
-      res.status(400).send('Invalid request');
-      next(e);
+      .then(results => {
+        res.status(200).send(results);
+      })
+      .catch(e => {
+        res.status(400).send('Invalid request');
+        next(e);
+      })
+  } else {
+    Order.findAll({
+      where: {
+        userId: req.user.id,
+      },
+      include: [{
+        model: OrderItem,
+      }],
+      order: [
+        [req.query.sort || 'createdAt', req.query.dir || 'ASC']
+      ],
     })
+      .then(results => {
+        res.status(200).send(results);
+      })
+      .catch(e => {
+        res.status(400).send('Invalid request');
+        next(e);
+      })
+  }
 });
 
-//create new order. UserId is required
+//create new order
 router.post('/', (req, res, next) => {
-  if (!req.body.userId) {
-    return res.status(400).send('Invalid request; userId required');
-  }
   Order.create({
     status: req.body.status || 'pending',
-    userId: req.body.userId,
+    userId: req.user.id,
   })
     .then(created => {
       res.status(201).send(created);
