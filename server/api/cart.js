@@ -39,8 +39,13 @@ router.get('/', (req, res, next) => {
         }
       ]
     })
-      .then(cart => {
-        return res.status(200).send(cart);
+      .then(cartOrNull => {
+        if (cartOrNull) {
+          res.status(200).send(cartOrNull);
+        }
+        else {
+          res.status(200).send({})
+        }
       })
       .catch(e => {
         res.status(500).send('error in GET cart/ route')
@@ -66,7 +71,19 @@ router.get('/user/:id', (req, res, next) => {
 //If no user, the session Id is used to generate a new cart for that session
 router.post('/', (req, res, next) => {
   if (req.user) {
-    Cart.findOne({ where: { userId: req.user.id }, include: { model: CartItem } })
+    Cart.findOne({
+      where: {
+        userId: req.user.id
+      },
+      include: [
+        {
+          model: CartItem,
+          include: [
+            Product
+          ]
+        }
+      ]
+    })
       .then((foundCart) => res.status(201).send(foundCart))
       .catch(e => {
         res.status(400).send('User is logged in but could not find cart')
@@ -75,8 +92,22 @@ router.post('/', (req, res, next) => {
   } else {
     Cart.create({ sessionId: req.cookies.sessionId })
       .then(() => {
-        Cart.findOne({ where: { sessionId: req.cookies.sessionId }, include: { model: CartItem } })
-          .then((newCart) => res.status(201).send(newCart))
+        Cart.findOne({
+          where: {
+            sessionId: req.cookies.sessionId
+          },
+          include: [
+            {
+              model: CartItem,
+              include: [
+                Product
+              ]
+            }
+          ]
+        })
+          .then((newCart) => {
+            res.status(201).send(newCart)
+          })
           .catch(e => {
             res.status(400).send('Error creating new cart!')
             next(e)

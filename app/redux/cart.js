@@ -1,4 +1,5 @@
 import axios from 'axios';
+import chalk from 'chalk';
 const ADD_CART_ITEM = 'ADD_CART_ITEM'
 const SET_CART_ITEMS = 'SET_CART_ITEMS'
 const UPDATE_CART_ITEM = 'UPDATE_CART_ITEM'
@@ -57,7 +58,7 @@ export const setCart = cart => {
 export const cartReducer = (state = {}, action) => {
   switch (action.type) {
     case ADD_CART_ITEM: {
-      [...state.cartitems, action.cartItem ]
+      [...state.cartitems, action.cartItem]
       return state;
     }
     case SET_CART_ITEMS: {
@@ -99,11 +100,11 @@ export const cartReducer = (state = {}, action) => {
 export const fetchCart = () => {
   return (dispatch, getState, { axios }) => {
     return axios.get('/api/cart/')
-      .then(cart => 
-        cart.data ?
-        dispatch(setCart(cart.data))
-        : dispatch(newSessionCart())
-        )
+      .then(cart => {
+        cart.data.id ?
+          dispatch(setCart(cart.data))
+          : dispatch(newSessionCart())
+      })
       .catch((e) => {
         console.log('error in fetchCart thunk');
         console.error(e);
@@ -114,8 +115,10 @@ export const fetchCart = () => {
 //creates a new cart with the current sessionId
 export const newSessionCart = () => {
   return (dispatch, getState, { axios }) => {
-    return axios.post('/api/cart/', {})
-      .then(response => response.data)
+    return axios.post('/api/cart/')
+      .then(response => {
+        return response.data
+      })
       .then(cart => dispatch(setCart(cart)))
       .catch(e => console.log(chalk.red(`Error in Redux thunk createSessionCart: ${e}`)))
   }
@@ -175,7 +178,7 @@ export const deleteCartItem = (cartItemId) => {
   //       });
   //   }
   // };
-  
+
   // //fetches cart by sessionId
   // export const fetchSessionCart = () => {
   //   return (dispatch, getState, { axios }) => {

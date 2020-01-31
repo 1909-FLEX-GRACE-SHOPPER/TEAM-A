@@ -54,24 +54,45 @@ router.get('/:orderId', (req, res, next) => {
 //example 1: /api/order
 //example 2: /api/order?sort=status&dir=ASC
 router.get('/', (req, res, next) => {
-  Order.findAll({
-    where: {
-      userId: req.user.id,
-    },
-    include: [{
-      model: OrderItem,
-    }],
-    order: [
-      [req.query.sort || 'createdAt', req.query.dir || 'ASC']
-    ],
-  })
-    .then(results => {
-      res.status(200).send(results);
+  if (!req.user) {
+    Order.findAll({
+      where: {
+        sessionId: req.cookies.sessionId,
+      },
+      include: [{
+        model: OrderItem,
+      }],
+      order: [
+        [req.query.sort || 'createdAt', req.query.dir || 'ASC']
+      ],
     })
-    .catch(e => {
-      res.status(400).send('Invalid request');
-      next(e);
+      .then(results => {
+        res.status(200).send(results);
+      })
+      .catch(e => {
+        res.status(400).send('Invalid request');
+        next(e);
+      })
+  } else {
+    Order.findAll({
+      where: {
+        userId: req.user.id,
+      },
+      include: [{
+        model: OrderItem,
+      }],
+      order: [
+        [req.query.sort || 'createdAt', req.query.dir || 'ASC']
+      ],
     })
+      .then(results => {
+        res.status(200).send(results);
+      })
+      .catch(e => {
+        res.status(400).send('Invalid request');
+        next(e);
+      })
+  }
 });
 
 //create new order
