@@ -29,6 +29,14 @@ const seed = async () => {
         email: 'joe@gmail.com',
         password: '123',
         isRegistered: true,
+      },
+      {
+        firstName: 'admin',
+        lastName: 'smith',
+        email: 'admin@gmail.com',
+        password: 'admin',
+        isRegistered: true,
+        isAdmin: true
       }
     ];
     for (let i = 0; i < GENERATED_USERS; i++) {
