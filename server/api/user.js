@@ -39,6 +39,14 @@ router.get('/:userId', (req, res, next) => {
 //example 1: /api/user
 //example 2: /api/user?sort=firstName&dir=ASC
 router.get('/', (req, res, next) => {
+  // try {
+  //   const users = await User.findAll()
+  //   res.status(200).send(products)
+  // } catch (error) {
+  //   console.log(error)
+  //   res.status(400).send('error in finding all users')
+  //   next(error)
+  // }
   User.findAll({
     order: [
       [req.query.sort || 'lastName', req.query.dir || 'ASC']
