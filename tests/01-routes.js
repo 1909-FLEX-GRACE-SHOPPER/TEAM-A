@@ -1,6 +1,7 @@
 const { expect } = require('chai');
 const { connection } = require('../db/');
 const { Product, User } = require('../db');
+const { categoriesArr } = require('../constants')
 const faker = require('faker');
 const sinon = require('sinon');
 const app = require('../server');
@@ -22,7 +23,7 @@ describe('API Routes', async () => {
             for (let i = 0; i < 3; i++) {
                 productList[i] = {
                     name: faker.commerce.productName(),
-                    category: Product.rawAttributes.category.values[i],
+                    category: categoriesArr[Math.floor(Math.random() * categoriesArr.length)],
                     description: faker.lorem.sentence(),
                     inventory: Math.round(Math.random() * 2000),
                     price: faker.commerce.price(1.00, 99.99, 2),
