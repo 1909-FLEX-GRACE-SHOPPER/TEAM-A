@@ -20,6 +20,8 @@ OrderItem.belongsTo(Product);
 
 ShippingAddress.belongsTo(User);
 User.hasMany(ShippingAddress);
+ShippingAddress.belongsTo(Session);
+Session.hasOne(ShippingAddress);
 
 Session.hasOne(User);
 User.belongsTo(Session);

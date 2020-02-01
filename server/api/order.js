@@ -97,17 +97,32 @@ router.get('/', (req, res, next) => {
 
 //create new order
 router.post('/', (req, res, next) => {
-  Order.create({
-    status: req.body.status || 'pending',
-    userId: req.user.id,
-  })
-    .then(created => {
-      res.status(201).send(created);
+  if (req.user) {
+    Order.create({
+      status: req.body.status || 'pending',
+      userId: req.user.id,
     })
-    .catch(e => {
-      res.status(400).send('Invalid request');
-      next(e);
+      .then(created => {
+        res.status(201).send(created);
+      })
+      .catch(e => {
+        res.status(400).send('Invalid request');
+        next(e);
+      })
+  }
+  else {
+    Order.create({
+      status: req.body.status || 'pending',
+      sessionId: req.cookies.sessionId,
     })
+      .then(created => {
+        res.status(201).send(created);
+      })
+      .catch(e => {
+        res.status(400).send('Invalid request');
+        next(e);
+      })
+  }
 });
 
 //Update an order
