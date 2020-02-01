@@ -30,6 +30,17 @@ export const loginUser = (login) => {
   }
 };
 
+export const createUser = (newUserDetails) => {
+  return (dispatch, getState, { axios }) => {
+    return axios.post(`/api/user`, newUserDetails)
+      .then(response => response.data)
+      .then((newUser) => dispatch(setUser(newUser)))
+      .catch(e => {
+        console.error(e)
+      })
+  }
+}
+
 export const logoutUser = () => {
   return (dispatch, getState, { axios }) => {
     return axios.put('/auth/login', { logout: true })

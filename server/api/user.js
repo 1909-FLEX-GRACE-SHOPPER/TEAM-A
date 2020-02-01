@@ -114,7 +114,7 @@ router.post('/guest', (req, res, next) => {
 });
 
 router.post('/', (req, res, next) => {
-  const sessionId = generateSessionId();
+  // const sessionId = generateSessionId();
   //TODO: HASH PASSWORD ON FRONTEND
 
   User.create({
@@ -123,7 +123,7 @@ router.post('/', (req, res, next) => {
     email: req.body.email,
     password: hasher(req.body.password),
     isRegistered: true,
-    sessionId,
+    sessionId: req.cookies.sessionId
   })
     .then(created => {
       res.status(201).send(created);
