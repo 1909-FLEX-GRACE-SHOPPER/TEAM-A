@@ -3,14 +3,27 @@ const router = require('express').Router()
 const { Product } = require('../../db')
 
 //fetch all products
-router.get('/', async function (req, res, next) {
-  try {
-    const products = await Product.findAll()
-    res.status(200).send(products)
-  } catch (error) {
-    console.log(error)
-    res.status(400).send('error in finding all products')
-    next(error)
+router.get('/', (req, res, next) => {
+  const { cat } = req.query;
+  if (cat) {
+    Product.findAll({
+      where: {
+        category: cat,
+      }
+    })
+      .then(products => res.status(200).send(products))
+      .catch(e => {
+        res.status(400).send('error finding products by category')
+        next(e)
+      })
+  }
+  else {
+    Product.findAll()
+      .then(products => res.status(200).send(products))
+      .catch(e => {
+        res.status(400).send('error in finding all products')
+        next(e)
+      })
   }
 });
 

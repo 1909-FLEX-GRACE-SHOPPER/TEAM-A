@@ -1,14 +1,14 @@
 const faker = require('faker');
 const chalk = require('chalk');
 const { connection, User, Cart, CartItem, Product, Order, OrderItem } = require('./db');
+const { categorize } = require('./server/utils')
+const { orderStatuses } = require('./constants')
 
 const GENERATED_PRODUCTS = 100;
 const GENERATED_USERS = 50;
 const GENERATED_ORDERS = 100;
 const MAX_ORDERITEMS = 10;
 const MAX_CARTITEMS = 10;
-
-const orderStatuses = ['pending', 'fulfilled', 'shipped', 'delivered', 'cancelled'];
 
 //helper function that randomly returns true or false
 const randomBool = () => {
@@ -68,6 +68,7 @@ const seed = async () => {
         price: faker.commerce.price(1.00, 99.99, 2),
         imageUrl: `${faker.image.nature()}?random=${Date.now()}`
       }
+      productList[i].category = categorize(productList[i].name.split(' ')[2])
     }
 
     //create products
