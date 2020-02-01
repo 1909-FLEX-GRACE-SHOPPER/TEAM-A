@@ -141,10 +141,21 @@ export const updateCart = (update) => {
   return (dispatch, getState, { axios }) => {
     const { cart } = getState();
     return axios.put(`/api/cart/${cart.id}`, update)
-      .then(() => dispatch(fetchCart()))
+      .then(response => response.data)
+      .then(cart => dispatch(setCart(cart)))
       .catch(e => console.log(`Error in Redux thunk updateCart: ${e}`))
   }
 };
+
+export const updateCartUser = (userData) => {
+  return (dispatch, getState, { axios }) => {
+    return axios.put(`/api/cart/newUser/${userData.sessionId}`, userData)
+      .then(() => dispatch(fetchCart()))
+      .catch(e => {
+        console.log(`Error in Redux thunk updateCartUser: ${e}`)
+      })
+  }
+}
 
 //---------Cart Item Thunks
 

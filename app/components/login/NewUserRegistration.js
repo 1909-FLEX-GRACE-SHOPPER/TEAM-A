@@ -10,6 +10,7 @@ import { Link } from 'react-router-dom';
 
 function NewUserRegistration(props) {
   const user = useSelector(state => state.user);
+  const cart = useSelector(state => state.cart);
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
@@ -38,7 +39,7 @@ function NewUserRegistration(props) {
   };
 
   const handleSubmit = () => {
-    dispatch(createUser({ firstName, lastName, email, password}));
+    dispatch(createUser({ firstName, lastName, email, password }, cart));
     props.history.push(`/`)
   }
 

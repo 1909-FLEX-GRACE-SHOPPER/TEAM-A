@@ -123,7 +123,7 @@ router.post('/', (req, res, next) => {
     email: req.body.email,
     password: hasher(req.body.password),
     isRegistered: true,
-    sessionId: req.cookies.sessionId
+    sessionId: req.cookies && req.cookies.sessionId
   })
     .then(created => {
       res.status(201).send(created);
