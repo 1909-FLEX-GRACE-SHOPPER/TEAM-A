@@ -125,7 +125,7 @@ export const newSessionCart = () => {
 export const mergeCart = () => {
   return (dispatch, getState, { axios }) => {
     const { cart } = getState();
-    return axios.put('/api/cart')
+    return axios.get('/api/cart')
       .then(userCart => {
         for (let i = 0; i < cart.cartitems.length; i++) {
           const cartItem = cart.cartitems[i]

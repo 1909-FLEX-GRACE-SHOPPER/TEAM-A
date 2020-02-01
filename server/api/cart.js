@@ -18,12 +18,14 @@ router.get('/', (req, res, next) => {
         }
       ]
     })
-      .then(cart => {
-        return res.send(cart)
-      })
-      .catch(e => {
-        res.status(500).send('error in GET cart/ route')
-        next(e)
+      .then(userCart => {
+        if (userCart) {
+          res.status(200).send(userCart)
+        }
+        else {
+          res.status(500).send('could not find cart (in GET route)')
+          next()
+        }
       })
   } else {
     Cart.findOne({
@@ -46,10 +48,6 @@ router.get('/', (req, res, next) => {
         else {
           res.status(200).send({})
         }
-      })
-      .catch(e => {
-        res.status(500).send('error in GET cart/ route')
-        next(e)
       })
   }
 });
@@ -126,46 +124,30 @@ router.post('/', (req, res, next) => {
 });
 
 //PUT
-router.put('/:cartId?', (req, res, next) => {
+router.put('/:cartId', (req, res, next) => {
   // if there is no cartId, request simply finds cart associated with current user
-  if (!req.params.cartId) {
-    Cart.findOne({
-      where: {
-        userId: req.user.id,
-      }
-    })
-      .then(userCart => {
-        if (userCart) {
-          res.status(200).send(userCart)
-        }
-        else {
-          res.status(400).send('could not find cart')
-        }
-      })
-  } else {
-    Cart.findOne({
-      where: {
-        id: req.params.cartId
-      }
-    })
-      .then(cart => {
-        if (cart) {
-          cart.update({
-            userId: req.user.id,
-            sessionId: req.cookies.sessionId,
-            cartitems: [...req.body.cartItems, ...cart.cartitems]
+  Cart.findOne({
+    where: {
+      id: req.params.cartId
+    }
+  })
+    .then(cart => {
+      if (cart) {
+        cart.update({
+          userId: req.user.id,
+          sessionId: req.cookies.sessionId,
+          cartitems: [...req.body.cartItems, ...cart.cartitems]
+        })
+          .then(cart => res.status(200).send(cart))
+          .catch(e => {
+            res.status(500).send('error in PUT /cart/:cartId route')
+            next(e)
           })
-            .then(cart => res.status(200).send(cart))
-            .catch(e => {
-              res.status(500).send('error in PUT /cart/:cartId route')
-              next(e)
-            })
-        }
-        else {
-          res.status(400).send('could not find cart')
-        }
-      })
-  }
+      }
+      else {
+        res.status(400).send('could not find cart')
+      }
+    })
 });
 
 
