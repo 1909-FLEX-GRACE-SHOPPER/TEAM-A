@@ -2,6 +2,7 @@ const { expect } = require('chai');
 const { connection } = require('../db/');
 const { User, Cart, CartItem, Product, Order, OrderItem, ShippingAddress, Session } = require('../db');
 const faker = require('faker');
+const { categoriesArr } = require('../constants')
 
 describe('Model formats and associations', async () => {
 
@@ -103,7 +104,7 @@ describe('Model formats and associations', async () => {
             const testProduct = await Product.create({
                 name: faker.commerce.productName(),
                 description: faker.lorem.sentence(),
-                category: Product.rawAttributes.category.values[Math.floor(Math.random() * Product.rawAttributes.category.values.length)],
+                category: categoriesArr[Math.floor(Math.random() * categoriesArr.length)],
                 inventory: Math.round(Math.random() * 2000),
                 price: faker.commerce.price(1.00, 99.99, 2),
                 imageUrl: `${faker.image.nature()}?random=${Date.now()}`
