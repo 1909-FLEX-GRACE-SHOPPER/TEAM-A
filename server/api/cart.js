@@ -117,28 +117,38 @@ router.post('/', (req, res, next) => {
 });
 
 //PUT
-router.put('/:cartId', (req, res, next) => {
-  Cart.update(
-    {
-      userId: req.body.userId,
-      sessionId: req.cookies.sessionId
-    },
-    {
+router.put('/:cartId?', (req, res, next) => {
+  // if there is no cartId, request simply finds cart associated with current user
+  if (!req.params.cartId) {
+    Cart.findOne({
+      where: {
+        userId: req.user.id,
+      }
+    })
+      .then(userCart => {
+        res.status(200).send(userCart)
+      })
+      .catch(e => console.error('could not find cart', e))
+  } else {
+    Cart.findOne({
       where: {
         id: req.params.cartId
       }
-    }
-  )
-    .then(cart => {
-      return res.status(200).send(cart);
     })
-    .catch(e => {
-      res.status(500).send('error in PUT /cart/:cartId route')
-      next(e)
-    })
+      .then(cart => {
+        cart.update({
+          userId: req.user.id,
+          sessionId: req.cookies.sessionId,
+          cartitems: [...req.body.cartItems, ...cart.cartitems]
+        })
+          .then(cart => res.status(200).send(cart))
+          .catch(e => {
+            res.status(500).send('error in PUT /cart/:cartId route')
+            next(e)
+          })
+      })
+  }
 });
-
-
 
 
 
