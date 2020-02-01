@@ -18,7 +18,7 @@ router.post('/', (req, res, next) => {
       })
   }
   else {
-    ShippingAddress.create({ name, line1, line2, city, state, zip, sessionId: req.cookies.sessionId })
+    ShippingAddress.create({ name, line1, line2, city, state, zip, sessionId: req.cookies.sessionId || 0 })
       .then(address => {
         res.status(201).send(address)
       })

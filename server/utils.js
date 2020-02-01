@@ -1,4 +1,5 @@
 const bcrypt = require('bcrypt')
+const { categoriesObj } = require('../constants')
 
 //utility functions for server
 
@@ -18,8 +19,15 @@ const compare = (item, hash) => {
   return bcrypt.compareSync(item, hash)
 }
 
+const categorize = item => {
+  for (let key in categoriesObj) {
+    if (categoriesObj[key].includes(item)) return key;
+  }
+}
+
 module.exports = {
   generateSessionId,
   hasher,
-  compare
+  compare,
+  categorize
 }

@@ -7,7 +7,7 @@ let dbString;
 
 if (process.env.NODE_ENV === 'test') {
     //unsure how to create test db for travis
-    dbString = testDB
+    dbString = process.env.DATABASE_URL || testDB
 
 } else {
     dbString = process.env.DATABASE_URL || localDB
