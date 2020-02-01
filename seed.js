@@ -22,15 +22,31 @@ const seed = async () => {
     await connection.sync({ force: true });
 
     //generate list of users, random guests or registered
-    let userList = Array(GENERATED_USERS);
+    let userList = [
+      {
+        firstName: 'joe',
+        lastName: 'smith',
+        email: 'joe@gmail.com',
+        password: '123',
+        isRegistered: true,
+      },
+      {
+        firstName: 'admin',
+        lastName: 'smith',
+        email: 'admin@gmail.com',
+        password: 'admin',
+        isRegistered: true,
+        isAdmin: true
+      }
+    ];
     for (let i = 0; i < GENERATED_USERS; i++) {
-      userList[i] = {
+      userList.push({
         firstName: faker.name.firstName(),
         lastName: faker.name.lastName(),
         email: faker.internet.email(),
         password: faker.random.alphaNumeric(16),
         isRegistered: true,
-      }
+      })
     }
     //create users
     const createdUsers = await Promise.all(
