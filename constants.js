@@ -2,16 +2,31 @@ const states = ['AL', 'AK', 'AZ', 'AR', 'CA', 'CO', 'CT', 'DE', 'FL', 'GA', 'HI'
 
 let months = [];
 for (let i = 0; i < 12; i++) {
-    months.push(`${i + 1}`);
+  months.push(`${i + 1}`);
 }
 
 let validYears = [];
 for (let i = 2021; i < 2025; i++) {
-    validYears.push(`${i}`);
+  validYears.push(`${i}`);
 };
 
+const categoriesObj = {
+  apparel: ['Gloves', 'Shoes', 'Hat', 'Pants', 'Shirt'],
+  noms: ['Tuna', 'Sausages', 'Chips', 'Salad', 'Bacon', 'Cheese', 'Chicken', 'Pizza', 'Fish'],
+  gadgets: ['Mouse', 'Keyboard', 'Computer'],
+  home: ['Chair', 'Table', 'Towels', 'Soap'],
+  leisure: ['Bike', 'Car', 'Ball'],
+}
+
+const categoriesArr = ['apparel', 'noms', 'gadgets', 'home', 'leisure']
+
+const orderStatuses = ['pending', 'fulfilled', 'shipped', 'delivered', 'cancelled'];
+
 module.exports = {
-    states,
-    months,
-    validYears
+  states,
+  months,
+  validYears,
+  categoriesObj,
+  categoriesArr,
+  orderStatuses
 }
