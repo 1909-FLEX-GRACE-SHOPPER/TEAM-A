@@ -84,10 +84,14 @@ router.post('/', (req, res, next) => {
         }
       ]
     })
-      .then((foundCart) => res.status(201).send(foundCart))
-      .catch(e => {
-        res.status(400).send('User is logged in but could not find cart')
-        next(e)
+      .then(foundCart => {
+        if (foundCart) {
+          res.status(201).send(foundCart)
+        }
+        else {
+          res.status(400).send('User is logged in but could not find cart')
+          next()
+        }
       })
   } else {
     Cart.create({ sessionId: req.cookies.sessionId })
@@ -105,13 +109,18 @@ router.post('/', (req, res, next) => {
             }
           ]
         })
-          .then((newCart) => {
-            res.status(201).send(newCart)
+          .then(newCart => {
+            if (newCart) {
+              res.status(201).send(newCart)
+            } else {
+              res.status(400).send('Error finding new cart!')
+              next()
+            }
           })
-          .catch(e => {
-            res.status(400).send('Error creating new cart!')
-            next(e)
-          })
+      })
+      .catch(e => {
+        res.status(400).send('Error creating new cart!')
+        next(e)
       })
   }
 });
@@ -126,9 +135,13 @@ router.put('/:cartId?', (req, res, next) => {
       }
     })
       .then(userCart => {
-        res.status(200).send(userCart)
+        if (userCart) {
+          res.status(200).send(userCart)
+        }
+        else {
+          res.status(400).send('could not find cart')
+        }
       })
-      .catch(e => console.error('could not find cart', e))
   } else {
     Cart.findOne({
       where: {
@@ -136,16 +149,21 @@ router.put('/:cartId?', (req, res, next) => {
       }
     })
       .then(cart => {
-        cart.update({
-          userId: req.user.id,
-          sessionId: req.cookies.sessionId,
-          cartitems: [...req.body.cartItems, ...cart.cartitems]
-        })
-          .then(cart => res.status(200).send(cart))
-          .catch(e => {
-            res.status(500).send('error in PUT /cart/:cartId route')
-            next(e)
+        if (cart) {
+          cart.update({
+            userId: req.user.id,
+            sessionId: req.cookies.sessionId,
+            cartitems: [...req.body.cartItems, ...cart.cartitems]
           })
+            .then(cart => res.status(200).send(cart))
+            .catch(e => {
+              res.status(500).send('error in PUT /cart/:cartId route')
+              next(e)
+            })
+        }
+        else {
+          res.status(400).send('could not find cart')
+        }
       })
   }
 });
@@ -158,19 +176,25 @@ router.put('/clear/:cartId', (req, res, next) => {
   CartItem.destroy({ where: { cartId } })
     .then(() => {
       Cart.findOne({ where: { cartId } })
-        .then(clearedCart => res.send(clearedCart))
-        .catch(() => res.send('Error finding cart'))
+        .then(clearedCart => {
+          if (clearedCart) {
+            res.send(clearedCart)
+          }
+          else {
+            res.status(400).send('Error finding cleared cart')
+          }
+        })
     })
     .catch(e => {
       res.status(400).send('Error destroying cartitems');
       next(e);
     })
-});
+})
 
 router.delete('/:cartId', (req, res, next) => {
   Cart.destroy({ where: { id: req.params.cartId } })
     .then(() => {
-      return res.status(200).send();
+      return res.status(200).send(`Cart ${req.params.cartId} successfully destroyed`);
     })
     .catch(e => {
       res.status(400).send('Error destroying cart');

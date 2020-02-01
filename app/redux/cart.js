@@ -124,17 +124,15 @@ export const newSessionCart = () => {
 
 export const mergeCart = () => {
   return (dispatch, getState, { axios }) => {
-    // grab id of user cart
+    const { cart } = getState();
     return axios.put('/api/cart')
       .then(userCart => {
-        // grab session cart
-        const { cart } = getState();
-        // loop through session cart's cart items and change cartId to user cart's id
         for (let i = 0; i < cart.cartitems.length; i++) {
           const cartItem = cart.cartitems[i]
-          return dispatch(updateCartItem(cartItem.id, { cartId: userCart.data.id }))
+          dispatch(updateCartItem(cartItem.id, { cartId: userCart.data.id }))
         }
       })
+      .then(() => axios.delete(`/api/cart/${cart.id}`))
       .catch(e => console.log('Error in Redux thunk mergeCart: ', e))
   }
 }
