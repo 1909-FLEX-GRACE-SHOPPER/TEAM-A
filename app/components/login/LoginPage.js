@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { loginUser } from '../../redux/user';
-import { updateCart } from '../../redux/cart';
+import { mergeCart } from '../../redux/cart';
 import { ErrorBar } from '../index';
 import Paper from '@material-ui/core/Paper';
 import TextField from '@material-ui/core/TextField';
@@ -41,7 +41,7 @@ function LoginPage(props) {
   useEffect(() => {
     if (user) {
       setError(false);
-      dispatch(updateCart({ userId: user.id }));
+      dispatch(mergeCart());
       props.history.push('/');
     }
   });

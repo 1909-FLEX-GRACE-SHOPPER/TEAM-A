@@ -116,13 +116,26 @@ export const fetchCart = () => {
 export const newSessionCart = () => {
   return (dispatch, getState, { axios }) => {
     return axios.post('/api/cart/')
-      .then(response => {
-        return response.data
-      })
+      .then(response => response.data)
       .then(cart => dispatch(setCart(cart)))
       .catch(e => console.log(chalk.red(`Error in Redux thunk createSessionCart: ${e}`)))
   }
 };
+
+export const mergeCart = () => {
+  return (dispatch, getState, { axios }) => {
+    const { cart } = getState();
+    return axios.get('/api/cart')
+      .then(userCart => {
+        for (let i = 0; i < cart.cartitems.length; i++) {
+          const cartItem = cart.cartitems[i]
+          dispatch(updateCartItem(cartItem.id, { cartId: userCart.data.id }))
+        }
+      })
+      .then(() => axios.delete(`/api/cart/${cart.id}`))
+      .catch(e => console.log('Error in Redux thunk mergeCart: ', e))
+  }
+}
 
 export const updateCart = (update) => {
   return (dispatch, getState, { axios }) => {
