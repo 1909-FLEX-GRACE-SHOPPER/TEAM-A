@@ -2,6 +2,8 @@ const chalk = require('chalk');
 const { connection } = require('./db');
 const server = require('./server');
 
+require('dotenv').config();
+
 const PORT = process.env.PORT || 3000;
 
 console.log(chalk.white('*** FILE: main.js'));
@@ -15,6 +17,6 @@ connection.sync()
     })
   })
   .catch(e => {
-      console.log(chalk.red('Database sync failed'));
-      console.error(e);
+    console.log(chalk.red('Database sync failed'));
+    console.error(e);
   })

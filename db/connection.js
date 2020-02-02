@@ -6,11 +6,11 @@ const testDB = `postgres://localhost:${PORT}/graceshopper_test`
 let dbString;
 
 if (process.env.NODE_ENV === 'test') {
-    //unsure how to create test db for travis
-    dbString = testDB
+  //unsure how to create test db for travis
+  dbString = testDB
 
 } else {
-    dbString = process.env.DATABASE_URL || localDB
+  dbString = process.env.DATABASE_URL || localDB
 }
 
 const connection = new Sequelize(dbString, { logging: false })
