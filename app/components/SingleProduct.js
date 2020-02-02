@@ -32,14 +32,14 @@ class SingleProduct extends Component {
   }
 
   render() {
-    const { selectedProduct, clearSelectedProduct, addCartItem, cart } = this.props;
+    const { selectedProduct, clearSelectedProduct, addCartItem, cart, user } = this.props;
     // TODO: add case for !selectedProduct (i.e. return "Requested product could not be found")
     return (
       <div>
-        <h1>Image??</h1>
-        <h2>Name: {selectedProduct.name}</h2>
-        <h2>Price: ${selectedProduct.price}</h2>
-        <h3>Description: {selectedProduct.description}</h3>
+        <img src={selectedProduct.imageUrl} width="400" height="400" />
+        <h1>{selectedProduct.name}</h1>
+        <h3>{selectedProduct.description}</h3>
+        <p>Price: ${selectedProduct.price}</p>
         <select name='quantity' onChange={this.handleChange}>
           {
             Array(10).fill('').map((el, idx) => <option key={idx}>{idx + 1}</option>)
@@ -48,10 +48,19 @@ class SingleProduct extends Component {
         <button
           onClick={() => addCartItem(cart.id, this.props.match.params.id, this.state.quantity)}
           disabled={selectedProduct.quantity === 0}
-        >Add to cart</button>
+        >
+          Add to cart
+        </button>
+        {
+          user && user.isAdmin &&
+            <button
+              onClick={() => this.props.history.push(`/products/edit/${selectedProduct.id}`)}
+            >
+              Edit Product
+            </button>
+        }
         <Link
           to='/'
-          // TODO: clear selected product thunk
           onClick={() => clearSelectedProduct()}
         >Return to products</Link>
       </div>
@@ -59,10 +68,11 @@ class SingleProduct extends Component {
   }
 }
 
-const mapState = ({ selectedProduct, cart }) => {
+const mapState = (state) => {
   return {
-    selectedProduct,
-    cart,
+    selectedProduct: state.selectedProduct,
+    cart: state.cart,
+    user: state.user,
   }
 }
 

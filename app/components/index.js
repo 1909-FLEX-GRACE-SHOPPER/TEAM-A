@@ -12,7 +12,11 @@ import ProductsList from './ProductsList'
 import ErrorBar from './login/ErrorBar';
 import LogoutButton from './login/LogoutButton'
 import useStyles from './styles/useStyles';
+<<<<<<< HEAD
 import NewUserRegistration from './login/NewUserRegistration';
+=======
+import EditProduct from './EditProduct';
+>>>>>>> fc161d4e67b290cd2e31b76d3ffff235ce304673
 
 export {
   Root,
@@ -29,5 +33,9 @@ export {
   ErrorBar,
   LogoutButton,
   useStyles,
+<<<<<<< HEAD
   NewUserRegistration,
+=======
+  EditProduct
+>>>>>>> fc161d4e67b290cd2e31b76d3ffff235ce304673
 }
