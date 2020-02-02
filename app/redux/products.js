@@ -21,9 +21,9 @@ export const productsReducer = (state = [], action) => {
 }
 
 //thunks
-export const fetchProducts = function () {
+export const fetchProducts = function (page=0) {
   return dispatch => {
-    axios.get('/api/products') //longtime
+    axios.get(`/api/products?page=${page}`) //longtime
       .then(products => dispatch(setProducts(products.data)))
       .catch(e => console.log(e));
   }

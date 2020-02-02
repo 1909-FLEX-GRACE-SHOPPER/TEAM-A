@@ -32,43 +32,53 @@ const useStyles = makeStyles({
 
 
 const ProductsList = props => {
-  //console.log('ProducstList PROPS****', props);
-  const classes = useStyles()
+  const classes = useStyles();
+
+  if (!props.products) {
+    return (
+      <div>
+        Loading Products;
+      </div>
+    )
+  };
+
   return (
     <Grid container className={classes.gridStyle}>
-      {props.products.map(product => {
-        return (
-          <Grid item md key={product.id}>
-            <Card className="card" className={classes.cardStyle}>
-              <CardActionArea>
-                <CardMedia
-                  className={classes.media}
-                  image={product.imageUrl}
-                  title={product.name}
-                />
-                <CardContent>
-                  <Typography gutterBottom variant="h5" component="h3">
-                    <Link href={`/#/products/${product.id}`}>{product.name}</Link>
-                  </Typography>
-                  <Typography variant="body2" color="textSecondary" component="p">
-                    {product.price}
-                  </Typography>
-                </CardContent>
-              </CardActionArea>
-              <CardActions>
-                <Button
-                  size="medium"
-                  color="primary"
-                  onClick={() => props.addCartItem(props.cart.id, product.id, 1)}
-                  // TODO: add temporary lightbox displaying success or failure for adding to cart
-                  disabled={product.quantity === 0}>
-                  Add to Cart
-                </Button>
-              </CardActions>
-            </Card>
-          </Grid>
-        );
-      })}
+      {
+        props.products.map(product => {
+          return (
+            <Grid item md key={product.id}>
+              <Card className="card" className={classes.cardStyle}>
+                <CardActionArea>
+                  <CardMedia
+                    className={classes.media}
+                    image={product.imageUrl}
+                    title={product.name}
+                  />
+                  <CardContent>
+                    <Typography gutterBottom variant="h5" component="h3">
+                      <Link href={`/#/products/${product.id}`}>{product.name}</Link>
+                    </Typography>
+                    <Typography variant="body2" color="textSecondary" component="p">
+                      {product.price}
+                    </Typography>
+                  </CardContent>
+                </CardActionArea>
+                <CardActions>
+                  <Button
+                    size="medium"
+                    color="primary"
+                    onClick={() => props.addCartItem(props.cart.id, product.id, 1)}
+                    // TODO: add temporary lightbox displaying success or failure for adding to cart
+                    disabled={product.quantity === 0}>
+                    Add to Cart
+                  </Button>
+                </CardActions>
+              </Card>
+            </Grid>
+          );
+        })
+      }
     </Grid>
   );
 };
