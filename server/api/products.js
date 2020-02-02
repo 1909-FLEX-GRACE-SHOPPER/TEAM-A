@@ -48,7 +48,7 @@ router.get('/:productId', (req, res, next) => {
 
 //add new product
 router.post('/', function (req, res, next) {
-  if (req.user && req.user.isAdmin) {
+  if (req.user && eq.user.dataValues.isAdmin) {
     const { name, description, inventory, price } = req.body;
     if (!name) {
       return res.status(400).send('Invalid request; name required');
@@ -56,8 +56,9 @@ router.post('/', function (req, res, next) {
     Product.create({ name, description, inventory, price })
       .then(product => res.status(201).send(product))
       .catch(next);
+  } else {
+    return res.status(403).send('Invalid user credentials');
   }
-  return res.status(403).send('Invalid user credentials');
 });
 
 //update product for specific product id
@@ -94,7 +95,7 @@ router.put('/:productId', (req, res, next) => {
 
 //delete product.
 router.delete('/:productId', (req, res, next) => {
-  if (req.user && req.user.isAdmin) {
+  if (req.user && req.user.dataValues.isAdmin) {
     Product.destroy({
       where: {
         id: req.params.productId
@@ -107,8 +108,10 @@ router.delete('/:productId', (req, res, next) => {
         res.status(400).send('Invalid request');
         next(e);
       })
+  } else {
+    return res.status(403).send('Invalid user credentials');
   }
-  return res.status(403).send('Invalid user credentials');
+  
 });
 
 

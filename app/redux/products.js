@@ -38,5 +38,16 @@ export const updateProduct = (update, id) => {
         dispatch(fetchProducts());
       })
   }
-}
+};
+
+export const deleteProduct = (id) => {
+  return (dispatch, getState, { axios }) => {
+    axios.delete(`/api/products/${id}`)
+      .then(() => dispatch(fetchProducts()))
+      .catch(e => {
+        console.log('Error in update product thunk');
+        dispatch(fetchProducts());
+      })
+  }
+};
 
