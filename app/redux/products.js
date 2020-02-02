@@ -29,3 +29,14 @@ export const fetchProducts = function () {
   }
 };
 
+export const updateProduct = (update, id) => {
+  return (dispatch, getState, { axios }) => {
+    axios.put(`/api/products/${id}`, update)
+      .then(() => dispatch(fetchProducts()))
+      .catch(e => {
+        console.log('Error in update product thunk');
+        dispatch(fetchProducts());
+      })
+  }
+}
+

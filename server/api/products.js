@@ -48,58 +48,67 @@ router.get('/:productId', (req, res, next) => {
 
 //add new product
 router.post('/', function (req, res, next) {
-  console.log('request body in post is: ', req.body)
-  const { name, description, inventory, price } = req.body;
-  if (!name) {
-    return res.status(400).send('Invalid request; name required');
+  if (req.user && req.user.isAdmin) {
+    const { name, description, inventory, price } = req.body;
+    if (!name) {
+      return res.status(400).send('Invalid request; name required');
+    }
+    Product.create({ name, description, inventory, price })
+      .then(product => res.status(201).send(product))
+      .catch(next);
   }
-  Product.create({ name, description, inventory, price })
-    .then(product => res.status(201).send(product))
-    .catch(next);
+  return res.status(403).send('Invalid user credentials');
 });
 
 //update product for specific product id
 router.put('/:productId', (req, res, next) => {
-
-  const { name, description, inventory, price } = req.body;
-  const { productId } = req.params;
-  Product.update(
-    {
-      name, description, inventory, price
-    },
-    {
-      where: {
-        id: req.params.productId
+  console.log(req.user);
+  if (req.user && req.user.dataValues.isAdmin) {
+    const { name, description, inventory, price } = req.body;
+    const { productId } = req.params;
+    Product.update(
+      {
+        name, description, inventory, price
       },
-      returning: true,
-    }
-  )
-    .then(updated => {
-      if (updated[0]) {
-        return res.status(200).send(updated[1]);
+      {
+        where: {
+          id: req.params.productId
+        },
+        returning: true,
       }
-      res.status(404).send('Product not found');
-    })
-    .catch(e => {
-      res.status(400).send('Invalid request');
-      next(e);
-    })
+    )
+      .then(updated => {
+        if (updated[0]) {
+          return res.status(200).send(updated[1]);
+        }
+        return res.status(404).send('Product not found');
+      })
+      .catch(e => {
+        res.status(400).send('Invalid request');
+        next(e);
+      })
+  } else {
+    return res.status(403).send('Invalid user credentials');
+  } 
 });
 
 //delete product.
 router.delete('/:productId', (req, res, next) => {
-  Product.destroy({
-    where: {
-      id: req.params.productId
-    },
-  })
-    .then(() => {
-      res.status(204).send(`deleted product ${req.params.productId}`);
+  if (req.user && req.user.isAdmin) {
+    Product.destroy({
+      where: {
+        id: req.params.productId
+      },
     })
-    .catch(e => {
-      res.status(400).send('Invalid request');
-      next(e);
-    })
+      .then(() => {
+        return res.status(204).send(`deleted product ${req.params.productId}`);
+      })
+      .catch(e => {
+        res.status(400).send('Invalid request');
+        next(e);
+      })
+  }
+  return res.status(403).send('Invalid user credentials');
 });
 
 
