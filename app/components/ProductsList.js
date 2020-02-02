@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { addCartItem } from '../redux/cart'
+import CheckboxesTags from './ProductFilter'
 
 //Material-UI
 import { Card, Grid } from '@material-ui/core';
@@ -40,7 +41,7 @@ const ProductsList = props => {
   const classes = useStyles()
   return (
     <Grid container className={classes.gridStyle}>
-      
+      <CheckboxesTags />
       {props.products.map(product => {
         return (
           <Grid item md key={product.id}>
