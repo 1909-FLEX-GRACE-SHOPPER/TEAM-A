@@ -12,6 +12,9 @@ import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import Link from '@material-ui/core/Link';
 import { makeStyles } from '@material-ui/core/styles';
+import Autocomplete from '@material-ui/lab/Autocomplete';
+import { createFilterOptions } from '@material-ui/lab/Autocomplete';
+import AddShoppingCartIcon from '@material-ui/icons/AddShoppingCart';
 
 //styling
 const useStyles = makeStyles({
@@ -31,11 +34,13 @@ const useStyles = makeStyles({
 })
 
 
+
 const ProductsList = props => {
   //console.log('ProducstList PROPS****', props);
   const classes = useStyles()
   return (
     <Grid container className={classes.gridStyle}>
+      
       {props.products.map(product => {
         return (
           <Grid item md key={product.id}>
@@ -62,7 +67,7 @@ const ProductsList = props => {
                   onClick={() => props.addCartItem(props.cart.id, product.id, 1)}
                   // TODO: add temporary lightbox displaying success or failure for adding to cart
                   disabled={product.quantity === 0}>
-                  Add to Cart
+                    <AddShoppingCartIcon />           
                 </Button>
               </CardActions>
             </Card>
