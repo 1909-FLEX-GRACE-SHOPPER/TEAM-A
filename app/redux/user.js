@@ -1,4 +1,5 @@
 import chalk from 'chalk';
+import {updateCartUser} from './cart'
 
 const SET_USER = 'SET_USER';
 
@@ -30,9 +31,25 @@ export const loginUser = (login) => {
   }
 };
 
+export const createUser = (newUserDetails, cart = {}) => {
+  return (dispatch, getState, { axios }) => {
+    return axios.post(`/api/user`, newUserDetails)
+      .then(response => response.data)
+      .then((newUser) => {
+        dispatch(setUser(newUser))
+        if (cart.id) {
+          dispatch(updateCartUser(newUser))
+        }
+      })
+      .catch(e => {
+        console.error(e)
+      })
+  }
+}
+
 export const logoutUser = () => {
   return (dispatch, getState, { axios }) => {
-    return axios.put('/auth/login', { logout: true })
+    return axios.post('/auth/logout', { logout: true })
       .then(() => dispatch(setUser('')))
       .catch(e => console.log(chalk.red(`Error IN Redux thunk userLogout: ${e}`)))
   }

@@ -21,11 +21,40 @@ export const productsReducer = (state = [], action) => {
 }
 
 //thunks
-export const fetchProducts = function () {
+export const fetchProducts = function (page=0, catString='', ) {
   return dispatch => {
-    axios.get('/api/products') //longtime
+    if (catString) {
+      axios.get(`/api/products?page=${page}${catString}`) //longtime
       .then(products => dispatch(setProducts(products.data)))
       .catch(e => console.log(e));
+    }
+    else {
+      axios.get(`/api/products?page=${page}`) //longtime
+      .then(products => dispatch(setProducts(products.data)))
+      .catch(e => console.log(e));
+    }
+  }
+};
+
+export const updateProduct = (update, id) => {
+  return (dispatch, getState, { axios }) => {
+    axios.put(`/api/products/${id}`, update)
+      .then(() => dispatch(fetchProducts()))
+      .catch(e => {
+        console.log('Error in update product thunk');
+        dispatch(fetchProducts());
+      })
+  }
+};
+
+export const deleteProduct = (id) => {
+  return (dispatch, getState, { axios }) => {
+    axios.delete(`/api/products/${id}`)
+      .then(() => dispatch(fetchProducts()))
+      .catch(e => {
+        console.log('Error in update product thunk');
+        dispatch(fetchProducts());
+      })
   }
 };
 

@@ -124,6 +124,30 @@ router.post('/', (req, res, next) => {
 });
 
 //PUT
+router.put('/newUser/:sessionId', (req, res, next) => {
+  // update userId for a newly signedup user
+  Cart.findOne({
+    where: {
+      sessionId: req.params.sessionId
+    }
+  })
+    .then(cart => {
+      if (cart) {
+        cart.update({
+          userId: req.user.id
+        })
+          .then(cart => res.status(200).send(cart))
+          .catch(e => {
+            res.status(500).send('error in PUT /cart/:sessionId route')
+            next(e)
+          })
+      }
+      else {
+        res.status(400).send('could not find cart')
+      }
+    })
+});
+
 router.put('/:cartId', (req, res, next) => {
   // if there is no cartId, request simply finds cart associated with current user
   Cart.findOne({
@@ -149,8 +173,6 @@ router.put('/:cartId', (req, res, next) => {
       }
     })
 });
-
-
 
 // clear cart (PUT - '/:cartId')
 router.put('/clear/:cartId', (req, res, next) => {
@@ -182,7 +204,7 @@ router.delete('/:cartId', (req, res, next) => {
       res.status(400).send('Error destroying cart');
       next(e);
     })
-});
+});  
 
 module.exports = router;
 

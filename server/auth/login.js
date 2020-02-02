@@ -12,7 +12,7 @@ router.post('/', (req, res, next) => {
     },
   })
     .then(foundUser => {
-      if (foundUser && req.body.password == foundUser.password) {
+      if (foundUser && compare(req.body.password, foundUser.password)) {
         User.update(
           {
             sessionId: req.cookies.sessionId

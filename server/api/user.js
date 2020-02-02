@@ -3,7 +3,6 @@ var router = express.Router();
 const chalk = require('chalk');
 const { User, Cart, Order } = require('../../db');
 const { generateSessionId, hasher } = require('../utils');
-// const bcrypt = require('bcrypt')
 
 //return a single user by id
 //includes cart and orders
@@ -39,14 +38,6 @@ router.get('/:userId', (req, res, next) => {
 //example 1: /api/user
 //example 2: /api/user?sort=firstName&dir=ASC
 router.get('/', (req, res, next) => {
-  // try {
-  //   const users = await User.findAll()
-  //   res.status(200).send(products)
-  // } catch (error) {
-  //   console.log(error)
-  //   res.status(400).send('error in finding all users')
-  //   next(error)
-  // }
   User.findAll({
     order: [
       [req.query.sort || 'lastName', req.query.dir || 'ASC']
@@ -89,41 +80,14 @@ router.put('/:userId', (req, res, next) => {
     })
 });
 
-//special post method for creating a guest user
-//generates a user random string email and hashed password,
-//returns said user with sessionId
-router.post('/guest', (req, res, next) => {
-  //todo: replace this function with something more secure
-  const sessionId = generateSessionId();
-  User.create({
-    firstName: 'guest',
-    lastName: 'guest',
-    email: `${Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15)}@guest.com`,
-    password: hasher(Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15)),
-    isRegistered: false,
-    sessionId,
-  })
-    .then(created => {
-      res.status(201).send(created);
-    })
-    .catch(e => {
-      console.log(chalk.red(`Error in POST /api/user/guest: ${req.url}`));
-      res.status(400).send('Invalid request');
-      next(e);
-    })
-});
-
 router.post('/', (req, res, next) => {
-  const sessionId = generateSessionId();
-  //TODO: HASH PASSWORD ON FRONTEND
-
   User.create({
     firstName: req.body.firstName,
     lastName: req.body.lastName,
     email: req.body.email,
     password: hasher(req.body.password),
     isRegistered: true,
-    sessionId,
+    sessionId: req.cookies && req.cookies.sessionId
   })
     .then(created => {
       res.status(201).send(created);
