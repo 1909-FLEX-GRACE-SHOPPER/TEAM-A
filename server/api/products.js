@@ -48,7 +48,7 @@ router.get('/:productId', (req, res, next) => {
 
 //add new product
 router.post('/', function (req, res, next) {
-  if (req.user && eq.user.dataValues.isAdmin) {
+  if (req.user && req.user.dataValues.isAdmin) {
     const { name, description, inventory, price } = req.body;
     if (!name) {
       return res.status(400).send('Invalid request; name required');
