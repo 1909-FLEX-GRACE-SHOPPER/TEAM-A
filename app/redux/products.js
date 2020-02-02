@@ -21,11 +21,22 @@ export const productsReducer = (state = [], action) => {
 }
 
 //thunks
-export const fetchProducts = function (queryStr) {
+export const fetchProducts = function (page=0, catString='', ) {
+  console.log("catString", catString)
   return dispatch => {
-    axios.get('/api/products') //longtime
+    if (catString) {
+      axios.get(`/api/products?page=${page}${catString}`) //longtime
+      .then(products => {
+        console.log("queryingProducts", products)
+        dispatch(setProducts(products.data))}
+      )
+      .catch(e => console.log(e));
+    }
+    else {
+      axios.get(`/api/products?page=${page}`) //longtime
       .then(products => dispatch(setProducts(products.data)))
       .catch(e => console.log(e));
+    }
   }
 };
 

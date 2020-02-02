@@ -9,7 +9,7 @@ router.post('/', (req, res, next) => {
     const { logout } = req.body;
     if (logout) {
         res.clearCookie("sessionId");
-        res.status(200).send();
+        res.status(200).send('logged out');
     }
 });
 

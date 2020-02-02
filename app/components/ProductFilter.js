@@ -1,5 +1,7 @@
 
 import React, {useState} from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { fetchProducts } from '../redux/products'
 import Checkbox from '@material-ui/core/Checkbox';
 import TextField from '@material-ui/core/TextField';
 import Autocomplete from '@material-ui/lab/Autocomplete';
@@ -12,6 +14,8 @@ const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
 const checkedIcon = <CheckBoxIcon fontSize="small" />;
 
 export default function CheckboxesTags() {
+const dispatch = useDispatch()
+
 const [selectedCategories, setSelectedCategories] = useState({
     apparel:false,
     noms:false,
@@ -20,23 +24,24 @@ const [selectedCategories, setSelectedCategories] = useState({
     leisure: false
 })
 
-handleChange = (value) =>{
-selectedCategories[value] = !selectedCategories[value]
+const handleChange = (value) =>{
+    setSelectedCategories({ ...selectedCategories, value:!selectedCategories[value]})
 }
 
-generateQuery = (categoriesObj) => {
+const generateQuery = (categoriesObj) => {
     let queryStr = ""
     for (let key in categoriesObj){
         if (categoriesObj[key]){
-            queryStr += `&cat=${categoriesObj[key]}`
+            queryStr += `&cat=${key}`
         }
     }
+    console.log("queryString", queryStr )
     return queryStr;
 }
 
-handleSubmit = () => {
+const handleSubmit = () => {
     const queryStr = generateQuery(selectedCategories)
-    
+    dispatch(fetchProducts(null, queryStr))
 }
 
 return (
@@ -50,7 +55,7 @@ return (
             renderOption={(option, { selected }) => (  
                 <React.Fragment>
                     <Checkbox
-                        onChange={(value) => handleChange(value)}
+                        onChange={(event) => handleChange(event.target.value)}
                         icon={icon}
                         checkedIcon={checkedIcon}
                         style={{ marginRight: 8 }}
@@ -70,7 +75,7 @@ return (
                 />
             )}
         />
-        <Button variant="contained" color="primary" > 
+        <Button variant="contained" color="primary" onClick={handleSubmit} > 
                 Apply Filter
       </Button>
         </React.Fragment>

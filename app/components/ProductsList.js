@@ -37,8 +37,16 @@ const useStyles = makeStyles({
 
 
 const ProductsList = props => {
-  //console.log('ProducstList PROPS****', props);
-  const classes = useStyles()
+  const classes = useStyles();
+
+  if (!props.products) {
+    return (
+      <div>
+        Loading Products;
+      </div>
+    )
+  };
+
   return (
     <Grid container className={classes.gridStyle}>
       <CheckboxesTags />
