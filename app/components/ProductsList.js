@@ -12,6 +12,9 @@ import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import Link from '@material-ui/core/Link';
 import { makeStyles } from '@material-ui/core/styles';
+import Autocomplete from '@material-ui/lab/Autocomplete';
+import { createFilterOptions } from '@material-ui/lab/Autocomplete';
+import AddShoppingCartIcon from '@material-ui/icons/AddShoppingCart';
 
 //styling
 const useStyles = makeStyles({
@@ -29,6 +32,7 @@ const useStyles = makeStyles({
     height: 140,
   },
 })
+
 
 
 const ProductsList = props => {
