@@ -49,7 +49,7 @@ export const createUser = (newUserDetails, cart = {}) => {
 
 export const logoutUser = () => {
   return (dispatch, getState, { axios }) => {
-    return axios.put('/auth/login', { logout: true })
+    return axios.post('/auth/logout', { logout: true })
       .then(() => dispatch(setUser('')))
       .catch(e => console.log(chalk.red(`Error IN Redux thunk userLogout: ${e}`)))
   }
