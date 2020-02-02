@@ -3,7 +3,10 @@ import { useSelector, useDispatch } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
+import IconButton from '@material-ui/core/IconButton';
 import CssBaseline from '@material-ui/core/CssBaseline';
+import SkipNextIcon from '@material-ui/icons/SkipNext';
+import SkipPreviousIcon from '@material-ui/icons/SkipPrevious';
 
 const useStyles = makeStyles(theme => ({
     wrapper: {
@@ -25,18 +28,40 @@ const useStyles = makeStyles(theme => ({
 
 const Pagination = (props) => {
     const [page, setPage] = useState(1);
-    const [enabledForward, setForward] = useState(true);
-    const [enabledBack, setBack] = useState(false);
     const dispatch = useDispatch();
     const classes = useStyles();
+
+    const handleNext = () => {
+        setPage(page + 1);
+        //dispatch(fetchProducts(page - 1));
+    }
+
+    const handleBack = () => {
+        setPage(page - 1);
+        //dispatch(fetchProducts(page - 1));
+    }
+
+    useEffect(() => {
+    });
 
     return (
         <Container component='div'>
             <CssBaseline />
             <div className={classes.paper}>
-                {/* Icon back arrow */}
+                <IconButton
+                    onClick={handleBack}
+                    disabled={page <= 1}
+                    color='primary'
+                >
+                    <SkipPreviousIcon />
+                </IconButton>
                 {page}
-                {/* Icon forward arrow */}
+                <IconButton
+                    onClick={handleNext}
+                    color='primary'
+                >
+                    <SkipNextIcon />
+                </IconButton>
             </div>
         </Container>
     )
