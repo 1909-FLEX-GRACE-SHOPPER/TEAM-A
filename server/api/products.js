@@ -3,13 +3,19 @@ const router = require('express').Router()
 const { Product } = require('../../db')
 
 //fetch all products
+//optional query parameter for limit and offset
+//formats:
+//get api/products?cat=noms
+//get api/products?cat=noms&page=2
 router.get('/', (req, res, next) => {
   const { cat } = req.query;
   if (cat) {
     Product.findAll({
       where: {
         category: cat,
-      }
+      },
+      limit: 10,
+      offset: req.query.offset || 0,
     })
       .then(products => res.status(200).send(products))
       .catch(e => {
@@ -18,7 +24,10 @@ router.get('/', (req, res, next) => {
       })
   }
   else {
-    Product.findAll()
+    Product.findAll({
+      limit: 10,
+      offset: req.query.offset || 0,
+    })
       .then(products => res.status(200).send(products))
       .catch(e => {
         res.status(400).send('error in finding all products')
