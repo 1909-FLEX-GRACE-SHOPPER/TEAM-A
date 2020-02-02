@@ -15,6 +15,7 @@ export default function EditProduct(props) {
     const [name, setName] = useState('');
     const [description, setDescription] = useState('');
     const [price, setPrice] = useState('');
+    const [inventory, setInventory] = useState('');
 
     useEffect(() => {
         if (products.length && !product) {
@@ -23,11 +24,12 @@ export default function EditProduct(props) {
             setName(match.name);
             setDescription(match.description);
             setPrice(match.price);
+            setInventory(math.inventory);
         }
     });
 
     const updateHandle = () => {
-        dispatch(updateProduct({ name, description, price, inventory: product.inventory }, product.id));
+        dispatch(updateProduct({ name, description, price, inventory }, product.id));
         props.history.push(`/products/${product.id}`);
     }
 
@@ -86,6 +88,15 @@ export default function EditProduct(props) {
                 onChange={(ev) => setPrice(ev.target.value)}
             >
                 {price}
+            </TextField>
+            <TextField
+                id="inventory"
+                label="Product Inventory"
+                variant="outlined"
+                value={inventory}
+                onChange={(ev) => setInventory(ev.target.value)}
+            >
+                {inventory}
             </TextField>
             <Button
                 variant="outlined"
