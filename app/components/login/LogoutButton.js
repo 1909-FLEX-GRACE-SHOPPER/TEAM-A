@@ -3,6 +3,8 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useStyles } from '../index';
 import { logoutUser } from '../../redux/user';
 import Button from '@material-ui/core/Button';
+import { withRouter } from 'react-router-dom';
+
 
 const LogoutButton = (props) => {
     const dispatch = useDispatch();
@@ -25,4 +27,4 @@ const LogoutButton = (props) => {
     )
 }
 
-export default LogoutButton;
+export default withRouter(LogoutButton);

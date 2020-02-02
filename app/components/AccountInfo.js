@@ -19,8 +19,7 @@ class AccountInfo extends Component {
                   <h2>Last name: {user.lastName}</h2>
                   <h2>Email: {user.email}</h2>
                   <Link to='/orders'>View orders</Link>
-                  {/* TODO: fix logout button */}
-                  {/* <LogoutButton /> */}
+                  <LogoutButton />
                 </div>
               ) : (
                 <h2>No account information to display.</h2>
