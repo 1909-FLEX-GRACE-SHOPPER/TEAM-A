@@ -53,6 +53,7 @@ describe('API Routes', async () => {
             expect(response.id).to.equal(randomIdx);
             expect(response.name).to.equal(productList[randomIdx - 1].name);
             expect(response.description).to.equal(productList[randomIdx - 1].description);
+            expect(response.category).to.equal(productList[randomIdx - 1].category)
             expect(response.inventory).to.equal(productList[randomIdx - 1].inventory);
             expect(response.price).to.equal(productList[randomIdx - 1].price);
 
@@ -77,5 +78,15 @@ describe('API Routes', async () => {
             //by default, the /user API returns sorted by LastName
             expect(responseBody[0].lastName).to.equal('Apple');
         });
+
+        it('GET :userId responds with specified user', async () => {
+            const randomUserId = Math.floor(Math.random() * userList.length) || 1
+            const response = (await agent.get(`/api/user/${randomUserId}`))
+            expect(response.body.firstName).to.equal(userList[randomUserId - 1].firstName);
+            expect(response.body.lastName).to.equal(userList[randomUserId - 1].lastName);
+            expect(response.body.email).to.equal(userList[randomUserId - 1].email)
+
+
+        })
     });
 });
