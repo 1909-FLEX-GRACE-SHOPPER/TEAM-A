@@ -1,6 +1,6 @@
 const { expect } = require('chai');
 const { connection } = require('../db/');
-const { Product, User } = require('../db');
+const { Product, User, Cart } = require('../db');
 const { categoriesArr } = require('../constants')
 const faker = require('faker');
 const sinon = require('sinon');
@@ -16,7 +16,7 @@ describe('API Routes', async () => {
         await connection.sync({ force: true });
     });
 
-    describe('GET /api/products', async () => {
+    describe('Product Routes', async () => {
         let productList = Array(3);
         before(async () => {
             //generate data
@@ -80,18 +80,27 @@ describe('API Routes', async () => {
         });
 
         it('GET :userId responds with specified user', async () => {
-            //picks a random number to use as ID between 1 and userList.length
-            const randomUserId = Math.floor(Math.random() * userList.length) || 1
-            //the IDX is -1 since array is 0 index.
-            const randomUserIdx = randomUserId - 1
-            const response = (await agent.get(`/api/user`))
+            const randomUserId = Math.floor(Math.random() * userList.length) || 1;
+            const response = (await agent.get(`/api/user/${randomUserId}`))
+            const allUsers = await agent.get('/api/user')
+            const userWithId = allUsers.body.find(user => user.id === randomUserId);
 
-            console.log(response.body, 'user')
-            //I think its failing because users arent being created in order??
-            //sometimes 2nd user gets id:3 when created
-            expect(response.body.firstName).to.equal(userList[randomUserIdx].firstName);
-            expect(response.body.lastName).to.equal(userList[randomUserIdx].lastName);
-            expect(response.body.email).to.equal(userList[randomUserIdx].email)
+            expect(response.body.firstName).to.equal(userWithId.firstName);
+            expect(response.body.lastName).to.equal(userWithId.lastName);
+            expect(response.body.email).to.equal(userWithId.email)
         });
     });
+
+    xdescribe('Cart Routes', async () => {
+        before(async () => {
+            let user = await User.create({ firstName: 'Will', lastName: 'Apple', email: 'FreshPrince@gmail.com', password: 'abc' })
+            let cart = await Cart.create({ userId: user.id })
+        });
+
+        it('cart created', () => {
+            console.log('user', user)
+            console.log('cart', cart)
+        })
+    });
+
 });
