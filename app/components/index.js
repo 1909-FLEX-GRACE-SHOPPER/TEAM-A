@@ -12,6 +12,7 @@ import ProductsList from './ProductsList'
 import ErrorBar from './login/ErrorBar';
 import LogoutButton from './login/LogoutButton'
 import useStyles from './styles/useStyles';
+import NewUserRegistration from './login/NewUserRegistration';
 import EditProduct from './EditProduct';
 
 export {
@@ -29,5 +30,6 @@ export {
   ErrorBar,
   LogoutButton,
   useStyles,
+  NewUserRegistration,
   EditProduct
 }
