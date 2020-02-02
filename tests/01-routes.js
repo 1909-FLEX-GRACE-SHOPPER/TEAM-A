@@ -80,13 +80,11 @@ describe('API Routes', async () => {
         });
 
         it('GET :userId responds with specified user', async () => {
-            const randomUserId = Math.floor(Math.random() * userList.length) || 1
+            const randomUserId = Math.floor(Math.random() * userList.length)
             const response = (await agent.get(`/api/user/${randomUserId}`))
             expect(response.body.firstName).to.equal(userList[randomUserId - 1].firstName);
             expect(response.body.lastName).to.equal(userList[randomUserId - 1].lastName);
             expect(response.body.email).to.equal(userList[randomUserId - 1].email)
-
-
         })
     });
 });
