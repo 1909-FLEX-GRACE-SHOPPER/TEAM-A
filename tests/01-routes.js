@@ -80,9 +80,15 @@ describe('API Routes', async () => {
         });
 
         it('GET :userId responds with specified user', async () => {
+            //picks a random number to use as ID between 1 and userList.length
             const randomUserId = Math.floor(Math.random() * userList.length) || 1
+            //the IDX is -1 since array is 0 index.
             const randomUserIdx = randomUserId - 1
-            const response = (await agent.get(`/api/user/${randomUserId}`))
+            const response = (await agent.get(`/api/user`))
+
+            console.log(response.body, 'user')
+            //I think its failing because users arent being created in order??
+            //sometimes 2nd user gets id:3 when created
             expect(response.body.firstName).to.equal(userList[randomUserIdx].firstName);
             expect(response.body.lastName).to.equal(userList[randomUserIdx].lastName);
             expect(response.body.email).to.equal(userList[randomUserIdx].email)
