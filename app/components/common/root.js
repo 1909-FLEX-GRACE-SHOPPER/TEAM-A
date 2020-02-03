@@ -5,7 +5,7 @@ import { fetchProducts } from '../../redux/products';
 import { fetchUser } from '../../redux/user';
 import { fetchCart } from '../../redux/cart';
 import { fetchOrdersByUser } from '../../redux/ordersByUser'
-import { LoginPage, SingleProduct, Cart, Home, Checkout, Navbar, SingleOrder, AllOrders, AccountInfo , EditProduct, NewUserRegistration } from '../index';
+import { LoginPage, SingleProduct, Cart, Home, Checkout, StripeCheckout, Navbar, SingleOrder, AllOrders, AccountInfo, EditProduct, NewUserRegistration } from '../index';
 
 class Root extends React.Component {
 
@@ -26,7 +26,7 @@ class Root extends React.Component {
             <Route path="/cart" component={Cart} />
             <Route path='/login' component={LoginPage} />
             <Route path='/signup' component={NewUserRegistration} />
-            <Route path='/checkout' component={Checkout} />
+            <Route path='/checkout' component={StripeCheckout} />
             <Route path='/account' component={AccountInfo} />
             <Route exact path='/products/:id' component={SingleProduct} />
             <Route exact path='/products/edit/:id' component={EditProduct} />

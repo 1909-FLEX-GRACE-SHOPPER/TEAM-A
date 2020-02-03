@@ -13,6 +13,7 @@ import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 
 import AddressForm from './AddressForm';
+import CheckoutForm from './Stripe/CheckoutForm';
 import PaymentForm from './PaymentForm';
 import Review from './Review';
 
@@ -60,7 +61,7 @@ const getStepContent = (step) => {
     case 0:
       return <AddressForm />;
     case 1:
-      return <PaymentForm />;
+      return <CheckoutForm />;
     case 2:
       return <Review />;
     default:

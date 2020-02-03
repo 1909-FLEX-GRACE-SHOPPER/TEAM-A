@@ -6,6 +6,7 @@ import AllOrders from './AllOrders';
 import Home from './Home';
 import Cart from './Cart';
 import Checkout from './checkout/Checkout';
+import StripeCheckout from './checkout/Stripe/StripeCheckout';
 import AccountInfo from './AccountInfo';
 import Navbar from './Navbar'
 import ProductsList from './ProductsList'
@@ -22,6 +23,7 @@ export {
   Home,
   Cart,
   Checkout,
+  StripeCheckout,
   AccountInfo,
   SingleOrder,
   AllOrders,
