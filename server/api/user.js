@@ -81,22 +81,40 @@ router.put('/:userId', (req, res, next) => {
 });
 
 router.post('/', (req, res, next) => {
-  User.create({
-    firstName: req.body.firstName,
-    lastName: req.body.lastName,
-    email: req.body.email,
-    password: hasher(req.body.password),
-    isRegistered: true,
-    sessionId: req.cookies && req.cookies.sessionId
+  User.findOne({
+    where: {
+      email: req.body.email,
+    },
   })
-    .then(created => {
-      res.status(201).send(created);
-    })
-    .catch(e => {
-      console.log(chalk.red(`Error in POST /api/user/guest: ${req.body}`));
-      res.status(400).send('Invalid request');
-      next(e);
-    })
+  .then(foundUser => {
+    if (foundUser) { 
+    console.log("found user before send response===>", foundUser)
+    res.status(400).send('Account already exist, please login.')
+    } else {
+      User.create({
+        firstName: req.body.firstName,
+        lastName: req.body.lastName,
+        email: req.body.email,
+        password: hasher(req.body.password),
+        isRegistered: true,
+        sessionId: req.cookies && req.cookies.sessionId
+      })
+        .then(created => {
+          res.status(201).send(created);
+        })
+        .catch(e => {
+          console.log(chalk.red(`Error in POST /api/user/: ${req.body}`));
+          res.status(400).send('Invalid request');
+          next(e);
+        })
+    }
+  })
+  .catch(e => {
+    console.log(chalk.red(`Error in POST /api/user/: ${req.body}`));
+    res.status(400).send('Invalid request');
+    next(e);
+  })
+  
 });
 
 module.exports = router;
