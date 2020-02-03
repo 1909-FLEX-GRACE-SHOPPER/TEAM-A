@@ -4,7 +4,7 @@ const { User, Cart, CartItem, Product, Order, OrderItem, ShippingAddress, Sessio
 const faker = require('faker');
 const { categoriesArr } = require('../constants')
 
-describe('Model formats and associations', async () => {
+xdescribe('Model formats and associations', async () => {
 
     before(async () => {
         await connection.sync({ force: true });

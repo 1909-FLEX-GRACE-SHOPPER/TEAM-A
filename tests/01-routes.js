@@ -1,11 +1,13 @@
 const { expect } = require('chai');
 const { connection } = require('../db/');
-const { Product, User, Cart } = require('../db');
+const { Product, User, Cart, Session } = require('../db');
 const { categoriesArr } = require('../constants')
 const faker = require('faker');
 const sinon = require('sinon');
 const app = require('../server');
 const agent = require('supertest')(app);
+const Sequelize = require('sequelize');
+
 
 describe('API Routes', async () => {
     before(async () => {
@@ -16,7 +18,7 @@ describe('API Routes', async () => {
         await connection.sync({ force: true });
     });
 
-    describe('Product Routes', async () => {
+    xdescribe('Product Routes', async () => {
         let productList = Array(3);
         before(async () => {
             //generate data
@@ -61,7 +63,7 @@ describe('API Routes', async () => {
 
     });
 
-    describe('User Routes', async () => {
+    xdescribe('User Routes', async () => {
         let userList = [
             { firstName: 'Will', lastName: 'Apple', email: 'FreshPrince@gmail.com', password: 'abc' },
             { firstName: 'John', lastName: 'Doe', email: 'Jdoe@gmail.com', password: 'xyz' },
@@ -91,15 +93,18 @@ describe('API Routes', async () => {
         });
     });
 
-    xdescribe('Cart Routes', async () => {
+    describe('Cart Routes', async () => {
         before(async () => {
-            let user = await User.create({ firstName: 'Will', lastName: 'Apple', email: 'FreshPrince@gmail.com', password: 'abc' })
-            let cart = await Cart.create({ userId: user.id })
+            const user = await User.create(
+                { firstName: 'Will', lastName: 'Apple', email: 'FreshPrince@gmail.com', password: 'abc' }
+            )
+            const cart = await Cart.create({ userId: user.id })
+            console.log(cart)
         });
 
-        it('cart created', () => {
-            console.log('user', user)
-            console.log('cart', cart)
+        it('cart created', async () => {
+            const cart = await agent.get('/api/cart')
+            //console.log('cart', cart)
         })
     });
 
