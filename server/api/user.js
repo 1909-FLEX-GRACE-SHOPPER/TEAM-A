@@ -88,8 +88,7 @@ router.post('/', (req, res, next) => {
   })
   .then(foundUser => {
     if (foundUser) { 
-    console.log("found user before send response===>", foundUser)
-    res.status(400).send('Account already exist, please login.')
+    res.status(400).send('Email already exists, please login or use different email to signup.')
     } else {
       User.create({
         firstName: req.body.firstName,

@@ -43,6 +43,7 @@ export const createUser = (newUserDetails, cart = {}) => {
       })
       .catch(e => {
         console.error(e)
+        user => dispatch(setUser(null))
       })
   }
 }
