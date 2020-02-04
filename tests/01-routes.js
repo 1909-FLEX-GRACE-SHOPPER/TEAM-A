@@ -18,11 +18,12 @@ describe('API Routes', async () => {
         await connection.sync({ force: true });
     });
 
-    xdescribe('Product Routes', async () => {
-        let productList = Array(3);
+    describe('Product Routes', async () => {
+        let productList = Array(10);
+        let createdProducts
         before(async () => {
             //generate data
-            for (let i = 0; i < 3; i++) {
+            for (let i = 0; i < 10; i++) {
                 productList[i] = {
                     name: faker.commerce.productName(),
                     category: categoriesArr[Math.floor(Math.random() * categoriesArr.length)],
@@ -31,80 +32,89 @@ describe('API Routes', async () => {
                     price: faker.commerce.price(1.00, 99.99, 2),
                 }
             };
-
-            await Promise.all(productList.map(product => Product.create({ ...product })));
+            //console.log(productList, ' product list')
+            createdProducts = await Promise.all(productList.map(product => Product.create({ ...product })));
+            // console.log(createdProducts.map(p => p.dataValues))
         });
 
         it('GET / responds with all products', async () => {
-
+            //console.log('created products', createdProducts.map(p => p.dataValues))
             const responseBody = (await agent.get('/api/products')).body;
-            expect(responseBody.length).to.equal(3);
-            responseBody.forEach((prod, idx) => {
-                expect(prod.name).to.equal(productList[idx].name);
-                expect(prod.description).to.equal(productList[idx].description);
-                expect(prod.category).to.equal(productList[idx].category);
-                expect(prod.inventory).to.equal(productList[idx].inventory);
-                expect(prod.price).to.equal(productList[idx].price);
+            //console.log('response body', responseBody)
+            expect(responseBody.length).to.equal(10);
+            responseBody.forEach((prod) => {
+                //find same prod ID in createdProdcuts.
+                let currentProduct = createdProducts.find(product => product.id === prod.id)
+                expect(prod.name).to.equal(currentProduct.name);
+                expect(prod.description).to.equal(currentProduct.description);
+                expect(prod.category).to.equal(currentProduct.category);
+                expect(prod.inventory).to.equal(currentProduct.inventory);
+                expect(prod.price).to.equal(currentProduct.price);
             });
         });
 
         it('GET /:productId responds with specified product', async () => {
-
-            let randomIdx = Math.floor(Math.random() * 10) % 3 || 1;
-            const response = (await agent.get(`/api/products/${randomIdx}`)).body;
-            expect(response.id).to.equal(randomIdx);
-            expect(response.name).to.equal(productList[randomIdx - 1].name);
-            expect(response.description).to.equal(productList[randomIdx - 1].description);
-            expect(response.category).to.equal(productList[randomIdx - 1].category)
-            expect(response.inventory).to.equal(productList[randomIdx - 1].inventory);
-            expect(response.price).to.equal(productList[randomIdx - 1].price);
+            let randomId = Math.floor(Math.random() * 10) % 10 || 1;
+            const response = (await agent.get(`/api/products/${randomId}`)).body;
+            //console.log('response', response)
+            //get a created product with randomId generated.
+            let productToCompare = createdProducts.find(product => product.id === response.id).dataValues
+            //console.log('product to compare', productToCompare)
+            expect(response.id).to.equal(productToCompare.id);
+            expect(response.name).to.equal(productToCompare.name);
+            expect(response.description).to.equal(productToCompare.description);
+            expect(response.category).to.equal(productToCompare.category)
+            expect(response.inventory).to.equal(productToCompare.inventory);
+            expect(response.price).to.equal(productToCompare.price);
 
         });
 
     });
 
-    xdescribe('User Routes', async () => {
+    describe('User Routes', async () => {
         let userList = [
             { firstName: 'Will', lastName: 'Apple', email: 'FreshPrince@gmail.com', password: 'abc' },
             { firstName: 'John', lastName: 'Doe', email: 'Jdoe@gmail.com', password: 'xyz' },
             { firstName: 'Homer', lastName: 'Zebra', email: 'donuts@gmail.com', password: '123' },
         ];
+        let createdUser
         before(async () => {
-            await Promise.all(userList.map(user => User.create({ ...user })));
+            createdUser = await Promise.all(userList.map(user => User.create({ ...user })));
         });
 
         it('GET /api/user responds with all users', async () => {
             const responseBody = (await agent.get('/api/user')).body;
-            expect(responseBody.length).to.equal(userList.length);
-
-            //by default, the /user API returns sorted by LastName
-            expect(responseBody[0].lastName).to.equal('Apple');
+            responseBody.forEach(responseUser => {
+                let userToCompare = createdUser.find(user => user.id === responseUser.id);
+                expect(responseBody.length).to.equal(userList.length);
+                //by default, the /user API returns sorted by LastName
+                expect(responseBody[0].lastName).to.equal('Apple');
+                expect(userToCompare.firstName).to.equal(responseUser.firstName)
+                expect(userToCompare.lastName).to.equal(responseUser.lastName)
+                expect(userToCompare.email).to.equal(responseUser.email)
+            })
         });
 
         it('GET :userId responds with specified user', async () => {
             const randomUserId = Math.floor(Math.random() * userList.length) || 1;
             const response = (await agent.get(`/api/user/${randomUserId}`))
-            const allUsers = await agent.get('/api/user')
-            const userWithId = allUsers.body.find(user => user.id === randomUserId);
+            let userToCompare = createdUser.find(user => response.body.id === user.id)
 
-            expect(response.body.firstName).to.equal(userWithId.firstName);
-            expect(response.body.lastName).to.equal(userWithId.lastName);
-            expect(response.body.email).to.equal(userWithId.email)
+            expect(response.body.firstName).to.equal(userToCompare.firstName);
+            expect(response.body.lastName).to.equal(userToCompare.lastName);
+            expect(response.body.email).to.equal(userToCompare.email)
         });
     });
 
-    describe('Cart Routes', async () => {
+    xdescribe('Cart Routes', async () => {
         before(async () => {
             const user = await User.create(
                 { firstName: 'Will', lastName: 'Apple', email: 'FreshPrince@gmail.com', password: 'abc' }
             )
-            const cart = await Cart.create({ userId: user.id })
-            console.log(cart)
         });
 
         it('cart created', async () => {
             const cart = await agent.get('/api/cart')
-            //console.log('cart', cart)
         })
     });
 
