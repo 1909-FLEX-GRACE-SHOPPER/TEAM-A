@@ -149,7 +149,6 @@ router.put('/newUser/:sessionId', (req, res, next) => {
 });
 
 router.put('/:cartId', (req, res, next) => {
-  // if there is no cartId, request simply finds cart associated with current user
   Cart.findOne({
     where: {
       id: req.params.cartId
@@ -204,7 +203,7 @@ router.delete('/:cartId', (req, res, next) => {
       res.status(400).send('Error destroying cart');
       next(e);
     })
-});  
+});
 
 module.exports = router;
 
