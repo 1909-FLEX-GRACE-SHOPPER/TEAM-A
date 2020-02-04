@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 const chalk = require('chalk');
-const { User, Cart, Order } = require('../../db');
+const { User, Cart, Order, CartItem, Product, Review } = require('../../db');
 const { generateSessionId, hasher } = require('../utils');
 
 //return a single user by id
