@@ -6,7 +6,7 @@ const connection = require('../connection')
 
 const Review = connection.define('review', {
     review: {
-        type: Sequelize.STRING,
+        type: Sequelize.TEXT,
         allowNull: false,
         validate: {
             notEmpty: true,
