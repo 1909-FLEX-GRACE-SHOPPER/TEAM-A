@@ -53,10 +53,10 @@ class SingleProduct extends Component {
         </button>
         {
           user && user.isAdmin &&
-            <button
-              onClick={() => this.props.history.push(`/products/edit/${selectedProduct.id}`)}
-            >
-              Edit Product
+          <button
+            onClick={() => this.props.history.push(`/products/edit/${selectedProduct.id}`)}
+          >
+            Edit Product
             </button>
         }
         <Link
@@ -73,6 +73,7 @@ const mapState = (state) => {
     selectedProduct: state.selectedProduct,
     cart: state.cart,
     user: state.user,
+    review: state.review
   }
 }
 

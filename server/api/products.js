@@ -1,6 +1,6 @@
 const Sequelize = require('sequelize');
 const router = require('express').Router()
-const { Product } = require('../../db')
+const { Product, Review } = require('../../db')
 
 //fetch all products
 //optional query parameter for limit and offset
@@ -14,6 +14,11 @@ router.get('/', (req, res, next) => {
       where: {
         category: cat,
       },
+      include: [
+        {
+          model: Review
+        }
+      ],
       limit: 10,
       offset: req.query.offset || 0,
     })
@@ -25,6 +30,11 @@ router.get('/', (req, res, next) => {
   }
   else {
     Product.findAll({
+      include: [
+        {
+          model: Review
+        }
+      ],
       limit: 10,
       offset: req.query.offset || 0,
     })
@@ -41,7 +51,12 @@ router.get('/:productId', (req, res, next) => {
   Product.findOne({
     where: {
       id: req.params.productId,
-    }
+    },
+    include: [
+      {
+        model: Review
+      }
+    ]
   })
     .then(result => {
       if (result) {
@@ -84,6 +99,11 @@ router.put('/:productId', (req, res, next) => {
         where: {
           id: req.params.productId
         },
+        include: [
+          {
+            model: Review
+          }
+        ],
         returning: true,
       }
     )
@@ -99,7 +119,7 @@ router.put('/:productId', (req, res, next) => {
       })
   } else {
     return res.status(403).send('Invalid user credentials');
-  } 
+  }
 });
 
 //delete product.
@@ -109,6 +129,11 @@ router.delete('/:productId', (req, res, next) => {
       where: {
         id: req.params.productId
       },
+      include: [
+        {
+          model: Review
+        }
+      ]
     })
       .then(() => {
         return res.status(204).send(`deleted product ${req.params.productId}`);
@@ -120,7 +145,7 @@ router.delete('/:productId', (req, res, next) => {
   } else {
     return res.status(403).send('Invalid user credentials');
   }
-  
+
 });
 
 
