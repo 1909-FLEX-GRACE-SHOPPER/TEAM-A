@@ -1,7 +1,7 @@
 const express = require('express');
 const Sequelize = require('sequelize');
 const router = express.Router();
-const { Order, OrderItem, Review } = require('../../db');
+const { Order, OrderItem, Review, Product } = require('../../db');
 
 router.use(express.json());
 
