@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { addCartItem } from '../redux/cart'
+import Pagination from './Pagination';
 
 //Material-UI
 import { Card, Grid } from '@material-ui/core';
@@ -48,6 +49,7 @@ const ProductsList = props => {
 
   return (
     <Grid container className={classes.gridStyle}>
+      <Pagination />
       {
         props.products.map(product => {
           return (
