@@ -11,6 +11,14 @@ const theme = createMuiTheme({
   typography: {
     fontFamily: "Nunito Sans, Roboto, sans-serif",
   },
+  props: {
+    MuiButtonBase: {
+      disableRipple: true, 
+    },
+    MuiToolbar:{
+      disableRipple: true, 
+    }
+  },
   contrastThreshold: 3,
 
 });

@@ -24,6 +24,9 @@ const useStyles = makeStyles(theme => ({
     flexGrow: 1,
     textAlign: 'left'
   },
+  title: {
+    flexGrow: 1,
+  },
 }));
 
 function Navbar(props) {
@@ -49,7 +52,7 @@ function Navbar(props) {
   return (
     <AppBar position="static">
       <Toolbar className={classes.root}>
-        <Button className={classes.home} edge='start' id='home' color="inherit" onClick={() => handleClick('')}>Dead Bits R Us</Button>
+        <Button className={classes.home} className={classes.title} edge='start' id='home' color="inherit" onClick={() => handleClick('')}>Dead Bits R Us</Button>
         <Button color="inherit" onClick={() => handleClick('cart')}><ShoppingCartIcon /> ({cartItemsLength ? cartItemsLength : 0})</Button>
         <Button edge="end" color="inherit" onClick={() => handleClick(user ? 'account' : 'login')}>
           {user ? `Welcome, ${user.firstName}` : 'Log In'}

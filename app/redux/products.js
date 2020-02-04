@@ -21,11 +21,10 @@ export const productsReducer = (state = [], action) => {
 }
 
 //thunks
-export const fetchProducts = function (page=0, catString='', ) {
-  console.log("catString", catString)
+export const fetchProducts = function (page, catString = '', ) {
   return dispatch => {
     if (catString) {
-      axios.get(`/api/products?page=${page}${catString}`) //longtime
+      axios.get(`/api/products?page=${!page ? 0 : page}${catString}`) //longtime
       .then(products => {
         console.log("queryingProducts", products)
         dispatch(setProducts(products.data))}

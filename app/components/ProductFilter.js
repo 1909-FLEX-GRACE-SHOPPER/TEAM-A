@@ -1,5 +1,4 @@
-
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchProducts } from '../redux/products'
 import Checkbox from '@material-ui/core/Checkbox';
@@ -13,75 +12,62 @@ import { render } from 'react-dom';
 const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
 const checkedIcon = <CheckBoxIcon fontSize="small" />;
 
-export default function CheckboxesTags() {
-const dispatch = useDispatch()
+export default function CheckboxesTags(props) {
+    const dispatch = useDispatch()
+    const [queryStr, editQueryStr] = useState('')
 
-const [selectedCategories, setSelectedCategories] = useState({
-    apparel:false,
-    noms:false,
-    gadgets:false,
-    home:false,
-    leisure: false
-})
-
-const handleChange = (value) =>{
-    setSelectedCategories({ ...selectedCategories, value:!selectedCategories[value]})
-}
-
-const generateQuery = (categoriesObj) => {
-    let queryStr = ""
-    for (let key in categoriesObj){
-        if (categoriesObj[key]){
-            queryStr += `&cat=${key}`
+    const handleChange = (category, isChecked) => {
+        if (isChecked) {
+            if (!queryStr.includes(category)) {
+                const newQueryStr = queryStr.concat(`&cat=${category}`)
+                editQueryStr(newQueryStr)
+            }
+        } else {
+            if (queryStr.includes(category)) {
+                const startidx = queryStr.indexOf(category);
+                const firstHalf = queryStr.slice(0, startidx - 5)
+                const secondHalf = queryStr.slice(startidx + category.length)
+                const newQueryStr = firstHalf.concat(secondHalf)
+                editQueryStr(newQueryStr)
+            }
         }
+        // props.history.push(`/${queryStr}`)
+        dispatch(fetchProducts(null, queryStr))
     }
-    console.log("queryString", queryStr )
-    return queryStr;
-}
-
-const handleSubmit = () => {
-    const queryStr = generateQuery(selectedCategories)
-    dispatch(fetchProducts(null, queryStr))
-}
-
-return (
+    return (
         <React.Fragment>
-        <Autocomplete
-            multiple
-            id="favorite"
-            options={productCategories}
-            disableCloseOnSelect
-            getOptionLabel={option => option.category}
-            renderOption={(option, { selected }) => (  
-                <React.Fragment>
-                    <Checkbox
-                        onChange={(event) => handleChange(event.target.value)}
-                        icon={icon}
-                        checkedIcon={checkedIcon}
-                        style={{ marginRight: 8 }}
-                        checked={selected}
+            <Autocomplete
+                multiple
+                id="favorite"
+                options={productCategories}
+                disableCloseOnSelect
+                getOptionLabel={option => option.category}
+                renderOption={(option, { selected }) => (
+                    <React.Fragment>
+                        <Checkbox
+                            onChange={ev => handleChange(option.category, ev.target.checked)}
+                            icon={icon}
+                            checkedIcon={checkedIcon}
+                            style={{ marginRight: 8 }}
+                            checked={selected}
+                        />
+                        {option.category}
+                    </React.Fragment>
+                )}
+                style={{ width: 500 }}
+                renderInput={params => (
+                    <TextField
+                        {...params}
+                        variant="outlined"
+                        label="Categories"
+                        placeholder="Chose Categories"
+                        fullWidth
                     />
-                    {option.category}
-                </React.Fragment>
-            )}
-            style={{ width: 500 }}
-            renderInput={params => (
-                <TextField
-                    {...params}
-                    variant="outlined"
-                    label="Categories"
-                    placeholder="Chose Categories"
-                    fullWidth
-                />
-            )}
-        />
-        <Button variant="contained" color="primary" onClick={handleSubmit} > 
-                Apply Filter
-      </Button>
+                )}
+            />
         </React.Fragment>
     );
 }
-
 const productCategories = [
     { category: 'apparel' },
     { category: 'noms' },

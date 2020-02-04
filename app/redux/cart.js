@@ -112,6 +112,8 @@ export const fetchCart = () => {
   }
 };
 
+
+
 //creates a new cart with the current sessionId
 export const newSessionCart = () => {
   return (dispatch, getState, { axios }) => {
