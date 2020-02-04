@@ -1,7 +1,7 @@
 const express = require('express');
 const Sequelize = require('sequelize');
 const router = express.Router();
-const { Order, OrderItem } = require('../../db');
+const { Order, OrderItem, Review } = require('../../db');
 
 router.use(express.json());
 
@@ -13,6 +13,14 @@ router.get('/:orderId', (req, res, next) => {
     },
     include: [{
       model: OrderItem,
+      include: {
+        model: Product,
+        include: [
+          {
+            model: Review,
+          }
+        ]
+      }
     }],
   })
     .then(result => {
@@ -61,6 +69,14 @@ router.get('/', (req, res, next) => {
       },
       include: [{
         model: OrderItem,
+        include: {
+          model: Product,
+          include: [
+            {
+              model: Review,
+            }
+          ]
+        }
       }],
       order: [
         [req.query.sort || 'createdAt', req.query.dir || 'ASC']
@@ -80,6 +96,14 @@ router.get('/', (req, res, next) => {
       },
       include: [{
         model: OrderItem,
+        include: {
+          model: Product,
+          include: [
+            {
+              model: Review,
+            }
+          ]
+        }
       }],
       order: [
         [req.query.sort || 'createdAt', req.query.dir || 'ASC']
