@@ -6,6 +6,7 @@ import { cartReducer } from './cart'
 import { ordersByUserReducer } from './ordersByUser'
 import { shippingAddressReducer } from './shippingAddress';
 import { billingReducer } from './billing';
+import { countReducer } from './count';
 
 const appReducer = combineReducers({
   products: productsReducer,
@@ -15,6 +16,7 @@ const appReducer = combineReducers({
   ordersByUser: ordersByUserReducer,
   shippingAddress: shippingAddressReducer,
   billing: billingReducer,
+  count: countReducer,
 })
 
 export default appReducer;

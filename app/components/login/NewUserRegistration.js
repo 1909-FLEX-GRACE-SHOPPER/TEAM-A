@@ -7,6 +7,7 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import { useStyles } from '../index';
 import { Link } from 'react-router-dom';
+import { ErrorBar } from '../index';
 
 function NewUserRegistration(props) {
   const user = useSelector(state => state.user);
@@ -16,6 +17,7 @@ function NewUserRegistration(props) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const dispatch = useDispatch();
+  const [signupError, setError] = useState(false);
 
   const classes = useStyles();
 
@@ -38,9 +40,12 @@ function NewUserRegistration(props) {
     }
   };
 
-  const handleSubmit = () => {
-    dispatch(createUser({ firstName, lastName, email, password }, cart));
-    props.history.push(`/`)
+  const handleSubmit = async () => {
+    setError(false);
+    await dispatch(createUser({ firstName, lastName, email, password }, cart));
+    if(!user) {
+        setError(true)
+    } else props.history.push(`/`)
   }
 
   return (
@@ -48,7 +53,9 @@ function NewUserRegistration(props) {
       <form className={classes.root}>
         <h1 className={classes.header}>Sign up</h1>
         <h3 className={classes.header}>glad to see you!</h3>
-
+        {signupError &&
+          <ErrorBar title={"Signup failed"} message={"Email already exists, please login or use different email to signup."} />
+        }
         <TextField
           id="firstname"
           label="First Name"
