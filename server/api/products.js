@@ -8,7 +8,12 @@ const { Product } = require('../../db')
 //get api/products?cat=noms
 //get api/products?cat=noms&page=2
 router.get('/', (req, res, next) => {
-  const { cat } = req.query;
+  const { cat, all } = req.query;
+  if (all) {
+    Product.findAll()
+      .then(products => res.status(200).send(products))
+      .catch(e => next(e))
+  }
   if (cat) {
     Product.findAll({
       where: {
