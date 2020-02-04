@@ -6,6 +6,7 @@ const Order = require('./order');
 const OrderItem = require('./orderItem');
 const ShippingAddress = require('./shippingAddress');
 const Session = require('./session');
+const Review = require('./review')
 
 module.exports = {
   User,
@@ -16,4 +17,5 @@ module.exports = {
   OrderItem,
   ShippingAddress,
   Session,
+  Review
 };
