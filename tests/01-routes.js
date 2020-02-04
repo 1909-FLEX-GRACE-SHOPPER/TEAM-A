@@ -32,15 +32,11 @@ describe('API Routes', async () => {
                     price: faker.commerce.price(1.00, 99.99, 2),
                 }
             };
-            //console.log(productList, ' product list')
             createdProducts = await Promise.all(productList.map(product => Product.create({ ...product })));
-            // console.log(createdProducts.map(p => p.dataValues))
         });
 
         it('GET / responds with all products', async () => {
-            //console.log('created products', createdProducts.map(p => p.dataValues))
             const responseBody = (await agent.get('/api/products')).body;
-            //console.log('response body', responseBody)
             expect(responseBody.length).to.equal(10);
             responseBody.forEach((prod) => {
                 //find same prod ID in createdProdcuts.
@@ -56,17 +52,14 @@ describe('API Routes', async () => {
         it('GET /:productId responds with specified product', async () => {
             let randomId = Math.floor(Math.random() * 10) % 10 || 1;
             const response = (await agent.get(`/api/products/${randomId}`)).body;
-            //console.log('response', response)
             //get a created product with randomId generated.
             let productToCompare = createdProducts.find(product => product.id === response.id).dataValues
-            //console.log('product to compare', productToCompare)
             expect(response.id).to.equal(productToCompare.id);
             expect(response.name).to.equal(productToCompare.name);
             expect(response.description).to.equal(productToCompare.description);
             expect(response.category).to.equal(productToCompare.category)
             expect(response.inventory).to.equal(productToCompare.inventory);
             expect(response.price).to.equal(productToCompare.price);
-
         });
 
     });
