@@ -8,6 +8,9 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import SkipNextIcon from '@material-ui/icons/SkipNext';
 import SkipPreviousIcon from '@material-ui/icons/SkipPrevious';
 
+import { fetchCount } from '../redux/count';
+import { fetchProducts } from '../redux/products';
+
 const useStyles = makeStyles(theme => ({
     wrapper: {
         margin: theme.spacing(1),
@@ -27,21 +30,29 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const Pagination = (props) => {
-    const [page, setPage] = useState(1);
+    const [page, setPage] = useState(0);
+    const totalProducts = useSelector(state => state.count);
+    const [totalPages, setTotalPages] = useState(0);
     const dispatch = useDispatch();
     const classes = useStyles();
 
     const handleNext = () => {
+        dispatch(fetchProducts(page + 1));
         setPage(page + 1);
-        //dispatch(fetchProducts(page - 1));
     }
 
     const handleBack = () => {
+        dispatch(fetchProducts(page - 1));
         setPage(page - 1);
-        //dispatch(fetchProducts(page - 1));
     }
 
     useEffect(() => {
+        if (totalProducts == null) {
+            dispatch(fetchCount());
+        }
+        if (totalProducts && !totalPages) {
+            setTotalPages(Math.ceil(totalProducts / 10));
+        }
     });
 
     return (
@@ -50,15 +61,16 @@ const Pagination = (props) => {
             <div className={classes.paper}>
                 <IconButton
                     onClick={handleBack}
-                    disabled={page <= 1}
+                    disabled={page <= 0}
                     color='primary'
                 >
                     <SkipPreviousIcon />
                 </IconButton>
-                {page}
+                {page + 1}
                 <IconButton
                     onClick={handleNext}
                     color='primary'
+                    disabled={page >= totalPages - 1}
                 >
                     <SkipNextIcon />
                 </IconButton>

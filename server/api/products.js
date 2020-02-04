@@ -8,8 +8,12 @@ const { Product, Review } = require('../../db')
 //get api/products?cat=noms
 //get api/products?cat=noms&page=2
 router.get('/', (req, res, next) => {
-  const { cat } = req.query;
-  if (cat) {
+  const { cat, all } = req.query;
+  if (all == 'true') {
+    Product.findAll()
+      .then(products => res.status(200).send(products))
+      .catch(e => next(e))
+  } else if (cat) {
     Product.findAll({
       where: {
         category: cat,
@@ -18,7 +22,7 @@ router.get('/', (req, res, next) => {
         model: Review
       },
       limit: 10,
-      offset: req.query.offset || 0,
+      offset: (req.query.page || 0) * 10,
     })
       .then(products => res.status(200).send(products))
       .catch(e => {
@@ -29,7 +33,7 @@ router.get('/', (req, res, next) => {
   else {
     Product.findAll({
       limit: 10,
-      offset: req.query.offset || 0,
+      offset: (req.query.page || 0) * 10,
       include: {
         model: Review
       }
