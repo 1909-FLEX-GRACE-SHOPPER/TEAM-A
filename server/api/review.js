@@ -2,13 +2,32 @@ const router = require('express').Router()
 const { Review } = require('../../db')
 const Sequelize = require('sequelize')
 
-router.get('/', (req, res, next) => {
-  Review.findAll()
-    .then(reviews => res.status(200).send(reviews))
-    .catch(e => {
-      res.status(400).send('Error finding all reviews');
-      next(e)
+router.get('/:reviewId?', (req, res, next) => {
+  const { reviewId } = req.params;
+  if (reviewId) {
+    Review.findOne({
+      where:
+      {
+        id: reviewId
+      }
     })
+      .then(review => {
+        if (review) {
+          res.status(302).send(review);
+        }
+        else {
+          res.status(404).send('Review not found')
+          next()
+        }
+      })
+  } else {
+    Review.findAll()
+      .then(reviews => res.status(200).send(reviews))
+      .catch(e => {
+        res.status(400).send('Error finding all reviews');
+        next(e)
+      })
+  }
 })
 
 router.post('/:productId', (req, res, next) => {
