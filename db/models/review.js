@@ -5,24 +5,22 @@ const connection = require('../connection')
 //Product hasMany Review
 
 const Review = connection.define('review', {
-    review: {
-        type: Sequelize.STRING,
-        allowNull: false,
-        validate: {
-            notEmpty: true,
-            len: [1, 500]
-        }
+  review: {
+    type: Sequelize.TEXT,
+    allowNull: false,
+    validate: {
+      notEmpty: true,
+      len: [1, 500]
     },
-    rating: {
-        type: Sequelize.DECIMAL(2, 1),
-        allowNull: false,
-        validate: {
-            isNumeric: true,
-            isDecimal: true,
-            min: .01,
-            max: 5.0
-        }
-    },
+    defaultValue: 'Product review'
+  },
+  rating: {
+    type: Sequelize.DECIMAL(3, 2),
+    validate: {
+      min: .01,
+      max: 5.0
+    }
+  },
 
 })
 
