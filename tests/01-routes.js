@@ -70,6 +70,10 @@ describe('API Routes', async () => {
       await Promise.all(userList.map(user => User.create({ ...user })));
     });
 
+    after(async() => {
+      
+    });
+
     it('GET /api/user responds with all users', async () => {
       const responseBody = (await agent.get('/api/user')).body;
       expect(responseBody.length).to.equal(userList.length);
@@ -80,24 +84,27 @@ describe('API Routes', async () => {
   });
 
   describe('GET /api/cart', async () => {
-    before(async () => {
-      //generate data
-      const session = await Session.create()
 
-      const user = await User.create({
+    before(async() => {
+      //generate data
+      await connection.sync({ force: true });
+      const session = (await Session.create()).dataValues;
+      console.log(session);
+
+      const user = (await User.create({
         firstName: 'Will',
         lastName: 'Apple',
         email: 'FreshPrince@gmail.com',
         password: 'abc',
-      })
+      })).dataValues;
 
-      const sessionCart = await Cart.create({
+      const sessionCart = (await Cart.create({
         sessionId: session.id,
-      })
+      })).dataValues
 
-      const userCart = await Cart.create({
+      const userCart = (await Cart.create({
         userId: user.id,
-      })
+      })).dataValues;
 
     });
 
