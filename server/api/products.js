@@ -9,29 +9,28 @@ const { Product } = require('../../db')
 //get api/products?cat=noms&page=2
 router.get('/', (req, res, next) => {
   const { cat, all } = req.query;
-  if (all) {
+  if (all == 'true') {
     Product.findAll()
       .then(products => res.status(200).send(products))
       .catch(e => next(e))
-  }
-  if (cat) {
-    Product.findAll({
-      where: {
-        category: cat,
-      },
-      limit: 10,
-      offset: req.query.offset || 0,
-    })
-      .then(products => res.status(200).send(products))
-      .catch(e => {
-        res.status(400).send('error finding products by category')
-        next(e)
+  } else if (cat) {
+      Product.findAll({
+        where: {
+          category: cat,
+        },
+        limit: 10,
+        offset: (req.query.page || 0) * 10,
       })
-  }
+        .then(products => res.status(200).send(products))
+        .catch(e => {
+          res.status(400).send('error finding products by category')
+          next(e)
+        })
+    }
   else {
     Product.findAll({
       limit: 10,
-      offset: req.query.offset || 0,
+      offset: (req.query.page || 0) * 10,
     })
       .then(products => res.status(200).send(products))
       .catch(e => {

@@ -1,6 +1,6 @@
 const SET_COUNT = 'SET_COUNT';
 
-initState = 0;
+const initState = null;
 
 //action creators
 const setCount = count => {
