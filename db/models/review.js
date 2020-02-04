@@ -3,6 +3,7 @@ const connection = require('../connection')
 
 //Review belongsTo Product
 //Product hasMany Review
+
 const Review = connection.define('review', {
     review: {
         type: Sequelize.STRING,
