@@ -13,17 +13,6 @@ const Review = connection.define('review', {
             len: [1, 500]
         }
     },
-    rating: {
-        type: Sequelize.DECIMAL(2, 1),
-        allowNull: false,
-        validate: {
-            isNumeric: true,
-            isDecimal: true,
-            min: .01,
-            max: 5.0
-        }
-    },
-
 })
 
 module.exports = Review
