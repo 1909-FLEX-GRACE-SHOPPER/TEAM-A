@@ -7,6 +7,7 @@ import { ordersByUserReducer } from './ordersByUser'
 import { shippingAddressReducer } from './shippingAddress';
 import { billingReducer } from './billing';
 import { reviewReducer } from './review'
+import { countReducer } from './count';
 
 const appReducer = combineReducers({
   products: productsReducer,
@@ -16,7 +17,8 @@ const appReducer = combineReducers({
   ordersByUser: ordersByUserReducer,
   shippingAddress: shippingAddressReducer,
   billing: billingReducer,
-  review: reviewReducer
+  review: reviewReducer,
+  count: countReducer,
 })
 
 export default appReducer;

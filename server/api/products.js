@@ -8,26 +8,25 @@ const { Product, Review } = require('../../db')
 //get api/products?cat=noms
 //get api/products?cat=noms&page=2
 router.get('/', (req, res, next) => {
-  const { cat } = req.query;
-  if (cat) {
-    Product.findAll({
-      where: {
-        category: cat,
-      },
-      include: [
-        {
-          model: Review
-        }
-      ],
-      limit: 10,
-      offset: req.query.offset || 0,
-    })
+  const { cat, all } = req.query;
+  if (all == 'true') {
+    Product.findAll()
       .then(products => res.status(200).send(products))
-      .catch(e => {
-        res.status(400).send('error finding products by category')
-        next(e)
+      .catch(e => next(e))
+  } else if (cat) {
+      Product.findAll({
+        where: {
+          category: cat,
+        },
+        limit: 10,
+        offset: (req.query.page || 0) * 10,
       })
-  }
+        .then(products => res.status(200).send(products))
+        .catch(e => {
+          res.status(400).send('error finding products by category')
+          next(e)
+        })
+    }
   else {
     Product.findAll({
       include: [
@@ -36,7 +35,7 @@ router.get('/', (req, res, next) => {
         }
       ],
       limit: 10,
-      offset: req.query.offset || 0,
+      offset: (req.query.page || 0) * 10,
     })
       .then(products => res.status(200).send(products))
       .catch(e => {
