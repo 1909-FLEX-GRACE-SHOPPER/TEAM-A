@@ -5,7 +5,6 @@ import { fetchProducts } from '../../redux/products';
 import { fetchUser } from '../../redux/user';
 import { fetchCart } from '../../redux/cart';
 import { fetchOrdersByUser } from '../../redux/ordersByUser'
-import { fetchReviews } from '../../redux/review'
 import { LoginPage, SingleProduct, Cart, Home, Checkout, Navbar, SingleOrder, AllOrders, AccountInfo, EditProduct, NewUserRegistration } from '../index';
 
 class Root extends React.Component {
@@ -15,7 +14,6 @@ class Root extends React.Component {
     await this.props.fetchUser();
     await this.props.fetchOrders();
     await this.props.fetchCart();
-    await this.props.fetchReviews();
   }
 
   render() {
@@ -53,8 +51,7 @@ const mapDispatch = dispatch => {
     fetchProducts: () => dispatch(fetchProducts()),
     fetchUser: () => dispatch(fetchUser()),
     fetchCart: () => dispatch(fetchCart()),
-    fetchOrders: () => dispatch(fetchOrdersByUser()),
-    fetchReviews: () => dispatch(fetchReviews())
+    fetchOrders: () => dispatch(fetchOrdersByUser())
   }
 }
 

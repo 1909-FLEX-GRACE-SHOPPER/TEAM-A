@@ -1,28 +1,29 @@
 import axios from 'axios'
 
-const SET_REVIEW = 'SET_REVIEW'
+const ADD_REVIEW = 'ADD_REVIEW'
 
-const setReview = (review) => {
+const addReview = (review) => {
     return {
-        type: SET_REVIEW,
+        type: ADD_REVIEW,
         review
     }
 }
 
 export const reviewReducer = (state = [], action) => {
     switch (action.type) {
-        case SET_REVIEW:
-            return action.review;
+        case ADD_REVIEW:
+            state = [...state.review, action.review]
+            return state;
         default:
             return state;
     }
 }
 //thunk to fetch reviews
 
-export const fetchReviews = () => {
+export const addReview = () => {
     return (dispatch) => {
-        axios.get('/api/review')
-            .then(reviews => dispatch(setReview(reviews.data)))
+        axios.post('/api/review', (productId))
+            .then(reviews => dispatch(addReview(reviews)))
             .catch(e => console.log(e))
     }
 }

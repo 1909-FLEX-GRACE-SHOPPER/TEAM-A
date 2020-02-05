@@ -72,8 +72,7 @@ const mapState = (state) => {
   return {
     selectedProduct: state.selectedProduct,
     cart: state.cart,
-    user: state.user,
-    review: state.review
+    user: state.user
   }
 }
 
