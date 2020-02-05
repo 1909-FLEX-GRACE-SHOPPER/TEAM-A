@@ -12,6 +12,7 @@ router.use('/cartitem', require('./cartItem'));
 router.use('/cart', require('./cart'));
 router.use('/shippingaddress', require('./shippingAddress'));
 router.use('/products', require('./products'));
+router.use('/checkout', require('./checkout'));
 
 //error handling
 router.use((req, res, next) => {
