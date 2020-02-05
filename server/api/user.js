@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 const chalk = require('chalk');
-const { User, Cart, Order } = require('../../db');
+const { User, Cart, Order, CartItem, Product, Review } = require('../../db');
 const { generateSessionId, hasher } = require('../utils');
 
 //return a single user by id
@@ -14,6 +14,18 @@ router.get('/:userId', (req, res, next) => {
     include: [
       {
         model: Cart,
+        include: [{
+          model: CartItem,
+          include: {
+            model: Product,
+            include: [
+              {
+                model: Review,
+              }
+            ]
+          }
+        }
+        ]
       },
       {
         model: Order,
@@ -81,22 +93,39 @@ router.put('/:userId', (req, res, next) => {
 });
 
 router.post('/', (req, res, next) => {
-  User.create({
-    firstName: req.body.firstName,
-    lastName: req.body.lastName,
-    email: req.body.email,
-    password: hasher(req.body.password),
-    isRegistered: true,
-    sessionId: req.cookies && req.cookies.sessionId
+  User.findOne({
+    where: {
+      email: req.body.email,
+    },
   })
-    .then(created => {
-      res.status(201).send(created);
+    .then(foundUser => {
+      if (foundUser) {
+        res.status(400).send('Email already exists, please login or use different email to signup.')
+      } else {
+        User.create({
+          firstName: req.body.firstName,
+          lastName: req.body.lastName,
+          email: req.body.email,
+          password: hasher(req.body.password),
+          isRegistered: true,
+          sessionId: req.cookies && req.cookies.sessionId
+        })
+          .then(created => {
+            res.status(201).send(created);
+          })
+          .catch(e => {
+            console.log(chalk.red(`Error in POST /api/user/: ${req.body}`));
+            res.status(400).send('Invalid request');
+            next(e);
+          })
+      }
     })
     .catch(e => {
-      console.log(chalk.red(`Error in POST /api/user/guest: ${req.body}`));
+      console.log(chalk.red(`Error in POST /api/user/: ${req.body}`));
       res.status(400).send('Invalid request');
       next(e);
     })
+
 });
 
 module.exports = router;

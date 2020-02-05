@@ -1,6 +1,6 @@
 'use strict';
 
-require('dotenv').config();
+// require('dotenv').config();
 
 module.exports = {
   // Default country for the checkout form.
@@ -22,7 +22,7 @@ module.exports = {
   // Storing these keys and secrets as environment variables is a good practice.
   // You can fill them in your own `.env` file.
   stripe: {
-    country: process.env.STRIPE_ACCOUNT_COUNTRY || 'US',
+    country: process.env.STRIPE_ACCOUNT_COUNTRY,
     apiVersion: '2019-12-03',
     publishableKey: process.env.STRIPE_PUBLISHABLE_KEY,
     secretKey: process.env.STRIPE_SECRET_KEY,

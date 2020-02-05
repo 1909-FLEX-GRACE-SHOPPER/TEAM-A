@@ -53,12 +53,15 @@ class SingleProduct extends Component {
         </button>
         {
           user && user.isAdmin &&
-            <button
-              onClick={() => this.props.history.push(`/products/edit/${selectedProduct.id}`)}
-            >
-              Edit Product
+          <button
+            onClick={() => this.props.history.push(`/products/edit/${selectedProduct.id}`)}
+          >
+            Edit Product
             </button>
         }
+        <Link
+          to='/review'
+        >Review</Link>
         <Link
           to='/'
           onClick={() => clearSelectedProduct()}

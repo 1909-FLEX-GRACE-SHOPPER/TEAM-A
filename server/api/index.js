@@ -14,6 +14,7 @@ router.use('/shippingaddress', require('./shippingAddress'));
 router.use('/products', require('./products'));
 router.use('/checkout', require('./checkout'));
 
+router.use('/review', require('./review'));
 //error handling
 router.use((req, res, next) => {
   const err = new Error(`Invalid API path: ${req.originalUrl}`);
