@@ -11,6 +11,7 @@ import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
+import Rating from '@material-ui/lab/Rating';
 import Link from '@material-ui/core/Link';
 import { makeStyles } from '@material-ui/core/styles';
 import Autocomplete from '@material-ui/lab/Autocomplete';
@@ -68,6 +69,9 @@ const ProductsList = props => {
                     <Typography variant="body2" color="textSecondary" component="p">
                       {product.price}
                     </Typography>
+                    {product.numRatings > 0 &&
+                      <Rating name="rating" value={Math.ceil(product.averageRating)} readOnly size="small" />
+                    }
                   </CardContent>
                 </CardActionArea>
                 <CardActions>
