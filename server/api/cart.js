@@ -1,6 +1,6 @@
 const Sequelize = require('sequelize');
 const router = require('express').Router()
-const { Cart, CartItem, User, Product } = require('../../db')
+const { Cart, CartItem, User, Product, Review } = require('../../db')
 
 // retrieve single cart based on either userId (if signed in) or sessionId
 router.get('/', (req, res, next) => {
@@ -13,7 +13,14 @@ router.get('/', (req, res, next) => {
         {
           model: CartItem,
           include: [
-            Product
+            {
+              model: Product,
+              include: [
+                {
+                  model: Review,
+                }
+              ]
+            }
           ]
         }
       ]
@@ -36,7 +43,14 @@ router.get('/', (req, res, next) => {
         {
           model: CartItem,
           include: [
-            Product
+            {
+              model: Product,
+              include: [
+                {
+                  model: Review,
+                }
+              ]
+            }
           ]
         }
       ]
@@ -54,7 +68,26 @@ router.get('/', (req, res, next) => {
 
 //check the database for a specific userId. Used when logging a user in.
 router.get('/user/:id', (req, res, next) => {
-  Cart.findOne({ where: { userId: req.params.id }, include: [{ model: CartItem }] })
+  Cart.findOne({
+    where: {
+      userId: req.params.id
+    },
+    include: [
+      {
+        model: CartItem,
+        include: [
+          {
+            model: Product,
+            include: [
+              {
+                model: Review,
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  })
     .then(cart => {
       return res.status(200).send(cart);
     })
@@ -77,7 +110,14 @@ router.post('/', (req, res, next) => {
         {
           model: CartItem,
           include: [
-            Product
+            {
+              model: Product,
+              include: [
+                {
+                  model: Review,
+                }
+              ]
+            }
           ]
         }
       ]
@@ -102,7 +142,14 @@ router.post('/', (req, res, next) => {
             {
               model: CartItem,
               include: [
-                Product
+                {
+                  model: Product,
+                  include: [
+                    {
+                      model: Review,
+                    }
+                  ]
+                }
               ]
             }
           ]
@@ -124,32 +171,31 @@ router.post('/', (req, res, next) => {
 });
 
 //PUT
-router.put('/newUser/:sessionId', (req, res, next) => {
-  // update userId for a newly signedup user
-  Cart.findOne({
-    where: {
-      sessionId: req.params.sessionId
-    }
-  })
-    .then(cart => {
-      if (cart) {
-        cart.update({
-          userId: req.user.id
-        })
-          .then(cart => res.status(200).send(cart))
-          .catch(e => {
-            res.status(500).send('error in PUT /cart/:sessionId route')
-            next(e)
-          })
-      }
-      else {
-        res.status(400).send('could not find cart')
-      }
-    })
-});
+// router.put('/newUser/:sessionId', (req, res, next) => {
+//   // update userId for a newly signedup user
+//   Cart.findOne({
+//     where: {
+//       sessionId: req.params.sessionId
+//     }
+//   })
+//     .then(cart => {
+//       if (cart) {
+//         cart.update({
+//           userId: req.user.id
+//         })
+//           .then(cart => res.status(200).send(cart))
+//           .catch(e => {
+//             res.status(500).send('error in PUT /cart/:sessionId route')
+//             next(e)
+//           })
+//       }
+//       else {
+//         res.status(400).send('could not find cart')
+//       }
+//     })
+// });
 
 router.put('/:cartId', (req, res, next) => {
-  // if there is no cartId, request simply finds cart associated with current user
   Cart.findOne({
     where: {
       id: req.params.cartId
@@ -204,7 +250,7 @@ router.delete('/:cartId', (req, res, next) => {
       res.status(400).send('Error destroying cart');
       next(e);
     })
-});  
+});
 
 module.exports = router;
 
