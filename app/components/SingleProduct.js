@@ -33,7 +33,9 @@ class SingleProduct extends Component {
 
   render() {
     const { selectedProduct, clearSelectedProduct, addCartItem, cart, user } = this.props;
+    const { reviews } = selectedProduct
     // TODO: add case for !selectedProduct (i.e. return "Requested product could not be found")
+    console.log(this.props)
     return (
       <div>
         <img src={selectedProduct.imageUrl} width="400" height="400" />
@@ -66,6 +68,23 @@ class SingleProduct extends Component {
           to='/'
           onClick={() => clearSelectedProduct()}
         >Return to products</Link>
+
+        <h3>
+          Reviews:
+        </h3>
+        <div>
+          {reviews && reviews.map(review => {
+            // let reviewer = user.find(user => user.id === review.userId)
+            return (
+              <React.Fragment key={review.id}>
+                {review.title}
+                <ul key>
+                  <li>{review.body}</li>
+                </ul>
+              </React.Fragment>
+            )
+          })}
+        </div>
       </div>
     )
   }
