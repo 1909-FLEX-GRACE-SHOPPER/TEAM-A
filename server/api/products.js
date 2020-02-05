@@ -1,6 +1,6 @@
 const Sequelize = require('sequelize');
 const router = require('express').Router()
-const { Product } = require('../../db')
+const { Product, Review } = require('../../db')
 
 //fetch all products
 //optional query parameter for limit and offset
@@ -14,23 +14,29 @@ router.get('/', (req, res, next) => {
       .then(products => res.status(200).send(products))
       .catch(e => next(e))
   } else if (cat) {
-      Product.findAll({
-        where: {
-          category: cat,
-        },
-        limit: 10,
-        offset: (req.query.page || 0) * 10,
+    Product.findAll({
+      where: {
+        category: cat,
+      },
+      include: {
+        model: Review
+      },
+      limit: 10,
+      offset: (req.query.page || 0) * 10,
+    })
+      .then(products => res.status(200).send(products))
+      .catch(e => {
+        res.status(400).send('error finding products by category')
+        next(e)
       })
-        .then(products => res.status(200).send(products))
-        .catch(e => {
-          res.status(400).send('error finding products by category')
-          next(e)
-        })
-    }
+  }
   else {
     Product.findAll({
       limit: 10,
       offset: (req.query.page || 0) * 10,
+      include: {
+        model: Review
+      }
     })
       .then(products => res.status(200).send(products))
       .catch(e => {
@@ -45,6 +51,9 @@ router.get('/:productId', (req, res, next) => {
   Product.findOne({
     where: {
       id: req.params.productId,
+    },
+    include: {
+      model: Review,
     }
   })
     .then(result => {
@@ -78,11 +87,11 @@ router.post('/', function (req, res, next) {
 router.put('/:productId', (req, res, next) => {
   console.log(req.user);
   if (req.user && req.user.dataValues.isAdmin) {
-    const { name, description, inventory, price } = req.body;
+    const { name, description, inventory, price, averageRating } = req.body;
     const { productId } = req.params;
     Product.update(
       {
-        name, description, inventory, price
+        name, description, inventory, price, averageRating
       },
       {
         where: {
@@ -103,7 +112,7 @@ router.put('/:productId', (req, res, next) => {
       })
   } else {
     return res.status(403).send('Invalid user credentials');
-  } 
+  }
 });
 
 //delete product.
@@ -124,7 +133,7 @@ router.delete('/:productId', (req, res, next) => {
   } else {
     return res.status(403).send('Invalid user credentials');
   }
-  
+
 });
 
 

@@ -1,7 +1,7 @@
 const express = require('express');
 const Sequelize = require('sequelize');
 const router = require('express').Router()
-const { CartItem, Product } = require('../../db/models')
+const { CartItem, Product, Review } = require('../../db/models')
 
 router.use(express.json());
 
@@ -17,7 +17,12 @@ router.post('/', (req, res, next) => {
           id: cartItem.id
         },
         include: {
-          model: Product
+          model: Product,
+          include: [
+            {
+              model: Review,
+            }
+          ]
         }
       })
         .then(cartItem => {
@@ -45,7 +50,12 @@ router.get('/:cartItemId?', (req, res, next) => {
         id: cartItemId
       },
       include: {
-        model: Product
+        model: Product,
+        include: [
+          {
+            model: Review,
+          }
+        ]
       }
     })
       .then(cartItem => {
@@ -78,7 +88,17 @@ router.put('/:cartItemId', (req, res, next) => {
   CartItem.findOne({
     where: {
       id: cartItemId
-    }
+    },
+    include: [
+      {
+        model: Product,
+        include: [
+          {
+            model: Review,
+          }
+        ]
+      }
+    ]
   })
     .then(cartItem => {
       cartItem.update({
