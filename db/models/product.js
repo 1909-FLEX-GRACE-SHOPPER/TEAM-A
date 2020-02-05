@@ -49,6 +49,20 @@ const Product = connection.define('product', {
   imageUrl: {
     type: Sequelize.TEXT,
     defaultValue: 'https://graceshopper.nyc3.cdn.digitaloceanspaces.com/Untitled_Artwork.png',
+  },
+  averageRating: {
+    type: Sequelize.DECIMAL(2, 1),
+    allowNull: false,
+    defaultValue: 0.0,
+    validate: {
+      min: 0.0,
+      max: 5.0
+    }
+  },
+  numRatings: {
+    type: Sequelize.INTEGER,
+    allowNull: false,
+    defaultValue: 0
   }
 })
 

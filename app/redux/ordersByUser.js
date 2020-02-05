@@ -43,38 +43,3 @@ export const createOrderAndAddOrderItems = function () {
       .catch(e => console.log(e));
   }
 }
-
-// const addOrderItem = function (orderId, productId, pricePaid, quantity) {
-//   return dispatch => {
-//     axios.post(`/api/orderitem/`, { orderId, productId, pricePaid, quantity })
-//       // .then(orderItem => dispatch(addAnOrderItem(orderItem.data)))
-//       // .then((orderItem) => console.log('orderItem: ', orderItem.data))
-//       .catch(e => console.log(e));
-//   }
-// }
-
-// export const createOrderAndAddOrderItems = function () {
-//   return (dispatch, getState) => {
-//     return dispatch(createOrder())
-//       .then(order => console.log('order line 79: ', order))
-//     // const cart = getState().cart
-//     // // console.log('cart: ', cart)
-//     // const order = getState().order
-//     // console.log('order: ', order)
-//     // return cart.cartitems.forEach(cartItem => dispatch(addOrderItem(order.id, cartItem.productId, cartItem.product.price, cartItem.quantity)))
-//   }
-// }
-
-// export const createOrderAndAddOrderItems = function () {
-//   return (dispatch, getState) => {
-//     return dispatch(createOrder())
-//       .then(() => {
-//         console.log('line 74')
-//         const cart = getState().cart
-//         const order = getState().order
-//         return cart.cartItems.forEach(cartItem => dispatch(addOrderItem(order.id, cartItem.productId, cartItem.product.price, cartItem.quantity)))
-//       })
-//       .catch(e => console.error(e))
-//   }
-// }
-
