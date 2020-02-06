@@ -63,7 +63,6 @@ class SingleProduct extends Component {
     const { selectedProduct, clearSelectedProduct, addCartItem, cart, user } = this.props;
     const { reviews } = selectedProduct
     // TODO: add case for !selectedProduct (i.e. return "Requested product could not be found")
-    console.log(this.props)
     return (
       <div>
         <img src={selectedProduct.imageUrl} width="400" height="400" />
