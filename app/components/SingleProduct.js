@@ -15,6 +15,7 @@ import { addCartItem } from '../redux/cart'
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import InputLabel from '@material-ui/core/InputLabel';
+import Rating from '@material-ui/lab/Rating';
 
 
 const useStyles = makeStyles(theme => ({
@@ -60,7 +61,7 @@ class SingleProduct extends Component {
 
   render() {
     const { selectedProduct, clearSelectedProduct, addCartItem, cart, user } = this.props;
-
+    const { reviews } = selectedProduct
     // TODO: add case for !selectedProduct (i.e. return "Requested product could not be found")
     return (
       <div>
@@ -83,23 +84,43 @@ class SingleProduct extends Component {
         </Button>
         {
           user && user.isAdmin &&
-          <Button 
-          variant="contained" 
-          color="primary"
-          onClick={() => this.props.history.push(`/products/edit/${selectedProduct.id}`)}
-            >
-              Edit Product
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={() => this.props.history.push(`/products/edit/${selectedProduct.id}`)}
+          >
+            Edit Product
             </Button>
         }
         <Button variant="contained" color="secondary">
-        <Link
-          to='/review'
-        >Review</Link>
-        <Link
-          to='/'
-          onClick={() => clearSelectedProduct()}
+          <Link
+            to='/review'
+          >Review</Link>
+          <Link
+            to='/'
+            onClick={() => clearSelectedProduct()}
           >Return to products</Link></Button>
-    
+        <h3>
+          Average Rating: {selectedProduct.numRatings > 0 &&
+            <Rating name="rating" value={Math.ceil(selectedProduct.averageRating)} readOnly size="small" />
+          }
+        </h3>
+        <h3>
+          Reviews:
+        </h3>
+        <div>
+          {reviews && reviews.map(review => {
+            return (
+              <React.Fragment key={review.id}>
+
+                {review.title}
+                <ul key>
+                  <li>{review.body}</li>
+                </ul>
+              </React.Fragment>
+            )
+          })}
+        </div>
       </div>
     )
   }
