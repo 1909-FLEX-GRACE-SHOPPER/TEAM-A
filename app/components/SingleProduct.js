@@ -11,6 +11,33 @@ import { Link } from 'react-router-dom';
 import { fetchProduct, clearProduct } from '../redux/singleProduct'
 import { addCartItem } from '../redux/cart'
 
+//Material UI
+import { makeStyles } from '@material-ui/core/styles';
+import Button from '@material-ui/core/Button';
+import InputLabel from '@material-ui/core/InputLabel';
+
+
+const useStyles = makeStyles(theme => ({
+  root: {
+    flexGrow: 1,
+  },
+  paper: {
+    padding: theme.spacing(2),
+    margin: 'auto',
+    maxWidth: 500,
+  },
+  image: {
+    width: 128,
+    height: 128,
+  },
+  img: {
+    margin: 'auto',
+    display: 'block',
+    maxWidth: '100%',
+    maxHeight: '100%',
+  },
+}));
+
 class SingleProduct extends Component {
 
   constructor() {
@@ -33,6 +60,7 @@ class SingleProduct extends Component {
 
   render() {
     const { selectedProduct, clearSelectedProduct, addCartItem, cart, user } = this.props;
+
     // TODO: add case for !selectedProduct (i.e. return "Requested product could not be found")
     return (
       <div>
@@ -45,27 +73,33 @@ class SingleProduct extends Component {
             Array(10).fill('').map((el, idx) => <option key={idx}>{idx + 1}</option>)
           }
         </select>
-        <button
+        <Button
+          variant="contained"
+          color="primary"
           onClick={() => addCartItem(cart.id, this.props.match.params.id, this.state.quantity)}
           disabled={selectedProduct.quantity === 0}
         >
           Add to cart
-        </button>
+        </Button>
         {
           user && user.isAdmin &&
-          <button
-            onClick={() => this.props.history.push(`/products/edit/${selectedProduct.id}`)}
-          >
-            Edit Product
-            </button>
+          <Button 
+          variant="contained" 
+          color="primary"
+          onClick={() => this.props.history.push(`/products/edit/${selectedProduct.id}`)}
+            >
+              Edit Product
+            </Button>
         }
+        <Button variant="contained" color="secondary">
         <Link
           to='/review'
         >Review</Link>
         <Link
           to='/'
           onClick={() => clearSelectedProduct()}
-        >Return to products</Link>
+          >Return to products</Link></Button>
+    
       </div>
     )
   }
