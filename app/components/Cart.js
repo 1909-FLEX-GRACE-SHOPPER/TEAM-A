@@ -20,7 +20,7 @@ class Cart extends React.Component {
 
   render() {
     return (
-      <div>
+      < div >
         <TableContainer component={Paper}>
           <Table aria-label="shoppingCart">
             <TableHead>
@@ -36,32 +36,31 @@ class Cart extends React.Component {
               {
                 this.props.cart.id ?
                   (this.props.cart.cartitems.map(cartItem => (
+
                     <TableRow key={cartItem.id}>
-                      {this.props.products.map(product => {
-                        if (cartItem.productId === product.id) {
-                          return (
-                            <Fragment key={cartItem.id}>
-                              <TableCell align="left" >{product.name}</TableCell>
-                              <TableCell align="left"><select name='quantity' value={cartItem.quantity} onChange={ev => this.handleChange(ev, cartItem.id)}>
-                                {
-                                  Array(10).fill('').map((el, idx) => <option key={idx} defaultValue={cartItem.quantity}>{idx + 1}</option>)
-                                }
-                              </select></TableCell>
-                              <TableCell align="left" >{product.price}</TableCell>
-                              <TableCell align="left" >{product.price * cartItem.quantity}</TableCell>
-                              <TableCell align="left" ><Button
-                                variant="contained"
-                                color="secondary"
-                                startIcon={<DeleteIcon />}
-                                onClick={() => this.props.deleteCartItem(cartItem.id)}
-                              >
-                                Delete
+
+                      <Fragment key={cartItem.id}>
+                        <TableCell align="left" >{cartItem.product.name}</TableCell>
+                        <TableCell align="left"><select name='quantity' value={cartItem.quantity} onChange={ev => this.handleChange(ev, cartItem.id)}>
+                          {
+                            Array(10).fill('').map((el, idx) => <option key={idx} defaultValue={cartItem.quantity}>{idx + 1}</option>)
+                          }
+                        </select></TableCell>
+                        <TableCell align="left" >{cartItem.product.price}</TableCell>
+                        <TableCell align="left" >{cartItem.product.price * cartItem.quantity}</TableCell>
+                        <TableCell align="left" ><Button
+                          variant="contained"
+                          color="secondary"
+                          startIcon={<DeleteIcon />}
+                          onClick={() => this.props.deleteCartItem(cartItem.id)}
+                        >
+                          Delete
                                 </Button>
-                              </TableCell>
-                            </Fragment>)
-                        }
-                      })}
+                        </TableCell>
+                      </Fragment>
+
                     </TableRow>
+
                   ))) : (
                     <TableRow>
                       <TableCell>Loading...</TableCell>
@@ -72,10 +71,9 @@ class Cart extends React.Component {
           </Table>
         </TableContainer>
         <Button onClick={() => window.location.href = '/#/checkout'}>Checkout</Button>
-      </div>
+      </div >
     )
   }
-
 }
 
 
@@ -91,8 +89,10 @@ const mapDispatch = dispatch => {
   return {
     fetchProducts: () => dispatch(fetchProducts()),
     updateCartItem: (cartItemId, newDetails) => dispatch(updateCartItem(cartItemId, newDetails)),
-    deleteCartItem: (cartItemId) => dispatch(deleteCartItem(cartItemId))
+    deleteCartItem: (cartItemId) => dispatch(deleteCartItem(cartItemId)),
+    fetchAllProducts: () => dispatch(fetchAllProducts()),
   }
 }
 
 export default connect(mapState, mapDispatch)(Cart)
+
