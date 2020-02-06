@@ -1,4 +1,4 @@
-const Sequelize = require('sequelize');
+const { Op } = require('sequelize');
 const router = require('express').Router()
 const { Product, Review } = require('../../db')
 
@@ -26,15 +26,15 @@ router.get('/:productId', (req, res, next) => {
 });
 
 router.get('/', (req, res, next) => {
-  const { cat, all } = req.query;
+  const { all, val } = req.query;
   if (all == 'true') {
     Product.findAll()
       .then(products => res.status(200).send(products))
       .catch(e => next(e))
-  } else if (cat) {
+  } else if (val) {
     Product.findAll({
       where: {
-        category: cat,
+        name: { [Op.iLike]: `%${val}%` }
       },
       include: {
         model: Review
