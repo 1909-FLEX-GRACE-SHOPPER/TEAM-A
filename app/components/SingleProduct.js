@@ -12,32 +12,9 @@ import { fetchProduct, clearProduct } from '../redux/singleProduct'
 import { addCartItem } from '../redux/cart'
 
 //Material UI
-import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import InputLabel from '@material-ui/core/InputLabel';
 import Rating from '@material-ui/lab/Rating';
-
-
-const useStyles = makeStyles(theme => ({
-  root: {
-    flexGrow: 1,
-  },
-  paper: {
-    padding: theme.spacing(2),
-    margin: 'auto',
-    maxWidth: 500,
-  },
-  image: {
-    width: 128,
-    height: 128,
-  },
-  img: {
-    margin: 'auto',
-    display: 'block',
-    maxWidth: '100%',
-    maxHeight: '100%',
-  },
-}));
 
 class SingleProduct extends Component {
 
@@ -62,7 +39,14 @@ class SingleProduct extends Component {
   render() {
     const { selectedProduct, clearSelectedProduct, addCartItem, cart, user } = this.props;
     const { reviews } = selectedProduct
+    console.log('reviews: ', reviews)
     // TODO: add case for !selectedProduct (i.e. return "Requested product could not be found")
+    if (!reviews) {
+      return (
+        <div>Loading...</div>
+      )
+    }
+
     return (
       <div>
         <img src={selectedProduct.imageUrl} width="400" height="400" />
@@ -92,35 +76,35 @@ class SingleProduct extends Component {
             Edit Product
             </Button>
         }
-        <Button variant="contained" color="secondary">
-          <Link
-            to='/review'
-          >Review</Link>
-          <Link
-            to='/'
-            onClick={() => clearSelectedProduct()}
-          >Return to products</Link></Button>
+        <Button variant="contained" color="secondary"
+          onClick={() => {
+            clearSelectedProduct()
+            this.props.history.push('/')
+          }}
+        >Return to products
+          </Button>
         <h3>
-          Average Rating: {selectedProduct.numRatings > 0 &&
-            <Rating name="rating" value={Math.ceil(selectedProduct.averageRating)} readOnly size="small" />
-          }
-        </h3>
+          Average Rating: </h3>
+        {selectedProduct.numRatings === 0 ? <span style={{ fontStyle: 'italic' }}>No ratings</span> :
+          <Rating name="rating" value={Math.ceil(selectedProduct.averageRating)} readOnly size="small" />
+        }
         <h3>
-          Reviews:
+          Customer Reviews:
         </h3>
-        <div>
-          {reviews && reviews.map(review => {
-            return (
-              <React.Fragment key={review.id}>
-
-                {review.title}
-                <ul key>
-                  <li>{review.body}</li>
-                </ul>
-              </React.Fragment>
-            )
-          })}
-        </div>
+        {reviews.length === 0 ? <span style={{ fontStyle: 'italic' }}>No reviews</span> :
+          <ul>
+            {reviews && reviews.map(review => {
+              return (
+                <li key={review.id} style={{ fontWeight: 'bold' }}>
+                  {review.title}
+                  <div>
+                    <div style={{ fontStyle: 'italic', fontWeight: 'normal', padding: '3px' }}>"{review.body}"</div>
+                  </div>
+                </li>
+              )
+            })}
+          </ul>
+        }
       </div>
     )
   }

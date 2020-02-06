@@ -30,6 +30,9 @@ const useStyles = makeStyles({
   },
   centerHero: {
     width: '480px',
+  },
+  italics: {
+    fontstyle: 'italics',
   }
 });
 
