@@ -1,7 +1,11 @@
+@import url('https://fonts.googleapis.com/css?family=Work+Sans&display=swap');
+
 * {
   box-sizing: border-box;
-  font-family: 'Montserrat', sans-serif;
+  font-family: 'Work Sans', sans-serif;
+  
 }
+
 #main {
     margin: 0;
     display: flex;
