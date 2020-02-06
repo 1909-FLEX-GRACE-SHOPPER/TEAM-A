@@ -31,12 +31,12 @@ router.get('/:reviewId?', (req, res, next) => {
 })
 
 router.post('/:productId', (req, res, next) => {
-  const { review, rating } = req.body;
+  const { title, body, userId } = req.body;
   const { productId } = req.params;
-  if (!review && !rating) {
-    return res.status(400).send('Invalid request; review or rating required');
+  if (!title || !body || !userId) {
+    return res.status(400).send('Invalid request; title, body & userId required');
   }
-  Review.create({ review: review ? review : 'No review', rating: rating ? rating : null, productId })
+  Review.create({ title, body, userId, productId })
     .then(review => res.status(201).send(review))
     .catch(e => {
       res.status(400).send('Error creating new review');

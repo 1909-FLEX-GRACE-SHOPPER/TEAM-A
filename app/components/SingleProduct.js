@@ -93,6 +93,9 @@ class SingleProduct extends Component {
         }
         <Button variant="contained" color="secondary">
         <Link
+          to='/review'
+        >Review</Link>
+        <Link
           to='/'
           onClick={() => clearSelectedProduct()}
           >Return to products</Link></Button>

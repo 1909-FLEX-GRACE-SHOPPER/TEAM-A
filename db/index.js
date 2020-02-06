@@ -30,6 +30,8 @@ Cart.belongsTo(Session);
 
 Product.hasMany(Review);
 Review.belongsTo(Product);
+User.hasMany(Review);
+Review.belongsTo(User);
 
 //exports
 module.exports = {
