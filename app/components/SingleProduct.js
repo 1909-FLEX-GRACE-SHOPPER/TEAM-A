@@ -74,7 +74,6 @@ class SingleProduct extends Component {
         </h3>
         <div>
           {reviews && reviews.map(review => {
-            // let reviewer = user.find(user => user.id === review.userId)
             return (
               <React.Fragment key={review.id}>
                 {review.title}
