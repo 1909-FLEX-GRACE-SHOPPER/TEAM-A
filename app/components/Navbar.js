@@ -48,10 +48,10 @@ function Navbar(props) {
 
   return (
     <AppBar position="static">
-      <Toolbar className={classes.root}>
-        <Button className={classes.home} edge='start' id='home' color="inherit" onClick={() => handleClick('')}>Dead Bits R Us</Button>
-        <Button color="inherit" onClick={() => handleClick('cart')}><ShoppingCartIcon /> ({cartItemsLength ? cartItemsLength : 0})</Button>
-        <Button edge="end" color="inherit" onClick={() => handleClick(user ? 'account' : 'login')}>
+      <Toolbar disableRipple className={classes.root}>
+        <Button disableRipple className={classes.home} edge='start' id='home' color="inherit" onClick={() => handleClick('')}>Dead Bits R Us</Button>
+        <Button disableRipple color="inherit" onClick={() => handleClick('cart')}><ShoppingCartIcon /> ({cartItemsLength ? cartItemsLength : 0})</Button>
+        <Button disableRipple edge="end" color="inherit" onClick={() => handleClick(user ? 'account' : 'login')}>
           {user ? `Welcome, ${user.firstName}` : 'Log In'}
         </Button>
       </Toolbar>
