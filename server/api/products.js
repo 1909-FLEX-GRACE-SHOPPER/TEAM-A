@@ -31,7 +31,6 @@ router.get('/:productId', (req, res, next) => {
 });
 
 router.get('/', (req, res, next) => {
-  console.log("req.query", req.query)
   const { cat, all } = req.query;
   if (all == 'true') {
     Product.findAll()

@@ -90,7 +90,6 @@ const mapDispatch = dispatch => {
     fetchProducts: () => dispatch(fetchProducts()),
     updateCartItem: (cartItemId, newDetails) => dispatch(updateCartItem(cartItemId, newDetails)),
     deleteCartItem: (cartItemId) => dispatch(deleteCartItem(cartItemId)),
-    fetchAllProducts: () => dispatch(fetchAllProducts()),
   }
 }
 
