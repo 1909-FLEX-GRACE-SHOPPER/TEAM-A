@@ -1,6 +1,7 @@
-import React from 'react';
-import { connect } from 'react-redux';
+import React, { useState } from 'react';
+import { connect, useDispatch } from 'react-redux';
 import { addCartItem } from '../redux/cart'
+import { fetchProducts } from '../redux/products'
 import Pagination from './Pagination';
 
 //Material-UI
@@ -13,6 +14,7 @@ import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import Rating from '@material-ui/lab/Rating';
 import Link from '@material-ui/core/Link';
+import TextField from '@material-ui/core/TextField';
 import { makeStyles } from '@material-ui/core/styles';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import { createFilterOptions } from '@material-ui/lab/Autocomplete';
@@ -35,61 +37,71 @@ const useStyles = makeStyles({
   },
 })
 
-
-
-const ProductsList = props => {
+const ProductsList = (props) => {
   const classes = useStyles();
+  const dispatch = useDispatch();
 
   if (!props.products) {
     return (
       <div>
         Loading Products;
-      </div>
+        </div>
     )
   };
 
+  const handleChange = ev => {
+    dispatch(fetchProducts(null, `&val=${ev.target.value}`))
+  }
+
   return (
-    <Grid container className={classes.gridStyle}>
+    <div>
       <Pagination />
-      {
-        props.products.map(product => {
-          return (
-            <Grid item md key={product.id}>
-              <Card className="card" className={classes.cardStyle}>
-                <CardActionArea>
-                  <CardMedia
-                    className={classes.media}
-                    image={product.imageUrl}
-                    title={product.name}
-                  />
-                  <CardContent>
-                    <Typography gutterBottom variant="h5" component="h3">
-                      <Link href={`/#/products/${product.id}`}>{product.name}</Link>
-                    </Typography>
-                    <Typography variant="body2" color="textSecondary" component="p">
-                      {product.price}
-                    </Typography>
-                    {product.numRatings > 0 &&
-                      <Rating name="rating" value={Math.ceil(product.averageRating)} readOnly size="small" />
-                    }
-                  </CardContent>
-                </CardActionArea>
-                <CardActions>
-                  <Button
-                    size="medium"
-                    color="primary"
-                    onClick={() => props.addCartItem(props.cart.id, product.id, 1)}
-                    // TODO: add temporary lightbox displaying success or failure for adding to cart
-                    disabled={product.quantity === 0}>
-                    Add to Cart
-                  </Button>
-                </CardActions>
-              </Card>
-            </Grid>
-          );
-        })
-      }
-    </Grid>
+      <TextField
+        id="product-search"
+        label="Search products"
+        type="search"
+        onChange={ev => handleChange(ev)} />
+      <Grid container className={classes.gridStyle} >
+        {
+          props.products.map(product => {
+            return (
+              <Grid item md key={product.id}>
+                <Card className="card" className={classes.cardStyle}>
+                  <CardActionArea>
+                    <CardMedia
+                      className={classes.media}
+                      image={product.imageUrl}
+                      title={product.name}
+                    />
+                    <CardContent>
+                      <Typography gutterBottom variant="h5" component="h3">
+                        <Link href={`/#/products/${product.id}`}>{product.name}</Link>
+                      </Typography>
+                      <Typography variant="body2" color="textSecondary" component="p">
+                        {product.price}
+                      </Typography>
+                      {product.numRatings > 0 &&
+                        <Rating name="rating" value={Math.ceil(product.averageRating)} readOnly size="small" />
+                      }
+                    </CardContent>
+                  </CardActionArea>
+                  <CardActions>
+                    <Button
+                      size="medium"
+                      color="primary"
+                      onClick={() => props.addCartItem(props.cart.id, product.id, 1)}
+                      // TODO: add temporary lightbox displaying success or failure for adding to cart
+                      disabled={product.quantity === 0}>
+                      Add to Cart
+                    </Button>
+                  </CardActions>
+                </Card>
+              </Grid>
+            );
+          })
+        }
+      </Grid >
+    </div>
   );
 };
 
@@ -102,7 +114,8 @@ const mapState = ({ products, cart }) => {
 
 const mapDispatch = dispatch => {
   return {
-    addCartItem: (cartId, productId, quantity) => dispatch(addCartItem(cartId, productId, quantity))
+    addCartItem: (cartId, productId, quantity) => dispatch(addCartItem(cartId, productId, quantity)),
+    fetchProducts: (page, valString) => dispatch(fetchProducts(page, valString))
   }
 }
 
