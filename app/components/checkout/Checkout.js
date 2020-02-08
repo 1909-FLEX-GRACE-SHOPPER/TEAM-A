@@ -11,9 +11,11 @@ import Step from '@material-ui/core/Step';
 import StepLabel from '@material-ui/core/StepLabel';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
+import {Elements} from 'react-stripe-elements';
 
 import AddressForm from './AddressForm';
 import PaymentForm from './PaymentForm';
+import StripePaymentForm from './StripePaymentForm';
 import Review from './Review';
 
 const useStyles = makeStyles(theme => ({
@@ -58,9 +60,9 @@ const steps = ['Shipping address', 'Payment details', 'Review your order'];
 const getStepContent = (step) => {
   switch (step) {
     case 0:
-      return <AddressForm />;
+      return <StripePaymentForm />;
     case 1:
-      return <PaymentForm />;
+      return <StripePaymentForm />;
     case 2:
       return <Review />;
     default:
@@ -86,7 +88,7 @@ const Checkout = () => {
   };
 
   const handleSubmit = () => {
-    dispatch(createOrderAndAddOrderItems())
+    dispatch(createOrderAndAddOrderItems());
   }
 
   useEffect(() => {
@@ -129,12 +131,14 @@ const Checkout = () => {
               </React.Fragment>
             ) : (
                 <React.Fragment>
-                  {getStepContent(activeStep)}
+                  <Elements>
+                    {getStepContent(activeStep)}
+                  </Elements>
                   <div className={classes.buttons}>
                     {activeStep !== 0 && (
                       <Button onClick={handleBack} className={classes.button}>
                         Back
-                    </Button>
+                      </Button>
                     )}
                     <Button
                       variant="contained"

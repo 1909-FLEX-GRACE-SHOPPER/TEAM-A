@@ -1,8 +1,10 @@
 const chalk = require('chalk');
 const { connection } = require('./db');
 const server = require('./server');
-
+const dotenv = require('dotenv');
+dotenv.config();
 const PORT = process.env.PORT || 3000;
+
 
 console.log(chalk.white('*** FILE: main.js'));
 console.log(chalk.white('Opening database connection'));
