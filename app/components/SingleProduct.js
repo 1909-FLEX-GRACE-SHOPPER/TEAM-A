@@ -96,7 +96,7 @@ class SingleProduct extends Component {
             {reviews && reviews.map(review => {
               return (
                 <li key={review.id} style={{ fontWeight: 'bold' }}>
-                  {review.title}
+                  {review.user.name}: {review.title}
                   <div>
                     <div style={{ fontStyle: 'italic', fontWeight: 'normal', padding: '3px' }}>"{review.body}"</div>
                   </div>
