@@ -1,6 +1,6 @@
 const { Op } = require('sequelize');
 const router = require('express').Router()
-const { Product, Review } = require('../../db')
+const { Product, Review, User } = require('../../db')
 
 //fetch all products
 //optional query parameter for limit and offset
@@ -15,6 +15,9 @@ router.get('/:productId', (req, res, next) => {
     },
     include: {
       model: Review,
+      include: {
+        model: User
+      }
     }
   })
     .then(result => {
