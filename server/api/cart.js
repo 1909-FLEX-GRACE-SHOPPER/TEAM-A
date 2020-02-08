@@ -35,6 +35,9 @@ router.get('/', (req, res, next) => {
         }
       })
   } else {
+    if (!req.cookies.sessionId) {
+      return res.status(200).send(null)
+    }
     Cart.findOne({
       where: {
         sessionId: req.cookies.sessionId
