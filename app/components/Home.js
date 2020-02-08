@@ -21,7 +21,8 @@ const theme = createMuiTheme({
     create: () => 'none',
   },
   typography: {
-    fontFamily:[ "-apple - system", "BlinkMacSystemFont", "Segoe UI", "Roboto", "Helvetica Neue", "Arial", "Noto Sans", "sans- serif", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"].join(",")
+    //fontFamily:[ "-apple - system", "BlinkMacSystemFont", "Segoe UI", "Roboto", "Helvetica Neue", "Arial", "Noto Sans", "sans- serif", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"].join(",")
+    fontFamily: 'Poppins'
   },
   contrastThreshold: 3,
 });

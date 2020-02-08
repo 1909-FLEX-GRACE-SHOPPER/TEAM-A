@@ -16,6 +16,8 @@ import Button from '@material-ui/core/Button';
 import InputLabel from '@material-ui/core/InputLabel';
 import Rating from '@material-ui/lab/Rating';
 import Grid from '@material-ui/core/Grid';
+import Container from '@material-ui/core/Container';
+import AddShoppingCartIcon from '@material-ui/icons/AddShoppingCart';
 
 class SingleProduct extends Component {
 
@@ -50,6 +52,7 @@ class SingleProduct extends Component {
 
     return (
       <React.Fragment>
+        <Container maxWidth={"lg"}> 
       <Grid
         container
         direction="row"
@@ -62,9 +65,9 @@ class SingleProduct extends Component {
           <Grid item xs={6} >
           <h1>{selectedProduct.name}</h1>
         <h3>{selectedProduct.description}</h3>
-        <p>Price: ${selectedProduct.price}</p>
+        <p style={{ marginBottom:"10px"}}>Price: ${selectedProduct.price}</p>
         
-        <select name='quantity' onChange={this.handleChange}>
+              <select style={{ marginBottom: "10px" }} name='quantity' onChange={this.handleChange}>
           {
             Array(10).fill('').map((el, idx) => <option key={idx}>{idx + 1}</option>)
           }
@@ -73,9 +76,11 @@ class SingleProduct extends Component {
         <Button
           variant="contained"
           color="primary"
+          style={{ marginBottom:"10px"}}
           onClick={() => addCartItem(cart.id, this.props.match.params.id, this.state.quantity)}
           disabled={selectedProduct.quantity === 0}
         >
+        <AddShoppingCartIcon fontSize={"small"} style={{ paddingRight: "10px" }} />
           Add to cart
         </Button>
         </Grid>
@@ -84,28 +89,32 @@ class SingleProduct extends Component {
           <Button
             variant="contained"
             color="primary"
+            style={{ marginBottom: "10px" }}
             onClick={() => this.props.history.push(`/products/edit/${selectedProduct.id}`)}
           >
             Edit Product
             </Button>
         }
-          <Grid item xs={3} >
-        <Button variant="contained" color="secondary">
-          <Link
-            to='/review'
-          >Review</Link> </Button>
-          </Grid>
+        
           <Button>
           <Link
             to='/'
             onClick={() => clearSelectedProduct()}
           >Return to products</Link></Button>
           </Grid>
-        <h3>
-          Average Rating: </h3>
-        {selectedProduct.numRatings === 0 ? <span style={{ fontStyle: 'italic' }}>No ratings</span> :
-          <Rating name="rating" value={Math.ceil(selectedProduct.averageRating)} readOnly size="small" />
-        }
+      
+            <Grid item sm={6}>
+              <Button color="secondary">
+                <Link
+                  to='/review'
+                > Leave Review</Link> </Button>
+                </Grid>
+         <Grid item sm={6}>
+              <h3>
+                Average Rating: </h3>
+              {selectedProduct.numRatings === 0 ? <span style={{ fontStyle: 'italic' }}>No ratings</span> :
+                <Rating name="rating" value={Math.ceil(selectedProduct.averageRating)} readOnly size="small" />
+              }
         <h3>
           Customer Reviews:
         </h3>
@@ -122,7 +131,9 @@ class SingleProduct extends Component {
             )
           })}
         </div>
+            </Grid>
         </Grid>
+        </Container>
       </React.Fragment>
     )
   }
