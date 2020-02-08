@@ -66,6 +66,8 @@ const seed = async () => {
         description: faker.lorem.sentence(),
         inventory: Math.round(Math.random() * 2000),
         price: faker.commerce.price(1.00, 99.99, 2),
+        numRatings: 1,
+        averageRating: Math.floor(Math.random() * 5)
       }
       productList[i].category = categorize(productList[i].name.split(' ')[2])
       productList[i].imageUrl = `https://graceshopper.nyc3.cdn.digitaloceanspaces.com/${productList[i].category}-${(i % 4) + 1}.png`
@@ -110,8 +112,12 @@ const seed = async () => {
           pricePaid: faker.commerce.price(1.00, 99.99, 2),
           productId: createdProducts[randomProduct].id
         });
+        await Product.update(
+
+        )
       }
     }
+
 
   }
   catch (e) {
