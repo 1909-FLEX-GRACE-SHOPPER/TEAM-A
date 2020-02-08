@@ -45,7 +45,7 @@ function LoginPage(props) {
       props.history.push('/');
     }
     else {
-      if (submitCount > 0) {
+      if (submitted) {
         setError(true);
       }
     }
