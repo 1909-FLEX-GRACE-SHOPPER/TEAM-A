@@ -1,10 +1,12 @@
 const User = require('./user');
 const Cart = require('./cart');
-const CartItem = require('./cartitem');
+const CartItem = require('./cartItem');
 const Product = require('./product');
 const Order = require('./order');
-const OrderItem = require('./orderitem');
-const ShippingAddress = require('./shippingaddress')
+const OrderItem = require('./orderItem');
+const ShippingAddress = require('./shippingAddress');
+const Session = require('./session');
+const Review = require('./review')
 
 module.exports = {
   User,
@@ -14,4 +16,6 @@ module.exports = {
   Order,
   OrderItem,
   ShippingAddress,
-}
+  Session,
+  Review
+};

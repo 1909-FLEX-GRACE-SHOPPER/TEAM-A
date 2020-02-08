@@ -1,9 +1,8 @@
 var express = require('express');
 var router = express.Router();
 const chalk = require('chalk');
-const { User, Cart, Order } = require('../../db');
+const { User, Cart, Order, CartItem, Product, Review } = require('../../db');
 const { generateSessionId, hasher } = require('../utils');
-// const bcrypt = require('bcrypt')
 
 //return a single user by id
 //includes cart and orders
@@ -15,6 +14,18 @@ router.get('/:userId', (req, res, next) => {
     include: [
       {
         model: Cart,
+        include: [{
+          model: CartItem,
+          include: {
+            model: Product,
+            include: [
+              {
+                model: Review,
+              }
+            ]
+          }
+        }
+        ]
       },
       {
         model: Order,
@@ -81,50 +92,40 @@ router.put('/:userId', (req, res, next) => {
     })
 });
 
-//special post method for creating a guest user
-//generates a user random string email and hashed password,
-//returns said user with sessionId
-router.post('/guest', (req, res, next) => {
-  //todo: replace this function with something more secure
-  const sessionId = generateSessionId();
-  User.create({
-    firstName: 'guest',
-    lastName: 'guest',
-    email: `${Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15)}@guest.com`,
-    password: hasher(Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15)),
-    isRegistered: false,
-    sessionId,
-  })
-    .then(created => {
-      res.status(201).send(created);
-    })
-    .catch(e => {
-      console.log(chalk.red(`Error in POST /api/user/guest: ${req.url}`));
-      res.status(400).send('Invalid request');
-      next(e);
-    })
-});
-
 router.post('/', (req, res, next) => {
-  const sessionId = generateSessionId();
-  //TODO: HASH PASSWORD ON FRONTEND
-
-  User.create({
-    firstName: req.body.firstName,
-    lastName: req.body.lastName,
-    email: req.body.email,
-    password: hasher(req.body.password),
-    isRegistered: true,
-    sessionId,
+  User.findOne({
+    where: {
+      email: req.body.email,
+    },
   })
-    .then(created => {
-      res.status(201).send(created);
+    .then(foundUser => {
+      if (foundUser) {
+        res.status(400).send('Email already exists, please login or use different email to signup.')
+      } else {
+        User.create({
+          firstName: req.body.firstName,
+          lastName: req.body.lastName,
+          email: req.body.email,
+          password: hasher(req.body.password),
+          isRegistered: true,
+          sessionId: req.cookies && req.cookies.sessionId
+        })
+          .then(created => {
+            res.status(201).send(created);
+          })
+          .catch(e => {
+            console.log(chalk.red(`Error in POST /api/user/: ${req.body}`));
+            res.status(400).send('Invalid request');
+            next(e);
+          })
+      }
     })
     .catch(e => {
-      console.log(chalk.red(`Error in POST /api/user/guest: ${req.body}`));
+      console.log(chalk.red(`Error in POST /api/user/: ${req.body}`));
       res.status(400).send('Invalid request');
       next(e);
     })
+
 });
 
 module.exports = router;

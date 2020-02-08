@@ -1,7 +1,7 @@
 const express = require('express');
 const Sequelize = require('sequelize');
 const router = require('express').Router()
-const { CartItem, Product } = require('../../db/models')
+const { CartItem, Product, Review } = require('../../db/models')
 
 router.use(express.json());
 
@@ -17,7 +17,12 @@ router.post('/', (req, res, next) => {
           id: cartItem.id
         },
         include: {
-          model: Product
+          model: Product,
+          include: [
+            {
+              model: Review,
+            }
+          ]
         }
       })
         .then(cartItem => {
@@ -45,7 +50,12 @@ router.get('/:cartItemId?', (req, res, next) => {
         id: cartItemId
       },
       include: {
-        model: Product
+        model: Product,
+        include: [
+          {
+            model: Review,
+          }
+        ]
       }
     })
       .then(cartItem => {
@@ -71,22 +81,33 @@ router.get('/:cartItemId?', (req, res, next) => {
 
 router.put('/:cartItemId', (req, res, next) => {
   const { cartItemId } = req.params;
-  const { id, cartId, productId } = req.body;
-  if (id || cartId || productId) {
-    return res.status(400).send('Only quantity can be updated')
+  const { id, productId, quantity, cartId } = req.body;
+  if (id || productId) {
+    return res.status(400).send('Only cartId and quantity can be updated')
   }
   CartItem.findOne({
     where: {
       id: cartItemId
-    }
+    },
+    include: [
+      {
+        model: Product,
+        include: [
+          {
+            model: Review,
+          }
+        ]
+      }
+    ]
   })
-    .then(cart => {
-      cart.update({ 
-        ...cart, 
-        quantity: req.body.quantity || cart.quantity, 
-      }, { 
-        returning: true 
-      })
+    .then(cartItem => {
+      cartItem.update({
+        ...cartItem,
+        quantity: quantity || cartItem.quantity,
+        cartId: cartId || cartItem.cartId
+      }, {
+          returning: true
+        })
         .then(updatedItem => res.status(200).send(updatedItem))
         .catch(e => {
           res.status(400).send('Error updating cart item');

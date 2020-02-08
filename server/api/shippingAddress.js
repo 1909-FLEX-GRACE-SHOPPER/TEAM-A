@@ -5,13 +5,23 @@ const { ShippingAddress, User } = require('../../db/models/index')
 // create shipping address
 
 router.post('/', (req, res, next) => {
-  const { name, line1, line2, city, state, zip, userId } = req.body;
-  if (!name || !line1 || !city || !state || !zip || !userId) {
-    res.status(400).send('Invalid request. Name, Address line 1, City, State, Zipcode and UserId are required fields. Please try again with all required fields.')
+  const { name, line1, line2, city, state, zip } = req.body;
+  if (!name || !line1 || !city || !state || !zip) {
+    return res.status(400).send('Invalid request. Name, Address line 1, City, State and Zipcode are required fields. Please try again with all required fields.')
+  }
+  if (req.user) {
+    ShippingAddress.create({ name, line1, line2, city, state, zip, userId: req.user.id })
+      .then(address => res.status(201).send(address))
+      .catch(e => {
+        res.status(400).send('Error creating shipping address');
+        next(e)
+      })
   }
   else {
-    ShippingAddress.create({ name, line1, line2, city, state, zip, userId })
-      .then(address => res.status(201).send(address))
+    ShippingAddress.create({ name, line1, line2, city, state, zip, sessionId: req.cookies.sessionId || 0 })
+      .then(address => {
+        res.status(201).send(address)
+      })
       .catch(e => {
         res.status(400).send('Error creating shipping address');
         next(e)

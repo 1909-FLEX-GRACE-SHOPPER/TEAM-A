@@ -92,7 +92,7 @@
 **ORDER HISTORY PAGE**
 
 * PAST ORDERS component:
-- past orders, with total price & status
+- past orders, with total price & statuss
 
 **PAST ORDER PAGE**
 

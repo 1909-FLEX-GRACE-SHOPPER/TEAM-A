@@ -17,17 +17,17 @@ const AddressForm = (props) => {
   const shippingAddress = useSelector(state => state.shippingAddress);
   const [name, setName] = useState(shippingAddress.name || '');
   const [line1, setLine1] = useState(shippingAddress.line1 || '');
-  const [line2, setLine2] = useState(shippingAddress.line2 ||'');
-  const [city, setCity] = useState(shippingAddress.city ||'');
+  const [line2, setLine2] = useState(shippingAddress.line2 || '');
+  const [city, setCity] = useState(shippingAddress.city || '');
   const [state, setShippingState] = useState(shippingAddress.state || 'AL');
-  const [zip, setZip] = useState(shippingAddress.zip ||'');
+  const [zip, setZip] = useState(shippingAddress.zip || '');
   const dispatch = useDispatch();
   const user = useSelector(state => state.user);
 
   const handleSubmit = () => {
     shippingAddress ?
-    dispatch(updateShippingAddress({ name, line1, line2, city, state, zip, userId: user.id }))
-    : dispatch(postShippingAddress({ name, line1, line2, city, state, zip, userId: user.id }))
+      dispatch(updateShippingAddress({ name, line1, line2, city, state, zip }))
+      : dispatch(postShippingAddress({ name, line1, line2, city, state, zip }))
   }
 
   return (
@@ -88,10 +88,10 @@ const AddressForm = (props) => {
               name="state"
               value={state}
               onChange={(ev) => setShippingState(ev.target.value)}
-              >
-                {
-                  states.map(stateSymb => <MenuItem key={stateSymb} value={stateSymb}>{stateSymb}</MenuItem>)
-                }
+            >
+              {
+                states.map(stateSymb => <MenuItem key={stateSymb} value={stateSymb}>{stateSymb}</MenuItem>)
+              }
             </Select>
           </FormControl>
         </Grid>

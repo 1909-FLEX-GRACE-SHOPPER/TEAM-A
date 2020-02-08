@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-
+import { createOrderAndAddOrderItems } from '../../redux/ordersByUser';
 import { makeStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import AppBar from '@material-ui/core/AppBar';
@@ -11,9 +11,11 @@ import Step from '@material-ui/core/Step';
 import StepLabel from '@material-ui/core/StepLabel';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
+import {Elements} from 'react-stripe-elements';
 
 import AddressForm from './AddressForm';
 import PaymentForm from './PaymentForm';
+import StripePaymentForm from './StripePaymentForm';
 import Review from './Review';
 
 const useStyles = makeStyles(theme => ({
@@ -53,16 +55,16 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const steps = ['Shipping address', 'Payment details', 'Review your order'];
+const steps = ['Review your order', 'Shipping Address', 'Confirm and Pay'];
 
 const getStepContent = (step) => {
   switch (step) {
     case 0:
-      return <AddressForm />;
-    case 1:
-      return <PaymentForm />;
-    case 2:
       return <Review />;
+    case 1:
+      return <AddressForm />;
+    case 2:
+      return <StripePaymentForm />;
     default:
       throw new Error('Unknown step');
   }
@@ -76,26 +78,23 @@ const Checkout = () => {
   const [next, setNext] = React.useState(false);
   const dispatch = useDispatch();
 
-  const handleNext = () => {
-    setActiveStep(activeStep + 1);
-    setDisabled(true);
-  };
-
   const handleBack = () => {
     setActiveStep(activeStep - 1);
   };
 
+  const handleSubmit = () => {    
+    setActiveStep(activeStep + 1);
+    setDisabled(true);
+  }
+
   useEffect(() => {
-    if (activeStep === 0 && shippingAddress) {
+    if (activeStep === 0) {
       setDisabled(false);
     }
-    if (activeStep === 1 && billing) {
+    if (activeStep === 1 && shippingAddress) {
       setDisabled(false);
     }
-    if (activeStep === 2) {
-      setDisabled(false);
-    }
-  })
+  });
 
   return (
     <React.Fragment>
@@ -119,31 +118,32 @@ const Checkout = () => {
                   Thank you for your order.
                 </Typography>
                 <Typography variant="subtitle1">
-                  Your order number is #2001539. This completes your order. We will
-                  send you an update when your order has shipped.
+                  We will send you an update when your order has shipped.
                 </Typography>
               </React.Fragment>
             ) : (
-              <React.Fragment>
-                {getStepContent(activeStep)}
-                <div className={classes.buttons}>
-                  {activeStep !== 0 && (
-                    <Button onClick={handleBack} className={classes.button}>
-                      Back
+                <React.Fragment>
+                  <Elements>
+                    {getStepContent(activeStep)}
+                  </Elements>
+                  <div className={classes.buttons}>
+                    {activeStep !== 0 && (
+                      <Button onClick={handleBack} className={classes.button}>
+                        Back
+                      </Button>
+                    )}
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      onClick={handleSubmit}
+                      className={classes.button}
+                      disabled={isDisabled}
+                    >
+                      {steps[activeStep] === 'Confirm and Pay' ? 'View Receipt' : 'Next'}
                     </Button>
-                  )}
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    onClick={handleNext}
-                    className={classes.button}
-                    disabled={isDisabled}
-                  >
-                    {activeStep === steps.length - 1 ? 'Place order' : 'Next'}
-                  </Button>
-                </div>
-              </React.Fragment>
-            )}
+                  </div>
+                </React.Fragment>
+              )}
           </React.Fragment>
         </Paper>
       </main>

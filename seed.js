@@ -1,14 +1,14 @@
 const faker = require('faker');
 const chalk = require('chalk');
 const { connection, User, Cart, CartItem, Product, Order, OrderItem } = require('./db');
+const { categorize, hasher } = require('./server/utils')
+const { orderStatuses } = require('./constants')
 
 const GENERATED_PRODUCTS = 100;
 const GENERATED_USERS = 50;
 const GENERATED_ORDERS = 100;
 const MAX_ORDERITEMS = 10;
 const MAX_CARTITEMS = 10;
-
-const orderStatuses = ['pending', 'fulfilled', 'shipped', 'delivered', 'cancelled'];
 
 //helper function that randomly returns true or false
 const randomBool = () => {
@@ -22,15 +22,31 @@ const seed = async () => {
     await connection.sync({ force: true });
 
     //generate list of users, random guests or registered
-    let userList = Array(GENERATED_USERS);
+    let userList = [
+      {
+        firstName: 'joe',
+        lastName: 'smith',
+        email: 'joe@gmail.com',
+        password: hasher('123'),
+        isRegistered: true,
+      },
+      {
+        firstName: 'admin',
+        lastName: 'smith',
+        email: 'admin@gmail.com',
+        password: hasher('admin'),
+        isRegistered: true,
+        isAdmin: true
+      }
+    ];
     for (let i = 0; i < GENERATED_USERS; i++) {
-      userList[i] = {
+      userList.push({
         firstName: faker.name.firstName(),
         lastName: faker.name.lastName(),
         email: faker.internet.email(),
-        password: faker.random.alphaNumeric(16),
+        password: hasher(faker.random.alphaNumeric(16)),
         isRegistered: true,
-      }
+      })
     }
     //create users
     const createdUsers = await Promise.all(
@@ -50,8 +66,9 @@ const seed = async () => {
         description: faker.lorem.sentence(),
         inventory: Math.round(Math.random() * 2000),
         price: faker.commerce.price(1.00, 99.99, 2),
-        imageUrl: `${faker.image.nature()}?random=${Date.now()}`
       }
+      productList[i].category = categorize(productList[i].name.split(' ')[2])
+      productList[i].imageUrl = `https://graceshopper.nyc3.cdn.digitaloceanspaces.com/${productList[i].category}-${(i % 4) + 1}.png`
     }
 
     //create products
@@ -102,6 +119,8 @@ const seed = async () => {
     console.error(e);
   }
 }
+
+module.exports = seed;
 
 //run the seed function
 seed()

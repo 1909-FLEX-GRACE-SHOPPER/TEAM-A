@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { fetchOrdersByUser } from '../redux/ordersByUser'
+import { Container } from '@material-ui/core';
 
 class AllOrders extends Component {
 
@@ -7,6 +9,7 @@ class AllOrders extends Component {
     const { ordersByUser } = this.props;
     return (
       <>
+        <Container maxWidth={"lg"}>
         <h1>All Orders</h1>
         <>
           {
@@ -17,9 +20,12 @@ class AllOrders extends Component {
                     ordersByUser.map(order => {
                       return (
                         <li key={order.id}>
+
                           <a href={`/#/orders/${order.id}`}>Order ID: {order.id}</a>
-                          Number of items: {order.orderitems.length}
-                          Status: {order.status}
+                          <ul>
+                            <li>Number of items: {order.orderitems.length}</li>
+                            <li>Status: {order.status}</li>
+                          </ul>
                         </li>
                       )
                     })
@@ -30,6 +36,7 @@ class AllOrders extends Component {
               )
           }
         </>
+        </Container>
       </>
     )
   }
@@ -41,4 +48,10 @@ const mapState = ({ ordersByUser }) => {
   }
 }
 
-export default connect(mapState)(AllOrders)
+const mapDispatch = dispatch => {
+  return {
+    fetchOrders: () => dispatch(fetchOrdersByUser())
+  }
+}
+
+export default connect(mapState, mapDispatch)(AllOrders)

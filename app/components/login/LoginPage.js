@@ -1,18 +1,20 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { loginUser } from '../../redux/user';
+import { mergeCart, fetchCart } from '../../redux/cart';
 import { ErrorBar } from '../index';
 import Paper from '@material-ui/core/Paper';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import { useStyles } from '../index';
+import { Link } from 'react-router-dom';
 
 function LoginPage(props) {
   const [loginError, setError] = useState(false);
   const user = useSelector(state => state.user);
-  const [initLoad, setInit] = useState(true);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [submitted, setSubmitted] = useState(false)
   const dispatch = useDispatch();
 
   const classes = useStyles();
@@ -30,31 +32,30 @@ function LoginPage(props) {
     }
   };
 
-  const handleSubmit = () => {
-    setInit(false);
+  const handleSubmit = async () => {
     setError(false);
-    dispatch(loginUser({ email, password }));
-    setEmail('');
-    setPassword('');
+    !submitted && setSubmitted(true);
+    await dispatch(loginUser({ email, password }));
+    await dispatch(mergeCart());
   }
 
   useEffect(() => {
-    if (user && user.isRegistered) {
+    if (user) {
+      setError(false);
       props.history.push('/');
     }
-    if (!initLoad && !user.isRegistered) {
-      setError(true);
+    else {
+      if (submitted) {
+        setError(true);
+      }
     }
-    if (email || password) {
-      setError(false);
-    }
-  });
+  }, [user]);
 
   return (
     <div id="loginContainer" className={[classes.root, classes.centerHero].join(' ')}>
 
       {
-        user.isRegistered &&
+        user &&
         <div>
           LoggedIn!
                     </div>
@@ -83,6 +84,7 @@ function LoginPage(props) {
           className={classes.formElem}
         />
         <Button className={classes.formElem} variant="contained" color="primary" onClick={handleSubmit}>Log In</Button>
+        <Link to="/signup" variant="body2">Don't have an account? Sign Up</Link>
       </form>
     </div>
   )

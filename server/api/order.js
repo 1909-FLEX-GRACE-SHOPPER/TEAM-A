@@ -1,7 +1,7 @@
 const express = require('express');
 const Sequelize = require('sequelize');
 const router = express.Router();
-const { Order, OrderItem } = require('../../db');
+const { Order, OrderItem, Review, Product } = require('../../db');
 
 router.use(express.json());
 
@@ -13,6 +13,14 @@ router.get('/:orderId', (req, res, next) => {
     },
     include: [{
       model: OrderItem,
+      include: {
+        model: Product,
+        include: [
+          {
+            model: Review,
+          }
+        ]
+      }
     }],
   })
     .then(result => {
@@ -29,67 +37,116 @@ router.get('/:orderId', (req, res, next) => {
 
 //return all orders by userId
 
-router.get('/byuser/:userId', (req, res, next) => {
-  const { userId } = req.params;
-  // console.log('userId: ', userId)
-  // console.log('typeof userId: ', typeof (userId))
-  Order.findAll({
-    where: {
-      userId: parseInt(userId),
-    },
-    include: [{
-      model: OrderItem,
-    }],
-  })
-    .then(results => {
-      if (results) {
-        return res.status(200).send(results);
-      }
-      res.status(200).send([]);
-    })
-    .catch(e => {
-      res.status(400).send('Invalid request for orders by userId');
-      next(e);
-    })
-});
+// router.get('/byuser', (req, res, next) => {
+//   Order.findAll({
+//     where: {
+//       userId: req.user.id,
+//     },
+//     include: [{
+//       model: OrderItem,
+//     }],
+//   })
+//     .then(results => {
+//       if (results) {
+//         return res.status(200).send(results);
+//       }
+//       res.status(200).send([]);
+//     })
+//     .catch(e => {
+//       res.status(400).send('Invalid request for orders by userId');
+//       next(e);
+//     })
+// });
 
 //return all orders, with optional sort query parameter in url
 //example 1: /api/order
 //example 2: /api/order?sort=status&dir=ASC
 router.get('/', (req, res, next) => {
-  Order.findAll({
-    include: [{
-      model: OrderItem,
-    }],
-    order: [
-      [req.query.sort || 'createdAt', req.query.dir || 'ASC']
-    ],
-  })
-    .then(results => {
-      res.status(200).send(results);
+  if (!req.user) {
+    Order.findAll({
+      where: {
+        sessionId: req.cookies.sessionId,
+      },
+      include: [{
+        model: OrderItem,
+        include: {
+          model: Product,
+          include: [
+            {
+              model: Review,
+            }
+          ]
+        }
+      }],
+      order: [
+        [req.query.sort || 'createdAt', req.query.dir || 'ASC']
+      ],
     })
-    .catch(e => {
-      res.status(400).send('Invalid request');
-      next(e);
+      .then(results => {
+        res.status(200).send(results);
+      })
+      .catch(e => {
+        res.status(400).send('Invalid request');
+        next(e);
+      })
+  } else {
+    Order.findAll({
+      where: {
+        userId: req.user.id,
+      },
+      include: [{
+        model: OrderItem,
+        include: {
+          model: Product,
+          include: [
+            {
+              model: Review,
+            }
+          ]
+        }
+      }],
+      order: [
+        [req.query.sort || 'createdAt', req.query.dir || 'ASC']
+      ],
     })
+      .then(results => {
+        res.status(200).send(results);
+      })
+      .catch(e => {
+        res.status(400).send('Invalid request');
+        next(e);
+      })
+  }
 });
 
-//create new order. UserId is required
+//create new order
 router.post('/', (req, res, next) => {
-  if (!req.body.userId) {
-    return res.status(400).send('Invalid request; userId required');
+  if (req.user) {
+    Order.create({
+      status: req.body.status || 'pending',
+      userId: req.user.id,
+    })
+      .then(created => {
+        res.status(201).send(created);
+      })
+      .catch(e => {
+        res.status(400).send('Invalid request');
+        next(e);
+      })
   }
-  Order.create({
-    status: req.body.status || 'pending',
-    userId: req.body.userId,
-  })
-    .then(created => {
-      res.status(201).send(created);
+  else {
+    Order.create({
+      status: req.body.status || 'pending',
+      sessionId: req.cookies.sessionId,
     })
-    .catch(e => {
-      res.status(400).send('Invalid request');
-      next(e);
-    })
+      .then(created => {
+        res.status(201).send(created);
+      })
+      .catch(e => {
+        res.status(400).send('Invalid request');
+        next(e);
+      })
+  }
 });
 
 //Update an order

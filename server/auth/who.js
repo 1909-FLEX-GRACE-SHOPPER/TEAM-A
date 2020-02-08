@@ -4,10 +4,10 @@ const router = express.Router();
 
 //the frontend can call this route to retrieve the loggedIn user
 router.get('/', (req, res, next) => {
-    if (req.loggedIn) {
+    if (req.user) {
         return res.status(201).send(req.user);
     }
-    return res.status(401).send('No login found');
+    return res.send(null);
 });
 
 module.exports = router;

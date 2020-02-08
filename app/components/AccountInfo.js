@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { LogoutButton } from './index';
+import { Container } from '@material-ui/core';
 
 class AccountInfo extends Component {
 
@@ -8,6 +10,7 @@ class AccountInfo extends Component {
     const { user } = this.props;
     return (
       <>
+      <Container maxWidth={"lg"}>
         <h1>Account Information</h1>
         <>
           {
@@ -18,12 +21,14 @@ class AccountInfo extends Component {
                   <h2>Last name: {user.lastName}</h2>
                   <h2>Email: {user.email}</h2>
                   <Link to='/orders'>View orders</Link>
+                  <LogoutButton />
                 </div>
               ) : (
-                <h2>Loading...</h2>
+                <h2>No account information to display.</h2>
               )
           }
         </>
+        </Container>
       </>
     )
   }

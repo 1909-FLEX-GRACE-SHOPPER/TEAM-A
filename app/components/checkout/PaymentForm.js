@@ -13,6 +13,8 @@ import Select from '@material-ui/core/Select';
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 
+import axios from 'axios';
+
 const useStyles = makeStyles({
   selectMenu: {
     width: '100%',
@@ -30,7 +32,8 @@ const PaymentForm = (props) => {
   const dispatch = useDispatch();
 
   const handleSubmit = () => {
-    dispatch(setBilling({ cardName, cardNumber, expireMonth, expireYear, cvv }));
+    axios.post('/api/checkout', { message: 'hello' });
+    //dispatch(setBilling({ cardName, cardNumber, expireMonth, expireYear, cvv }));
   }
 
   return (

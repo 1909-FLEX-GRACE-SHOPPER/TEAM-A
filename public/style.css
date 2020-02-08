@@ -1,12 +1,24 @@
+@import url('https://fonts.googleapis.com/css?family=Poppins&display=swap');
+
 * {
   box-sizing: border-box;
-  font-family: 'Montserrat', sans-serif;
+  font-family: 'Poppins', sans-serif;
+  
 }
+
 #main {
+    margin: 0;
+}
+
+.products{
     margin: 0;
     display: flex;
     flex-direction: column;
-    align-items: center;
+    margin:20px;
+
+}
+body {
+  margin: 0;
 }
 .card {
   max-width: 345;
