@@ -113,7 +113,7 @@ class SingleProduct extends Component {
             return (
               <React.Fragment key={review.id}>
 
-                {review.user.name}: {review.title}
+                {review.title}
                 <ul key>
                   <li>{review.body}</li>
                 </ul>
