@@ -12,8 +12,8 @@ const LogoutButton = (props) => {
 
   const handleSubmit = async () => {
     await dispatch(logoutUser());
+    await dispatch(fetchCart());
     props.history.push('/');
-    dispatch(fetchCart());
   }
 
   return (

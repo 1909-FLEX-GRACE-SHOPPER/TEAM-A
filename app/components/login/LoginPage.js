@@ -14,7 +14,7 @@ function LoginPage(props) {
   const user = useSelector(state => state.user);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [submitCount, setSubmitCount] = useState(0)
+  const [submitted, setSubmitted] = useState(false)
   const dispatch = useDispatch();
 
   const classes = useStyles();
@@ -34,10 +34,9 @@ function LoginPage(props) {
 
   const handleSubmit = async () => {
     setError(false);
-    setSubmitCount(submitCount + 1)
+    !submitted && setSubmitted(true);
     await dispatch(loginUser({ email, password }));
     await dispatch(mergeCart());
-    // await dispatch(fetchCart());
   }
 
   useEffect(() => {
@@ -46,7 +45,7 @@ function LoginPage(props) {
       props.history.push('/');
     }
     else {
-      if (submitCount > 0) {
+      if (submitted) {
         setError(true);
       }
     }

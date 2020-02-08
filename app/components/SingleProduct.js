@@ -12,33 +12,10 @@ import { fetchProduct, clearProduct } from '../redux/singleProduct'
 import { addCartItem } from '../redux/cart'
 
 //Material UI
-import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import InputLabel from '@material-ui/core/InputLabel';
 import Rating from '@material-ui/lab/Rating';
 import Grid from '@material-ui/core/Grid';
-
-
-const useStyles = makeStyles(theme => ({
-  root: {
-    flexGrow: 1,
-  },
-  paper: {
-    padding: theme.spacing(2),
-    margin: 'auto',
-    maxWidth: 500,
-  },
-  image: {
-    width: 128,
-    height: 128,
-  },
-  img: {
-    margin: 'auto',
-    display: 'block',
-    maxWidth: '100%',
-    maxHeight: '100%',
-  },
-}));
 
 class SingleProduct extends Component {
 
@@ -63,7 +40,14 @@ class SingleProduct extends Component {
   render() {
     const { selectedProduct, clearSelectedProduct, addCartItem, cart, user } = this.props;
     const { reviews } = selectedProduct
+    console.log('reviews: ', reviews)
     // TODO: add case for !selectedProduct (i.e. return "Requested product could not be found")
+    if (!reviews) {
+      return (
+        <div>Loading...</div>
+      )
+    }
+
     return (
       <React.Fragment>
       <Grid
@@ -118,12 +102,12 @@ class SingleProduct extends Component {
           >Return to products</Link></Button>
           </Grid>
         <h3>
-          Average Rating: {selectedProduct.numRatings > 0 &&
-            <Rating name="rating" value={Math.ceil(selectedProduct.averageRating)} readOnly size="small" />
-          }
-        </h3>
+          Average Rating: </h3>
+        {selectedProduct.numRatings === 0 ? <span style={{ fontStyle: 'italic' }}>No ratings</span> :
+          <Rating name="rating" value={Math.ceil(selectedProduct.averageRating)} readOnly size="small" />
+        }
         <h3>
-          Reviews:
+          Customer Reviews:
         </h3>
         <div>
           {reviews && reviews.map(review => {
