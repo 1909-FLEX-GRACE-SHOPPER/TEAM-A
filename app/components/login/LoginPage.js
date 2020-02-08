@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { loginUser } from '../../redux/user';
-import { mergeCart } from '../../redux/cart';
+import { mergeCart, fetchCart } from '../../redux/cart';
 import { ErrorBar } from '../index';
 import Paper from '@material-ui/core/Paper';
 import TextField from '@material-ui/core/TextField';
@@ -14,6 +14,7 @@ function LoginPage(props) {
   const user = useSelector(state => state.user);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [submitCount, setSubmitCount] = useState(0)
   const dispatch = useDispatch();
 
   const classes = useStyles();
@@ -33,19 +34,23 @@ function LoginPage(props) {
 
   const handleSubmit = async () => {
     setError(false);
+    setSubmitCount(submitCount + 1)
     await dispatch(loginUser({ email, password }));
-    if (!user) {
-      setError(true);
-    }
+    await dispatch(mergeCart());
+    // await dispatch(fetchCart());
   }
 
   useEffect(() => {
     if (user) {
       setError(false);
-      dispatch(mergeCart());
       props.history.push('/');
     }
-  });
+    else {
+      if (submitCount > 0) {
+        setError(true);
+      }
+    }
+  }, [user]);
 
   return (
     <div id="loginContainer" className={[classes.root, classes.centerHero].join(' ')}>
