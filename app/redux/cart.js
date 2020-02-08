@@ -101,15 +101,25 @@ export const fetchCart = () => {
   return (dispatch, getState, { axios }) => {
     return axios.get('/api/cart/')
       .then(cart => {
+        if (!cart) {
+          axios.get('/api/cart')
+            .then(() => {
+              dispatch(newSessionCart())
+            })
+            .catch(e => {
+              console.log('error fetching new session cart in fetchCart thunk');
+              console.error(e);
+            });
+        }
         cart.data.id ?
           dispatch(setCart(cart.data))
           : dispatch(newSessionCart())
       })
-      .catch((e) => {
+      .catch(e => {
         console.log('error in fetchCart thunk');
         console.error(e);
       });
-  }
+  };
 };
 
 //creates a new cart with the current sessionId
@@ -132,6 +142,7 @@ export const mergeCart = () => {
           dispatch(updateCartItem(cartItem.id, { cartId: userCart.data.id }))
         }
       })
+      .then(() => dispatch(fetchCart()))
       .then(() => axios.delete(`/api/cart/${cart.id}`))
       .catch(e => console.log('Error in Redux thunk mergeCart: ', e))
   }
