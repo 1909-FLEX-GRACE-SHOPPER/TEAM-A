@@ -55,16 +55,16 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const steps = ['Shipping address', 'Payment details', 'Review your order'];
+const steps = ['Review your order', 'Shipping Address', 'Confirm and Pay'];
 
 const getStepContent = (step) => {
   switch (step) {
     case 0:
-      return <StripePaymentForm />;
-    case 1:
-      return <StripePaymentForm />;
-    case 2:
       return <Review />;
+    case 1:
+      return <AddressForm />;
+    case 2:
+      return <StripePaymentForm />;
     default:
       throw new Error('Unknown step');
   }
@@ -78,30 +78,23 @@ const Checkout = () => {
   const [next, setNext] = React.useState(false);
   const dispatch = useDispatch();
 
-  const handleNext = () => {
-    setActiveStep(activeStep + 1);
-    setDisabled(true);
-  };
-
   const handleBack = () => {
     setActiveStep(activeStep - 1);
   };
 
-  const handleSubmit = () => {
-    dispatch(createOrderAndAddOrderItems());
+  const handleSubmit = () => {    
+    setActiveStep(activeStep + 1);
+    setDisabled(true);
   }
 
   useEffect(() => {
-    if (activeStep === 0 && shippingAddress) {
+    if (activeStep === 0) {
       setDisabled(false);
     }
-    if (activeStep === 1 && billing) {
+    if (activeStep === 1 && shippingAddress) {
       setDisabled(false);
     }
-    if (activeStep === 2) {
-      setDisabled(false);
-    }
-  })
+  });
 
   return (
     <React.Fragment>
@@ -125,8 +118,7 @@ const Checkout = () => {
                   Thank you for your order.
                 </Typography>
                 <Typography variant="subtitle1">
-                  Your order number is #2001539. This completes your order. We will
-                  send you an update when your order has shipped.
+                  We will send you an update when your order has shipped.
                 </Typography>
               </React.Fragment>
             ) : (
@@ -143,11 +135,11 @@ const Checkout = () => {
                     <Button
                       variant="contained"
                       color="primary"
-                      onClick={activeStep === steps.length - 1 ? handleSubmit : handleNext}
+                      onClick={handleSubmit}
                       className={classes.button}
                       disabled={isDisabled}
                     >
-                      {activeStep === steps.length - 1 ? 'Place order' : 'Next'}
+                      {steps[activeStep] === 'Confirm and Pay' ? 'View Receipt' : 'Next'}
                     </Button>
                   </div>
                 </React.Fragment>

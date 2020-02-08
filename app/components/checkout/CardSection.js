@@ -2,7 +2,7 @@ import React from 'react';
 import {CardElement} from 'react-stripe-elements';
 
 const style = {
-    width: "240px",
+    width: "100%",
     height: "48px",  
 };
 
@@ -10,7 +10,7 @@ const CardSection = () => {
     return (
       <label>
         Card details
-        <CardElement className="MyCardElement" style={style} />
+        <CardElement />
       </label>
     );
   };
