@@ -16,6 +16,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import InputLabel from '@material-ui/core/InputLabel';
 import Rating from '@material-ui/lab/Rating';
+import Grid from '@material-ui/core/Grid';
 
 
 const useStyles = makeStyles(theme => ({
@@ -64,16 +65,27 @@ class SingleProduct extends Component {
     const { reviews } = selectedProduct
     // TODO: add case for !selectedProduct (i.e. return "Requested product could not be found")
     return (
-      <div>
+      <React.Fragment>
+      <Grid
+        container
+        direction="row"
+        justify="flex-start"
+        alignItems="flex-start"
+      >
+          <Grid item xs={6}>>
         <img src={selectedProduct.imageUrl} width="400" height="400" />
-        <h1>{selectedProduct.name}</h1>
+          </Grid>
+          <Grid item xs={6} >
+          <h1>{selectedProduct.name}</h1>
         <h3>{selectedProduct.description}</h3>
         <p>Price: ${selectedProduct.price}</p>
+        
         <select name='quantity' onChange={this.handleChange}>
           {
             Array(10).fill('').map((el, idx) => <option key={idx}>{idx + 1}</option>)
           }
         </select>
+            <Grid item sm={6}>
         <Button
           variant="contained"
           color="primary"
@@ -82,6 +94,7 @@ class SingleProduct extends Component {
         >
           Add to cart
         </Button>
+        </Grid>
         {
           user && user.isAdmin &&
           <Button
@@ -92,14 +105,18 @@ class SingleProduct extends Component {
             Edit Product
             </Button>
         }
+          <Grid item xs={3} >
         <Button variant="contained" color="secondary">
           <Link
             to='/review'
-          >Review</Link>
+          >Review</Link> </Button>
+          </Grid>
+          <Button>
           <Link
             to='/'
             onClick={() => clearSelectedProduct()}
           >Return to products</Link></Button>
+          </Grid>
         <h3>
           Average Rating: {selectedProduct.numRatings > 0 &&
             <Rating name="rating" value={Math.ceil(selectedProduct.averageRating)} readOnly size="small" />
@@ -121,7 +138,8 @@ class SingleProduct extends Component {
             )
           })}
         </div>
-      </div>
+        </Grid>
+      </React.Fragment>
     )
   }
 }
