@@ -19,12 +19,14 @@ class Cart extends React.Component {
   }
 
   render() {
+    let totalCost = 0
     return (
       <div>
         <TableContainer component={Paper}>
           <Table aria-label="shoppingCart">
             <TableHead>
               <TableRow>
+                <TableCell></TableCell>
                 <TableCell>Product Id</TableCell>
                 <TableCell>Quantity</TableCell>
                 <TableCell>Price</TableCell>
@@ -36,11 +38,11 @@ class Cart extends React.Component {
               {
                 this.props.cart.id ?
                   (this.props.cart.cartitems.map(cartItem => (
+                    { let productCost = product.price * cartItem.quantity
+                      totalCost += productCost}
                     <TableRow key={cartItem.id}>
-                      {/* {this.props.products.map(product => {
-                        if (cartItem.productId === product.id) {
-                          return ( */}
                       <Fragment key={cartItem.id}>
+                        <TableCell align="left" >{cartItem.product.imageUrl}</TableCell>
                         <TableCell align="left" >{cartItem.product.name}</TableCell>
                         <TableCell align="left"><select name='quantity' value={cartItem.quantity} onChange={ev => this.handleChange(ev, cartItem.id)}>
                           {
@@ -50,7 +52,6 @@ class Cart extends React.Component {
                         <TableCell align="left" >{cartItem.product.price}</TableCell>
                         <TableCell align="left" >{cartItem.product.price * cartItem.quantity}</TableCell>
                         <TableCell align="left" ><Button
-                          variant="contained"
                           color="secondary"
                           startIcon={<DeleteIcon />}
                           onClick={() => this.props.deleteCartItem(cartItem.id)}
@@ -58,6 +59,7 @@ class Cart extends React.Component {
                           Delete
                                 </Button>
                         </TableCell>
+                        <TableCell align="left" >Total Cost: {totalCost} </TableCell>
                       </Fragment>
                       {/* } */}
                     </TableRow>
