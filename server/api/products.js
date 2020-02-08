@@ -13,12 +13,12 @@ router.get('/:productId', (req, res, next) => {
     where: {
       id: req.params.productId,
     },
-    include: {
+    include: [{
       model: Review,
-      include: {
-        model: User
-      }
-    }
+      include: [{
+        model: User,
+      }]
+    }]
   })
     .then(result => {
       if (result) {
