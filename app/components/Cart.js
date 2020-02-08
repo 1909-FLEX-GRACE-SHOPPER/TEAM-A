@@ -38,8 +38,8 @@ class Cart extends React.Component {
               {
                 this.props.cart.id ?
                   (this.props.cart.cartitems.map(cartItem => (
-                    { let productCost = product.price * cartItem.quantity
-                      totalCost += productCost}
+                    // { let productCost = product.price * cartItem.quantity
+                    //   totalCost += productCost}
                     <TableRow key={cartItem.id}>
                       <Fragment key={cartItem.id}>
                         <TableCell align="left" >{cartItem.product.imageUrl}</TableCell>
