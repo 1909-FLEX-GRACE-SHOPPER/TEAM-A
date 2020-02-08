@@ -1,5 +1,6 @@
 import React from 'react';
-import { createMuiTheme, makeStyles, ThemeProvider } from '@material-ui/core/styles';
+import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
+import CssBaseline from '@material-ui/core/CssBaseline';
 import { ProductsList } from './index';
 
 const theme = createMuiTheme({
@@ -21,7 +22,15 @@ const theme = createMuiTheme({
     create: () => 'none',
   },
   typography: {
-    fontFamily:[ "-apple - system", "BlinkMacSystemFont", "Segoe UI", "Roboto", "Helvetica Neue", "Arial", "Noto Sans", "sans- serif", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"].join(",")
+    //fontFamily:[ "-apple - system", "BlinkMacSystemFont", "Segoe UI", "Roboto", "Helvetica Neue", "Arial", "Noto Sans", "sans- serif", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"].join(",")
+    fontFamily: 'Poppins'
+  },
+  overrides: {
+    MuiCssBaseline: {
+      '@global': {
+        '@font-face': 'Poppins',
+      },
+    },
   },
   contrastThreshold: 3,
 });
@@ -31,6 +40,7 @@ export default function () {
   return (
     <>
     <ThemeProvider theme = {theme}>
+        <CssBaseline />
       <ProductsList />
     </ThemeProvider>
     </>

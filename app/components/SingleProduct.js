@@ -15,6 +15,9 @@ import { addCartItem } from '../redux/cart'
 import Button from '@material-ui/core/Button';
 import InputLabel from '@material-ui/core/InputLabel';
 import Rating from '@material-ui/lab/Rating';
+import Grid from '@material-ui/core/Grid';
+import Container from '@material-ui/core/Container';
+import AddShoppingCartIcon from '@material-ui/icons/AddShoppingCart';
 
 class SingleProduct extends Component {
 
@@ -48,64 +51,90 @@ class SingleProduct extends Component {
     }
 
     return (
-      <div>
+      <React.Fragment>
+        <Container maxWidth={"lg"}> 
+      <Grid
+        container
+        direction="row"
+        justify="flex-start"
+        alignItems="flex-start"
+      >
+          <Grid item xs={6}>>
         <img src={selectedProduct.imageUrl} width="400" height="400" />
-        <h1>{selectedProduct.name}</h1>
+          </Grid>
+          <Grid item xs={6} >
+          <h1>{selectedProduct.name}</h1>
         <h3>{selectedProduct.description}</h3>
-        <p>Price: ${selectedProduct.price}</p>
-        <select name='quantity' onChange={this.handleChange}>
+        <p style={{ marginBottom:"10px"}}>Price: ${selectedProduct.price}</p>
+        
+              <select style={{ marginBottom: "10px" }} name='quantity' onChange={this.handleChange}>
           {
             Array(10).fill('').map((el, idx) => <option key={idx}>{idx + 1}</option>)
           }
         </select>
+            <Grid item sm={6}>
         <Button
           variant="contained"
           color="primary"
+          style={{ marginBottom:"10px"}}
           onClick={() => addCartItem(cart.id, this.props.match.params.id, this.state.quantity)}
           disabled={selectedProduct.quantity === 0}
         >
+        <AddShoppingCartIcon fontSize={"small"} style={{ paddingRight: "10px" }} />
           Add to cart
         </Button>
+        </Grid>
         {
           user && user.isAdmin &&
           <Button
             variant="contained"
             color="primary"
+            style={{ marginBottom: "10px" }}
             onClick={() => this.props.history.push(`/products/edit/${selectedProduct.id}`)}
           >
             Edit Product
             </Button>
         }
-        <Button variant="contained" color="secondary"
-          onClick={() => {
-            clearSelectedProduct()
-            this.props.history.push('/')
-          }}
-        >Return to products
-          </Button>
-        <h3>
-          Average Rating: </h3>
-        {selectedProduct.numRatings === 0 ? <span style={{ fontStyle: 'italic' }}>No ratings</span> :
-          <Rating name="rating" value={Math.ceil(selectedProduct.averageRating)} readOnly size="small" />
-        }
+        
+          <Button>
+          <Link
+            to='/'
+            onClick={() => clearSelectedProduct()}
+          >Return to products</Link></Button>
+          </Grid>
+      
+            <Grid item sm={6}>
+              <Button color="secondary">
+                <Link
+                  to='/review'
+                > Leave Review</Link> </Button>
+                </Grid>
+         <Grid item sm={6}>
+              <h3>
+                Average Rating: </h3>
+              {selectedProduct.numRatings === 0 ? <span style={{ fontStyle: 'italic' }}>No ratings</span> :
+                <Rating name="rating" value={Math.ceil(selectedProduct.averageRating)} readOnly size="small" />
+              }
         <h3>
           Customer Reviews:
         </h3>
-        {reviews.length === 0 ? <span style={{ fontStyle: 'italic' }}>No reviews</span> :
-          <ul>
-            {reviews && reviews.map(review => {
-              return (
-                <li key={review.id} style={{ fontWeight: 'bold' }}>
-                  {review.user.name}: {review.title}
-                  <div>
-                    <div style={{ fontStyle: 'italic', fontWeight: 'normal', padding: '3px' }}>"{review.body}"</div>
-                  </div>
-                </li>
-              )
-            })}
-          </ul>
-        }
-      </div>
+        <div>
+          {reviews && reviews.map(review => {
+            return (
+              <React.Fragment key={review.id}>
+
+                {review.title}
+                <ul key>
+                  <li>{review.body}</li>
+                </ul>
+              </React.Fragment>
+            )
+          })}
+        </div>
+            </Grid>
+        </Grid>
+        </Container>
+      </React.Fragment>
     )
   }
 }

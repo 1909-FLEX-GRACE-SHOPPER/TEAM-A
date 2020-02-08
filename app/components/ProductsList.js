@@ -19,22 +19,24 @@ import { makeStyles } from '@material-ui/core/styles';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import { createFilterOptions } from '@material-ui/lab/Autocomplete';
 import AddShoppingCartIcon from '@material-ui/icons/AddShoppingCart';
+import Container from '@material-ui/core/Container';
+import Box from '@material-ui/core/Box';
 
 //styling
 const useStyles = makeStyles({
   gridStyle: {
     direction: 'row',
-    justify: 'space-around',
+    justify: 'space-evenly',
     alignItems: 'center'
   },
   cardStyle: {
     margin: '1rem',
-    width: '30vw',
-    height: '40vh'
+    width: '25vw',
+    height: '45vh'
   },
   media: {
     height: 140,
-  },
+  }
 })
 
 const ProductsList = (props) => {
@@ -55,7 +57,10 @@ const ProductsList = (props) => {
 
   return (
     <div>
+      <Container maxWidth={"xl"}>
+        <Box justifyContent="center">
       <Pagination />
+        </Box>
       <TextField
         id="product-search"
         label="Search products"
@@ -74,7 +79,7 @@ const ProductsList = (props) => {
                       title={product.name}
                     />
                     <CardContent>
-                      <Typography gutterBottom variant="h5" component="h3">
+                      <Typography gutterBottom variant="h6" component="h6">
                         <Link href={`/#/products/${product.id}`}>{product.name}</Link>
                       </Typography>
                       <Typography variant="body2" color="textSecondary" component="p">
@@ -92,6 +97,7 @@ const ProductsList = (props) => {
                       onClick={() => props.addCartItem(props.cart.id, product.id, 1)}
                       // TODO: add temporary lightbox displaying success or failure for adding to cart
                       disabled={product.quantity === 0}>
+                      <AddShoppingCartIcon fontSize={"small"} style={{paddingRight:"10px"}}/>
                       Add to Cart
                     </Button>
                   </CardActions>
@@ -101,6 +107,7 @@ const ProductsList = (props) => {
           })
         }
       </Grid >
+      </Container>
     </div>
   );
 };

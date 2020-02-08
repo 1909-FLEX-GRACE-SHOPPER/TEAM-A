@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { fetchProduct } from '../redux/singleProduct';
+import { Container } from '@material-ui/core';
 
 class SingleOrder extends Component {
 
@@ -11,6 +12,7 @@ class SingleOrder extends Component {
     // console.log('order: ', order)
     return (
       <>
+       <Container maxWidth={"lg"}>
         <h1>Single Order</h1>
         <>
           {
@@ -28,6 +30,7 @@ class SingleOrder extends Component {
                           >{orderItem.product.name}
                             {/* TODO: render "update review" if user has already left review on this product */}
                             <Link
+                              style={{paddingLeft:"10px"}}
                               to='/review'
                               onClick={() => this.props.setSelectedProduct(orderItem.product.id)}
                             >Leave a review
@@ -46,6 +49,7 @@ class SingleOrder extends Component {
               )
           }
         </>
+        </Container>
       </>
     )
   }
