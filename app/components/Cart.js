@@ -12,6 +12,7 @@ import Paper from "@material-ui/core/Paper";
 import Button from '@material-ui/core/Button';
 import DeleteIcon from '@material-ui/icons/Delete';
 import Image from 'material-ui-image'
+import { Container } from '@material-ui/core';
 
 class Cart extends React.Component {
 
@@ -23,6 +24,7 @@ class Cart extends React.Component {
     let totalCost = 0
     return (
       <div>
+        <Container maxWidth={"lg"}>
         <TableContainer component={Paper}>
           <Table aria-label="shoppingCart">
             <TableHead>
@@ -58,8 +60,8 @@ class Cart extends React.Component {
                             Array(10).fill('').map((el, idx) => <option key={idx} defaultValue={cartItem.quantity}>{idx + 1}</option>)
                           }
                         </select></TableCell>
-                        <TableCell align="left" >{cartItem.product.price}</TableCell>
-                        <TableCell align="left" >{cartItem.product.price * cartItem.quantity}</TableCell>
+                        <TableCell align="left" >${cartItem.product.price}</TableCell>
+                        <TableCell align="left" >${cartItem.product.price * cartItem.quantity}.00</TableCell>
                         <TableCell align="left" ><Button
                           color="secondary"
                           startIcon={<DeleteIcon />}
@@ -86,6 +88,7 @@ class Cart extends React.Component {
           </Table>
         </TableContainer>
         <Button onClick={() => window.location.href = '/#/checkout'}>Checkout</Button>
+        </Container>
       </div>
     )
   }
