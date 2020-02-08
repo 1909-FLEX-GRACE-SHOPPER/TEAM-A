@@ -1,3 +1,5 @@
+const dotenv = require('dotenv');
+dotenv.config();
 const express = require('express');
 const Sequelize = require('sequelize');
 const router = require('express').Router();
@@ -9,7 +11,7 @@ const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 router.post('/', async(req, res, next) => {
         const intent = await stripe.paymentIntents.create(
             {
-                amount: 1099,
+                amount: req.body.total,
                 currency: 'usd',
                 payment_method: req.body.pmId,
                 confirm: true,

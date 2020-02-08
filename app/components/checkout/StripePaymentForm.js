@@ -16,6 +16,15 @@ const StripePaymentForm = (props) => {
     const [pending, setPending] = useState(false);
     const dispatch = useDispatch();
     const orders = useSelector(state => state.ordersByUser)
+    const cart = useSelector(state => state.cart)
+
+    const getTotal = () => {
+        let sum = 0;
+        cart.cartitems.forEach(item => sum += item.product.price * item.quantity);
+        return sum;
+    };
+
+    const totalCost = cart ? getTotal() : 0;
 
     const handleSubmit = async(ev) => {
         ev.preventDefault();
@@ -25,7 +34,7 @@ const StripePaymentForm = (props) => {
             card: props.elements.getElement('card'),
         });
 
-        const response = await axios.post('/api/checkout', { pmId: result.paymentMethod.id });
+        const response = await axios.post('/api/checkout', { pmId: result.paymentMethod.id, total: totalCost });
         if (response.data.success) {
             setPaid(true);
             await dispatch(createOrderAndAddOrderItems());
