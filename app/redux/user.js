@@ -1,5 +1,5 @@
 import chalk from 'chalk';
-import {updateCartUser} from './cart'
+import { updateCartUser } from './cart'
 
 const SET_USER = 'SET_USER';
 
@@ -20,7 +20,7 @@ export const fetchUser = () => {
     return axios.get('/auth/who')
       .then(user => dispatch(setUser(user.data)))
       .catch(() => dispatch(setUser(null)))
-  } 
+  }
 };
 
 export const loginUser = (login) => {

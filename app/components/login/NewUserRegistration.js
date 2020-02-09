@@ -18,6 +18,7 @@ function NewUserRegistration(props) {
   const [password, setPassword] = useState('');
   const dispatch = useDispatch();
   const [signupError, setError] = useState(false);
+  const [submitted, setSubmitted] = useState(false)
 
   const classes = useStyles();
 
@@ -29,10 +30,10 @@ function NewUserRegistration(props) {
       case "lastname":
         setLastName(event.target.value);
         break;
-        case "email":
+      case "email":
         setEmail(event.target.value);
         break;
-        case "password":
+      case "password":
         setPassword(event.target.value);
         break;
       default:
@@ -42,11 +43,21 @@ function NewUserRegistration(props) {
 
   const handleSubmit = async () => {
     setError(false);
+    !submitted && setSubmitted(true);
     await dispatch(createUser({ firstName, lastName, email, password }, cart));
-    if(!user) {
-        setError(true)
-    } else props.history.push(`/`)
   }
+
+  useEffect(() => {
+    if (user) {
+      setError(false);
+      props.history.push('/');
+    }
+    else {
+      if (submitted) {
+        setError(true)
+      }
+    }
+  }, [user]);
 
   return (
     <div id="loginContainer" className={[classes.root, classes.centerHero].join(' ')}>
@@ -90,7 +101,7 @@ function NewUserRegistration(props) {
           className={classes.formElem}
         />
         <Button className={classes.formElem} variant="contained" color="primary" onClick={handleSubmit}>Sign up</Button>
-              <Link to="/login" variant="body2">Already have an account? Sign in</Link>
+        <Link to="/login" variant="body2">Already have an account? Sign in</Link>
       </form>
 
     </div>
