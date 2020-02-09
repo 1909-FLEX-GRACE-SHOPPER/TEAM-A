@@ -84,7 +84,7 @@ router.post('/', function (req, res, next) {
 
 //update product for specific product id
 router.put('/:productId', (req, res, next) => {
-  if (req.user) {
+  if (req.user && !req.user.dataValues.isAdmin) {
     const { averageRating, numRatings } = req.body;
     const { productId } = req.params;
     Product.update(
