@@ -79,7 +79,7 @@ router.get('/', (req, res, next) => {
         }
       }],
       order: [
-        [req.query.sort || 'createdAt', req.query.dir || 'DESC']
+        ['createdAt', 'ASC']
       ],
     })
       .then(results => {
@@ -106,7 +106,7 @@ router.get('/', (req, res, next) => {
         }
       }],
       order: [
-        [req.query.sort || 'createdAt', req.query.dir || 'ASC']
+        [req.query.sort || 'createdAt', req.query.dir || 'DESC']
       ],
     })
       .then(results => {
