@@ -43,7 +43,7 @@ class SingleProduct extends Component {
   render() {
     const { selectedProduct, clearSelectedProduct, addCartItem, cart, user } = this.props;
     const { reviews } = selectedProduct
-    console.log('reviews: ', reviews)
+    //console.log('reviews: ', reviews)
     // TODO: add case for !selectedProduct (i.e. return "Requested product could not be found")
     if (!reviews) {
       return (
