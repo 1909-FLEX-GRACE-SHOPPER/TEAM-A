@@ -43,7 +43,7 @@ class SingleProduct extends Component {
   render() {
     const { selectedProduct, clearSelectedProduct, addCartItem, cart, user } = this.props;
     const { reviews } = selectedProduct
-    // console.log('reviews: ', reviews)
+    //console.log('reviews: ', reviews)
     // TODO: add case for !selectedProduct (i.e. return "Requested product could not be found")
     if (!reviews) {
       return (
@@ -53,97 +53,95 @@ class SingleProduct extends Component {
 
     return (
       <React.Fragment>
-        <Container maxWidth={"lg"}> 
-      <Grid
-        container
-        direction="row"
-        justify="flex-start"
-        alignItems="flex-start"
-      >
-          <Grid item xs={6}>>
-        <img src={selectedProduct.imageUrl} width="400" height="400" />
-          </Grid>
-          <Grid item xs={6} >
-          <h1>{selectedProduct.name}</h1>
-        <h3>{selectedProduct.description}</h3>
-        <p style={{ marginBottom:"10px"}}>Price: ${selectedProduct.price}</p>
-        
-              <select style={{ marginBottom: "10px" }} name='quantity' onChange={this.handleChange}>
-          {
-            Array(10).fill('').map((el, idx) => <option key={idx}>{idx + 1}</option>)
-          }
-        </select>
-            <Grid item sm={6}>
-        <Button
-          variant="contained"
-          color="primary"
-          style={{ marginBottom:"10px"}}
-          onClick={() => addCartItem(cart.id, this.props.match.params.id, this.state.quantity)}
-          disabled={selectedProduct.quantity === 0}
-        >
-        <AddShoppingCartIcon fontSize={"small"} style={{ paddingRight: "10px" }} />
-          Add to cart
-        </Button>
-        </Grid>
-        {
-          user && user.isAdmin &&
-          <Button
-            variant="contained"
-            color="primary"
-            style={{ marginBottom: "10px" }}
-            onClick={() => this.props.history.push(`/products/edit/${selectedProduct.id}`)}
+        <Container maxWidth={"lg"}>
+          <Grid
+            container
+            direction="row"
+            justify="flex-start"
+            alignItems="flex-start"
           >
-            Edit Product
-            </Button>
-        }
-        
-          <Button>
-          <Link
-            to='/'
-            onClick={() => clearSelectedProduct()}
-          >Return to products</Link></Button>
-          </Grid>
-      
-            <Grid item sm={6}>
-              <Button color="secondary">
-                <Link
-                  to='/review'
-                > Leave Review</Link> </Button>
-                </Grid>
-        <Grid item sm={6}>
-          <h3>
-            Average Rating
-          </h3> 
-            {selectedProduct.numRatings === 0 ? <span style={{ fontStyle: 'italic' }}>No ratings</span> :
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                }}
-              >
-                <Rating name="rating" value={Math.ceil(selectedProduct.averageRating)} readOnly size="small" />
-                <Typography variant="overline">
-                  {`(${selectedProduct.numRatings})`}
-                </Typography>
-              </div>
-            }
-        <h3>
-          Customer Reviews:
-        </h3>
-        <div>
-          {reviews && reviews.map(review => {
-            return (
-              <React.Fragment key={review.id}>
-                <h4 style={{ margin: 0 }}>
-                  {review.title}
-                </h4>
-                <p style={{ fontStyle: "italic", marginTop: 0, marginBottom: "1rem" }}>{review.body}</p>
-              </React.Fragment>
-            )
-          })}
-        </div>
+            <Grid item xs={6}>>
+        <img src={selectedProduct.imageUrl} width="400" height="400" />
             </Grid>
-        </Grid>
+            <Grid item xs={6} >
+              <h1>{selectedProduct.name}</h1>
+              <h3>{selectedProduct.description}</h3>
+              <p style={{ marginBottom: "10px" }}>Price: ${selectedProduct.price}</p>
+
+              <select style={{ marginBottom: "10px" }} name='quantity' onChange={this.handleChange}>
+                {
+                  Array(10).fill('').map((el, idx) => <option key={idx}>{idx + 1}</option>)
+                }
+              </select>
+              <Grid item sm={6}>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  style={{ marginBottom: "10px" }}
+                  onClick={() => addCartItem(cart.id, this.props.match.params.id, this.state.quantity)}
+                  disabled={selectedProduct.quantity === 0}
+                >
+                  <AddShoppingCartIcon fontSize={"small"} style={{ paddingRight: "10px" }} />
+                  Add to cart
+        </Button>
+              </Grid>
+              {
+                user && user.isAdmin &&
+                <Button
+                  variant="contained"
+                  color="primary"
+                  style={{ marginBottom: "10px" }}
+                  onClick={() => this.props.history.push(`/products/edit/${selectedProduct.id}`)}
+                >
+                  Edit Product
+            </Button>
+              }
+
+              <Button>
+                <Link
+                  to='/'
+                  onClick={() => clearSelectedProduct()}
+                >Return to products</Link></Button>
+            </Grid>
+
+            <Grid item sm={6}>
+              <h3>
+                Average Rating
+          </h3>
+              {selectedProduct.numRatings === 0 ? <span style={{ fontStyle: 'italic' }}>No ratings</span> :
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                  }}
+                >
+                  <Rating name="rating" value={Math.ceil(selectedProduct.averageRating)} readOnly size="small" />
+                  <Typography variant="overline">
+                    {`(${selectedProduct.numRatings})`}
+                  </Typography>
+                </div>
+              }
+              <h3>
+                Customer Reviews:
+        </h3>
+              <div>
+                {reviews.length > 0 ? reviews.map(review => {
+                  return (
+                    <React.Fragment key={review.id}>
+                      <h4 style={{ margin: 0 }}>
+                        {review.title}
+                      </h4>
+                      <p style={{ fontStyle: "italic", marginTop: 0, marginBottom: "1rem" }}>{review.body}</p>
+                    </React.Fragment>
+                  )
+                }) :
+                  <React.Fragment>
+                    <p style={{ fontStyle: "italic", marginTop: 0, marginBottom: "1rem" }}>No Reviews</p>
+                  </React.Fragment>
+                }
+              </div>
+            </Grid>
+          </Grid>
         </Container>
       </React.Fragment>
     )
