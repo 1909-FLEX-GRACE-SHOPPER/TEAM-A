@@ -17,6 +17,7 @@ import InputLabel from '@material-ui/core/InputLabel';
 import Rating from '@material-ui/lab/Rating';
 import Grid from '@material-ui/core/Grid';
 import Container from '@material-ui/core/Container';
+import Typography from '@material-ui/core/Typography';
 import AddShoppingCartIcon from '@material-ui/icons/AddShoppingCart';
 
 class SingleProduct extends Component {
@@ -42,7 +43,7 @@ class SingleProduct extends Component {
   render() {
     const { selectedProduct, clearSelectedProduct, addCartItem, cart, user } = this.props;
     const { reviews } = selectedProduct
-    console.log('reviews: ', reviews)
+    // console.log('reviews: ', reviews)
     // TODO: add case for !selectedProduct (i.e. return "Requested product could not be found")
     if (!reviews) {
       return (
@@ -103,31 +104,45 @@ class SingleProduct extends Component {
           >Return to products</Link></Button>
           </Grid>
       
-         <Grid item sm={6}>
-              <h3>
-                Average Rating: </h3>
-              {selectedProduct.numRatings === 0 ? <span style={{ fontStyle: 'italic' }}>No ratings</span> :
+            <Grid item sm={6}>
+              <Button color="secondary">
+                <Link
+                  to='/review'
+                > Leave Review</Link> </Button>
+                </Grid>
+        <Grid item sm={6}>
+          <h3>
+            Average Rating
+          </h3> 
+            {selectedProduct.numRatings === 0 ? <span style={{ fontStyle: 'italic' }}>No ratings</span> :
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                }}
+              >
                 <Rating name="rating" value={Math.ceil(selectedProduct.averageRating)} readOnly size="small" />
-              }
+                <Typography variant="overline">
+                  {`(${selectedProduct.numRatings})`}
+                </Typography>
+              </div>
+            }
         <h3>
           Customer Reviews:
         </h3>
-        {/* <>
+        {<>
           if (reviews.length > 0) {
           reviews.map(review => {
             return (
               <React.Fragment key={review.id}>
-                {review.title}
-                <ul key>
-                  <li>{review.body}</li>
-                </ul>
-              </React.Fragment>)
-            })}
-            else {              
-               <p>no reviews</p>         
-            }
-          </> */}
-       
+                <h4 style={{ margin: 0 }}>
+                  {review.title}
+                </h4>
+                <p style={{ fontStyle: "italic", marginTop: 0, marginBottom: "1rem" }}>{review.body}</p>
+              </React.Fragment>
+            )
+          })}
+        </div>
             </Grid>
         </Grid>
         </Container>

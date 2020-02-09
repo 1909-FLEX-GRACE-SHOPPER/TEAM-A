@@ -7,23 +7,6 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import Grid from '@material-ui/core/Grid';
 
-
-/** BACKEND INTEGRATION PENDING HENCE FEEDING THE DATA DIRECTLY BY HARD CODING FOR NOW BELOW. WILL BE REMOVED ONCE BACKEND IS INTEGRATED */
-const products = [
-  { name: 'Product 1', desc: 'A nice thing', price: '$9.99' },
-  { name: 'Product 2', desc: 'Another thing', price: '$3.45' },
-  { name: 'Product 3', desc: 'Something else', price: '$6.51' },
-  { name: 'Product 4', desc: 'Best thing of all', price: '$14.11' },
-  { name: 'Shipping', desc: '', price: 'Free' },
-];
-const addresses = ['22 Main street', 'Shopperspace', 'Fullstack Town', '12345', 'USA'];
-const payments = [
-  { name: 'Card type', detail: 'Master' },
-  { name: 'Card holder', detail: 'Mr ABC XYZ' },
-  { name: 'Card number', detail: 'xxxx-xxxx-xxxx-6789' },
-  { name: 'Expiry date', detail: '10/2029' },
-];
-
 const useStyles = makeStyles(theme => ({
   listItem: {
     padding: theme.spacing(1, 0),
@@ -43,7 +26,7 @@ const Review = () => {
   const cart = useSelector(state => state.cart);
   const dispatch = useDispatch();
 
-  const cartTotal = cart.items ? cart.items.reduce((total, item) => { return total + item.product.price }, 0) : 0;
+  const cartTotal = cart.cartitems ? cart.cartitems.reduce((total, item) => { return total + parseInt(item.product.price, 10) }, 0.00) : 0;
   return (
     <React.Fragment>
       <Typography variant="h6" gutterBottom>
@@ -52,7 +35,6 @@ const Review = () => {
       <List disablePadding>
         {cart.cartitems && cart.cartitems.map(item => (
           <ListItem className={classes.listItem} key={item.product.name}>
-            <ListItemText primary={item.product.name} secondary={item.product.description} />
             <ListItemText primary={item.product.name} secondary={item.quantity} />
             <Typography variant="body2">{item.product.price}</Typography>
           </ListItem>
@@ -64,7 +46,7 @@ const Review = () => {
           </Typography>
         </ListItem>
       </List>
-      <Grid container spacing={2}>
+      {/* <Grid container spacing={2}>
         <Grid item xs={12} sm={6}>
           <Typography variant="h6" gutterBottom className={classes.title}>
             Shipping
@@ -84,7 +66,7 @@ const Review = () => {
           <Typography gutterBottom>{`Card Number: ****${billingInfo.cardNumber.slice(billingInfo.cardNumber.length - 4, billingInfo.cardNumber.length)}`}</Typography>
           <Typography gutterBottom>{`Expires: ${billingInfo.expireMonth} / ${billingInfo.expireYear}`}</Typography>
         </Grid>
-      </Grid>
+      </Grid> */}
     </React.Fragment>
   );
 }
