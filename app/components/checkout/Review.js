@@ -26,7 +26,7 @@ const Review = () => {
   const cart = useSelector(state => state.cart);
   const dispatch = useDispatch();
 
-  const cartTotal = cart.items ? cart.items.reduce((total, item) => { return total + item.product.price }, 0) : 0;
+  const cartTotal = cart.cartitems ? cart.cartitems.reduce((total, item) => { return total + parseInt(item.product.price, 10) }, 0.00) : 0;
   return (
     <React.Fragment>
       <Typography variant="h6" gutterBottom>
@@ -35,7 +35,6 @@ const Review = () => {
       <List disablePadding>
         {cart.cartitems && cart.cartitems.map(item => (
           <ListItem className={classes.listItem} key={item.product.name}>
-            <ListItemText primary={item.product.name} secondary={item.product.description} />
             <ListItemText primary={item.product.name} secondary={item.quantity} />
             <Typography variant="body2">{item.product.price}</Typography>
           </ListItem>
