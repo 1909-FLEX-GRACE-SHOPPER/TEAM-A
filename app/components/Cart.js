@@ -11,8 +11,9 @@ import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import Button from '@material-ui/core/Button';
 import DeleteIcon from '@material-ui/icons/Delete';
-import Image from 'material-ui-image';
-import { Container } from '@material-ui/core';
+import Image from 'material-ui-image'
+import { Container, Box } from '@material-ui/core';
+
 
 class Cart extends React.Component {
 
@@ -39,10 +40,11 @@ class Cart extends React.Component {
             </TableHead>
             <TableBody>
               {
-                this.props.cart.id ?
-                  (this.props.cart.cartitems.map(cartItem => (
-                    // { let productCost = product.price * cartItem.quantity
-                    //   totalCost += productCost}
+                this.props.cart.id ? (
+                  this.props.cart.cartitems.map(cartItem => {
+                    let productCost = cartItem.product.price * cartItem.quantity;
+                    totalCost += productCost;
+                    return (
                     <TableRow key={cartItem.id}>
                       <Fragment key={cartItem.id}>
                         <TableCell align="left" >
@@ -72,22 +74,24 @@ class Cart extends React.Component {
                         </TableCell>
                        
                       </Fragment>
-                      {/* } */}
                     </TableRow>
-                   
-                  ))) : (
+                    )
+                    })
+                  ) : (
                     <TableRow>
                       <TableCell>Loading...</TableCell>
                     </TableRow>
                   )
-              }
+                  }
               <TableRow>
-                <TableCell align="left" >Total Cost: {totalCost} </TableCell>
+                <TableCell align="left" >Total Cost: ${totalCost}.00 </TableCell>
                </TableRow>
             </TableBody>
           </Table>
         </TableContainer>
-        <Button onClick={() => window.location.href = '/#/checkout'}>Checkout</Button>
+          <Box display="flex" justifyContent="flex-end">
+          <Button style ={{justifyContent: "center", margin:"40px"}}variant="contained" color="primary" onClick={() => window.location.href = '/#/checkout'}>Checkout</Button>
+          </Box>
         </Container>
       </div>
     )
