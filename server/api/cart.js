@@ -174,29 +174,29 @@ router.post('/', (req, res, next) => {
 });
 
 //PUT
-// router.put('/newUser/:sessionId', (req, res, next) => {
-//   // update userId for a newly signedup user
-//   Cart.findOne({
-//     where: {
-//       sessionId: req.params.sessionId
-//     }
-//   })
-//     .then(cart => {
-//       if (cart) {
-//         cart.update({
-//           userId: req.user.id
-//         })
-//           .then(cart => res.status(200).send(cart))
-//           .catch(e => {
-//             res.status(500).send('error in PUT /cart/:sessionId route')
-//             next(e)
-//           })
-//       }
-//       else {
-//         res.status(400).send('could not find cart')
-//       }
-//     })
-// });
+router.put('/newUser/:sessionId', (req, res, next) => {
+  // update userId for a newly signedup user
+  Cart.findOne({
+    where: {
+      sessionId: req.params.sessionId
+    }
+  })
+    .then(cart => {
+      if (cart) {
+        cart.update({
+          userId: req.user.id
+        })
+          .then(cart => res.status(200).send(cart))
+          .catch(e => {
+            res.status(500).send('error in PUT /cart/:sessionId route')
+            next(e)
+          })
+      }
+      else {
+        res.status(400).send('could not find cart')
+      }
+    })
+});
 
 router.put('/:cartId', (req, res, next) => {
   Cart.findOne({
