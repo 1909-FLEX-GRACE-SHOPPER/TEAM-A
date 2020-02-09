@@ -103,12 +103,6 @@ class SingleProduct extends Component {
           >Return to products</Link></Button>
           </Grid>
       
-            <Grid item sm={6}>
-              <Button color="secondary">
-                <Link
-                  to='/review'
-                > Leave Review</Link> </Button>
-                </Grid>
          <Grid item sm={6}>
               <h3>
                 Average Rating: </h3>
@@ -118,19 +112,22 @@ class SingleProduct extends Component {
         <h3>
           Customer Reviews:
         </h3>
-        <div>
-          {reviews && reviews.map(review => {
+        {/* <>
+          if (reviews.length > 0) {
+          reviews.map(review => {
             return (
               <React.Fragment key={review.id}>
-
                 {review.title}
                 <ul key>
                   <li>{review.body}</li>
                 </ul>
-              </React.Fragment>
-            )
-          })}
-        </div>
+              </React.Fragment>)
+            })}
+            else {              
+               <p>no reviews</p>         
+            }
+          </> */}
+       
             </Grid>
         </Grid>
         </Container>
