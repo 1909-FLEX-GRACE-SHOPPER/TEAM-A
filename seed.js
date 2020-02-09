@@ -112,9 +112,6 @@ const seed = async () => {
           pricePaid: faker.commerce.price(1.00, 99.99, 2),
           productId: createdProducts[randomProduct].id
         });
-        await Product.update(
-
-        )
       }
     }
 
