@@ -125,7 +125,7 @@ class SingleProduct extends Component {
                 Customer Reviews:
         </h3>
               <div>
-                {reviews.length > 0 ? reviews.map(review => {
+                {reviews.length > 0 ? (reviews.map(review => {
                   return (
                     <React.Fragment key={review.id}>
                       <h4 style={{ margin: 0 }}>
@@ -134,10 +134,11 @@ class SingleProduct extends Component {
                       <p style={{ fontStyle: "italic", marginTop: 0, marginBottom: "1rem" }}>{review.body}</p>
                     </React.Fragment>
                   )
-                }) :
-                  <React.Fragment>
-                    <p style={{ fontStyle: "italic", marginTop: 0, marginBottom: "1rem" }}>No Reviews</p>
-                  </React.Fragment>
+                })) : (
+                    <React.Fragment>
+                      <p style={{ fontStyle: "italic", marginTop: 0, marginBottom: "1rem" }}>No Reviews</p>
+                    </React.Fragment>
+                  )
                 }
               </div>
             </Grid>
