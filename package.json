@@ -31,7 +31,7 @@
     "@material-ui/pickers": "^3.2.9",
     "@material-ui/styles": "^4.9.0",
     "axios": "^0.19.1",
-    "bcrypt": "^3.0.7",
+    "bcrypt": "^5.0.0",
     "chalk": "^3.0.0",
     "cjs": "0.0.11",
     "cookie-parser": "^1.4.4",
